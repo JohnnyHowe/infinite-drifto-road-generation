@@ -22,8 +22,10 @@ public class OverlapDetector : MonoBehaviour
             {
                 foreach (Vector2 vertex2 in OrderedVertices)
                 {
-                    Vector2 axis = vertex1 - vertex2;
-                    if (axis.magnitude == 0) continue;
+                    Vector2 tangent = vertex1 - vertex2;
+                    if (tangent.normalized.magnitude == 0) continue;
+
+                    Vector2 axis = new Vector2(-tangent.y, tangent.x);
                     tangents.Add(axis.normalized);
                 }
             }
@@ -101,6 +103,7 @@ public class OverlapDetector : MonoBehaviour
         IEnumerable<Vector2> axes = shape1.GetAxes().Concat(shape2.GetAxes()).Distinct().ToList();
         foreach (Vector2 axis in axes)
         {
+            Debug.DrawRay(Vector3.zero, new Vector3(axis.x, 0, axis.y));
             // get the projection of each object on the axis
             FloatRange shape1ProjectionRange = shape1.GetProjection(axis);
             FloatRange shape2ProjectionRange = shape2.GetProjection(axis);
