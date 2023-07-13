@@ -12,12 +12,19 @@ namespace RoadGeneration
         private int _maxDepth;
         private int _nBranches;
         private const int MAX_ITERATIONS = 10000;
+        private bool _atSolution;
 
         public DFSCombinationGenerator(int branches, int depth)
         {
-            SetState(Enumerable.Range(0, depth).Select(_ => -1).ToArray()); // init to { -1, -1, ...}
+            if (branches < 1) throw new ArgumentOutOfRangeException("Cannot have less than branches");
+            if (depth < 1) throw new ArgumentOutOfRangeException("Cannot have less than one depth");
+
             _maxDepth = depth;
             _nBranches = branches;
+            _atSolution = false;
+
+            SetState(Enumerable.Range(0, depth).Select(_ => -1).ToArray()); // init to { -1, -1, ...}
+            _state[0] = 0;
         }
 
         public int[] GetState()
@@ -32,8 +39,10 @@ namespace RoadGeneration
 
         public void StepInvalid()
         {
-            int currentDepth = GetCurrentDepthIndex();
-            int indexInQuestion = Mathf.Max(0, currentDepth);
+            _atSolution = false;
+
+            int currentDepth = GetCurrentDepth();
+            int indexInQuestion = currentDepth;
 
             if (_state[indexInQuestion] < _nBranches - 1)
             {
@@ -48,7 +57,7 @@ namespace RoadGeneration
 
         private void _Backtrack()
         {
-            int currentDepth = GetCurrentDepthIndex();
+            int currentDepth = GetCurrentDepth();
             int indexInQuestion = Mathf.Max(0, currentDepth);
 
             // Acting as a while loop - I'm sick of breaking Unity through infinite loops 
@@ -69,23 +78,27 @@ namespace RoadGeneration
 
         public bool CanBacktrack()
         {
-            int indexInQuestion = Mathf.Max(0, GetCurrentDepthIndex());
+            int indexInQuestion = Mathf.Max(0, GetCurrentDepth());
             return indexInQuestion > 0;
         }
 
         public void StepValid()
         {
-            if (HasFoundSolution()) return;
+            if (_state[_maxDepth - 1] != -1)
+            {
+                _atSolution = true;
+                return;
+            }
 
-            _state[GetCurrentDepthIndex() + 1] = 0;
+            _state[GetCurrentDepth() + 1] = 0;
         }
 
         public bool HasFoundSolution()
         {
-            return _state[_maxDepth - 1] != -1;
+            return _atSolution;
         }
 
-        public int GetCurrentDepthIndex()
+        public int GetCurrentDepth()
         {
             int firstNegativeOneIndex = Array.IndexOf(_state, -1);
             if (firstNegativeOneIndex >= 0) return firstNegativeOneIndex - 1;
@@ -94,7 +107,7 @@ namespace RoadGeneration
 
         public int GetCurrentEnd()
         {
-            return _state[Mathf.Max(0, GetCurrentDepthIndex())];
+            return _state[Mathf.Max(0, GetCurrentDepth())];
         }
     }
 }
