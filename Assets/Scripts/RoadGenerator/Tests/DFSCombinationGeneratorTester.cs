@@ -7,6 +7,28 @@ using RoadGeneration;
 
 public class DFSCombinationGeneratorTester
 {
+    /// ===========================================================================================
+    /// Other
+    /// ===========================================================================================
+
+    [Test]
+    public void TestInitialState()
+    {
+        DFSCombinationGenerator generator = new DFSCombinationGenerator(5, 5);
+        CollectionAssert.AreEqual(new int[] { 0, -1, -1, -1, -1 }, generator.GetState());
+    }
+
+    [Test]
+    public void TestInvalidOnFirst()
+    {
+        DFSCombinationGenerator generator = new DFSCombinationGenerator(5, 5);
+        generator.StepInvalid();
+    }
+    
+    /// ===========================================================================================
+    /// GetCurrentDepth
+    /// ===========================================================================================
+
     [Test]
     public void TestGetCurrentDepthEmpty()
     {
@@ -39,12 +61,9 @@ public class DFSCombinationGeneratorTester
         Assert.AreEqual(generator.GetCurrentDepth(), 4);
     }
 
-    [Test]
-    public void TestInitialState()
-    {
-        DFSCombinationGenerator generator = new DFSCombinationGenerator(5, 5);
-        CollectionAssert.AreEqual(new int[] { 0, -1, -1, -1, -1 }, generator.GetState());
-    }
+    /// ===========================================================================================
+    /// GetCurrentEnd
+    /// ===========================================================================================
 
     [Test]
     public void TestGetCurrentEndPartialFull()
@@ -69,6 +88,10 @@ public class DFSCombinationGeneratorTester
         generator.SetState(new int[] { 0, 1, 2, 3, 4 });
         Assert.AreEqual(4, generator.GetCurrentEnd());
     }
+
+    /// ===========================================================================================
+    /// Has Found Solution
+    /// ===========================================================================================
 
     [Test]
     public void TestHasFoundSolutionFalse()
@@ -95,8 +118,12 @@ public class DFSCombinationGeneratorTester
         Assert.True(generator.HasFoundSolution());
     }
 
+    /// ===========================================================================================
+    /// StepValid
+    /// ===========================================================================================
+
     [Test]
-    public void TestValidOne()
+    public void TestStepValidOne()
     {
         DFSCombinationGenerator generator = new DFSCombinationGenerator(5, 5);
         generator.StepValid();
@@ -104,7 +131,7 @@ public class DFSCombinationGeneratorTester
     }
 
     [Test]
-    public void TestValidThree()
+    public void TestStepValidThree()
     {
         DFSCombinationGenerator generator = new DFSCombinationGenerator(5, 5);
         generator.StepValid();
@@ -114,15 +141,19 @@ public class DFSCombinationGeneratorTester
     }
 
     [Test]
-    public void TestInvalidOne()
+    public void TestStepInvalidOne()
     {
         DFSCombinationGenerator generator = new DFSCombinationGenerator(3, 3);
         generator.StepInvalid();
         CollectionAssert.AreEqual(new int[] { 1, -1, -1 }, generator.GetState());
     }
 
+    /// ===========================================================================================
+    /// StepInvalid
+    /// ===========================================================================================
+
     [Test]
-    public void TestInvalidThreeNoBackTrack()
+    public void TestStepInvalidThreeNoBackTrack()
     {
         DFSCombinationGenerator generator = new DFSCombinationGenerator(5, 5);
         generator.StepInvalid();
@@ -132,7 +163,7 @@ public class DFSCombinationGeneratorTester
     }
 
     [Test]
-    public void TestInvalidSingleBackTrack()
+    public void TestStepInvalidSingleBackTrack()
     {
         DFSCombinationGenerator generator = new DFSCombinationGenerator(5, 5);
         generator.SetState(new int[] { 0, 0, 4, -1, -1 });
@@ -141,7 +172,7 @@ public class DFSCombinationGeneratorTester
     }
 
     [Test]
-    public void TestInvalidDoubleBackTrack()
+    public void TestStepInvalidDoubleBackTrack()
     {
         DFSCombinationGenerator generator = new DFSCombinationGenerator(5, 5);
         generator.SetState(new int[] { 0, 4, 4, -1, -1 });
@@ -150,7 +181,7 @@ public class DFSCombinationGeneratorTester
     }
 
     [Test]
-    public void TestInvalidDoubleBackTrackToStart()
+    public void TestStepInvalidDoubleBackTrackToStart()
     {
         DFSCombinationGenerator generator = new DFSCombinationGenerator(5, 5);
         generator.SetState(new int[] { 4, 4, 4, -1, -1 });
@@ -164,6 +195,10 @@ public class DFSCombinationGeneratorTester
             // Good, there was an error
         }
     }
+
+    /// ===========================================================================================
+    /// CanBacktrack
+    /// ===========================================================================================
 
     [Test]
     public void TestCanBacktrackTrue()
@@ -179,12 +214,5 @@ public class DFSCombinationGeneratorTester
         DFSCombinationGenerator generator = new DFSCombinationGenerator(5, 5);
         generator.SetState(new int[] { 4, 4, 4, -1, -1 });
         Assert.True(generator.CanBacktrack());
-    }
-
-    [Test]
-    public void TestInvalidOnFirst()
-    {
-        DFSCombinationGenerator generator = new DFSCombinationGenerator(5, 5);
-        generator.StepInvalid();
     }
 }
