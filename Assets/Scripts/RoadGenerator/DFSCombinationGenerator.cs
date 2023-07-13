@@ -6,6 +6,8 @@ namespace RoadGeneration
 {
     public class DFSCombinationGenerator
     {
+        public class OutOfCombinationsException : Exception { }
+
         private int[] _state;
         private int _maxDepth;
         private int _nBranches;
@@ -55,11 +57,20 @@ namespace RoadGeneration
                 // exit clause, imagine the contents in while(!...)
                 if (_state[indexInQuestion] < _nBranches - 1) break;
 
+                // Cannot backtrack anymore
+                if (!CanBacktrack()) throw new OutOfCombinationsException();
+
                 // do backtrack
                 _state[indexInQuestion] = -1;
                 _state[indexInQuestion - 1]++;
                 indexInQuestion -= 1;
             }
+        }
+
+        public bool CanBacktrack()
+        {
+            int indexInQuestion = Mathf.Max(0, GetCurrentDepthIndex());
+            return indexInQuestion > 0;
         }
 
         public void StepValid()

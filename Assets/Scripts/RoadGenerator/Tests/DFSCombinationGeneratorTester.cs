@@ -155,7 +155,30 @@ public class DFSCombinationGeneratorTester
     {
         DFSCombinationGenerator generator = new DFSCombinationGenerator(5, 5);
         generator.SetState(new int[] { 4, 4, 4, -1, -1 });
-        generator.StepInvalid();
-        // What now?
+        try
+        {
+            generator.StepInvalid();
+            Assert.True(false, "An error should have been thrown");
+        }
+        catch (DFSCombinationGenerator.OutOfCombinationsException exception)
+        {
+            // Good, there was an error
+        }
+    }
+
+    [Test]
+    public void TestCanBacktrackTrue()
+    {
+        DFSCombinationGenerator generator = new DFSCombinationGenerator(5, 5);
+        generator.SetState(new int[] { 4, 2, 4, -1, -1 });
+        Assert.True(generator.CanBacktrack());
+    }
+
+    [Test]
+    public void TestCanBacktrackFalse()
+    {
+        DFSCombinationGenerator generator = new DFSCombinationGenerator(5, 5);
+        generator.SetState(new int[] { 4, 4, 4, -1, -1 });
+        Assert.True(generator.CanBacktrack());
     }
 }
