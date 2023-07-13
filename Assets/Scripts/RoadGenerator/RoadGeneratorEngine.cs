@@ -8,18 +8,18 @@ namespace RoadGeneration
 {
     public class RoadGeneratorEngine
     {
-        private List<RoadSection> _currentPiecesInWorld;
-        private List<RoadSection> _possibleNextPieces;
+        private List<IRoadSection> _currentPiecesInWorld;
+        private List<IRoadSection> _possibleNextPieces;
         private int _forwardPiecesToCheck;
-        private int[] _lastSearchState;
         private bool _lastSearchStateContainsOverlap;
+        private DFSCombinationGenerator _combinationGenerator;
 
-        public void UpdateInputsAndResetSearch(List<RoadSection> currentPiecesInWorld, List<RoadSection> possibleNextPieces, int forwardPiecesToCheck)
+        public void UpdateInputsAndResetSearch(List<IRoadSection> currentPiecesInWorld, List<IRoadSection> possibleNextPieces, int forwardPiecesToCheck)
         {
             _currentPiecesInWorld = currentPiecesInWorld;
             _possibleNextPieces = possibleNextPieces;
             _forwardPiecesToCheck = forwardPiecesToCheck;
-            _lastSearchState = Enumerable.Range(0, forwardPiecesToCheck).Select(_ => -1).ToArray(); // init to { -1, -1, ...}
+            _combinationGenerator = new DFSCombinationGenerator(possibleNextPieces.Count, forwardPiecesToCheck);
             _lastSearchStateContainsOverlap = false;
         }
 
@@ -33,50 +33,38 @@ namespace RoadGeneration
 
         private void _CheckOneIteration()
         {
-            Debug.Log($"State: {string.Join(", ", _lastSearchState)}, Contains Overlap: {_lastSearchStateContainsOverlap}");
+            Debug.Log($"State: {string.Join(", ", _combinationGenerator.GetState())}, Contains Overlap: {_lastSearchStateContainsOverlap}");
 
             // We're already done -> early exit
             if (IsNextChoiceReady()) return;
-
-            // How deep into the search are we: what's the index of the first -1 in _searchState
-            int searchDepth = Array.IndexOf(_lastSearchState, -1);
-
-            if (_lastSearchStateContainsOverlap)
-            {
-                // Piece at search is invalid, change it
-
-                int lastChoice = _lastSearchState[_lastSearchState.Length - 1];
-                if (lastChoice < _possibleNextPieces.Count - 1)
-                {
-                    // There's more choices at this depth
-                }
-                else
-                {
-                    // No more choices at this depth, undo
-                }
-            }
-            else
-            {
-                // Current path contains no overlap
-                // What happens when another piece is added?
-                _lastSearchState[searchDepth + 1] = 0;
-                _lastSearchStateContainsOverlap = _DoesLastPieceOverlapWithAnyOthers();
-            }
         }
 
         private bool _DoesLastPieceOverlapWithAnyOthers()
         {
+            // Does it overlap with any pieces in the world?
+            foreach (IRoadSection worldRoadSection in _currentPiecesInWorld)
+            {
+                // if this piece will cause an overlap, return true;
+            }
+
+            // Does it overlap with any pieces we're thinking about using?
+            for (int pieceIndex = 0; pieceIndex < _combinationGenerator.GetCurrentDepth(); pieceIndex++)
+            {
+                // if this piece will cause an overlap, return true;
+            }
+
+            // No overlap, must be a-okay
             return false;
         }
 
         public bool IsNextChoiceReady()
         {
-            return !_lastSearchStateContainsOverlap && _lastSearchState[_lastSearchState.Length - 1] != -1;
+            return !_lastSearchStateContainsOverlap && _combinationGenerator.HasFoundSolution();
         }
 
-        public RoadSection GetNextChoice()
+        public IRoadSection GetNextChoice()
         {
-            return _possibleNextPieces[_lastSearchState[_lastSearchState.Length - 1]];
+            return _possibleNextPieces[0];
         }
     }
 }

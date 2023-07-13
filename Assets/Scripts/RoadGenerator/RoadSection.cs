@@ -4,9 +4,9 @@ using UnityEngine;
 
 namespace RoadGeneration
 {
-    public class RoadSection : MonoBehaviour
+    public class RoadSection : MonoBehaviour, IRoadSection
     {
         [SerializeField] private MeshFilter _boundingMesh;
-        
+
     }
 }
