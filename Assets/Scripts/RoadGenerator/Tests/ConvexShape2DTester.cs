@@ -10,17 +10,32 @@ public class ConvexShape2DTester
     [Test]
     public void TestGetAxesUnitSquareAtOrigin()
     {
-        List<Vector2> _unitSquareAtOrigin = new List<Vector2> {
+        List<Vector2> unitSquareAtOrigin = new List<Vector2> {
             new Vector2(-.5f, -.5f),
             new Vector2(-.5f, .5f),
             new Vector2(.5f, .5f),
             new Vector2(.5f, -.5f),
         };
-        ConvexShape2D shape = new ConvexShape2D(_unitSquareAtOrigin);
+        ConvexShape2D shape = new ConvexShape2D(unitSquareAtOrigin);
 
         List<Vector2> axes = shape.GetAxes();
         List<Vector2> expected = new List<Vector2>() { Vector2.right, Vector2.up };
 
         CollectionAssert.AreEquivalent(expected, axes);
+    }
+
+    [Test]
+    public void TestEqualityDifferentRefrence()
+    {
+        List<Vector2> unitSquareAtOrigin = new List<Vector2> {
+            new Vector2(-.5f, -.5f),
+            new Vector2(-.5f, .5f),
+            new Vector2(.5f, .5f),
+            new Vector2(.5f, -.5f),
+        };
+        ConvexShape2D shape1 = new ConvexShape2D(unitSquareAtOrigin);
+        ConvexShape2D shape2 = new ConvexShape2D(unitSquareAtOrigin);
+
+        Assert.True(shape1 == shape2);
     }
 }

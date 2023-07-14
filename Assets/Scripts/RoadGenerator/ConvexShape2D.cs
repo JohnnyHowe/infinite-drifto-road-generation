@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace RoadGeneration
 {
-    public struct ConvexShape2D
+    public class ConvexShape2D
     {
         public class Vector2EqualityComparer : IEqualityComparer<Vector2>
         {
@@ -46,9 +46,35 @@ namespace RoadGeneration
             return new FloatRange(min, max);
         }
 
+        public List<Vector2> GetVertices()
+        {
+            return _vertices;
+        }
+
         private static float _Project(Vector2 axis, Vector2 point)
         {
             return Vector2.Dot(axis, point) / axis.magnitude;
         }
+
+        public bool Equals(ConvexShape2D other)
+        {
+            return new HashSet<Vector2>(other.GetVertices()).SetEquals(new HashSet<Vector2>(GetVertices()));
+        }
+
+        public override bool Equals(object obj) => this.Equals(obj as ConvexShape2D);
+
+        public override int GetHashCode() => (new HashSet<Vector2>(GetVertices())).GetHashCode();
+
+        public static bool operator ==(ConvexShape2D lhs, ConvexShape2D rhs)
+        {
+            if (lhs is null)
+            {
+                if (rhs is null) return true;
+                return false;
+            }
+            return lhs.Equals(rhs);
+        }
+
+        public static bool operator !=(ConvexShape2D lhs, ConvexShape2D rhs) => !(lhs == rhs);
     }
 }
