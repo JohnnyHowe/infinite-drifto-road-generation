@@ -43,21 +43,9 @@ public class MeshGeneratorUtility
             1, 6, 5
         };
 
-        // Define the normals for each vertex
-        Vector3[] normals =
-        {
-            Vector3.down,   // Bottom face
-            Vector3.up,     // Top face
-            Vector3.back,   // Front face
-            Vector3.forward,// Back face
-            Vector3.left,   // Left face
-            Vector3.right   // Right face
-        };
-
         // Assign the vertices, triangles, and normals to the mesh
         cubeMesh.vertices = vertices;
         cubeMesh.triangles = triangles;
-        cubeMesh.normals = normals;
 
         // Recalculate the bounds and normals of the mesh
         cubeMesh.RecalculateBounds();
