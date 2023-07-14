@@ -1,5 +1,5 @@
 {
-    "name": "Tests1",
+    "name": "RoadGeneratorTests",
     "rootNamespace": "",
     "references": [
         "UnityEngine.TestRunner",
