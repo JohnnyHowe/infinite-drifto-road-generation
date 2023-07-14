@@ -22,6 +22,18 @@ public static class ConvexHullUtility
         }
     }
 
+    public static List<Vector2> GetConvexHullAxes(List<Vector2> points)
+    {
+        List<Vector2> axes = new List<Vector2>();
+        foreach (Vector2 tangent in GetConvexHullTangents(points)) {
+            Vector2 axis = new Vector2(-tangent.y, tangent.x);
+            if (axis.x < 0) axis = -axis;
+            if (axis.y < 0) axis = -axis;
+            axes.Add(axis);
+        }
+        return axes;
+    }
+
     public static List<Vector2> GetConvexHullTangents(List<Vector2> points)
     {
         List<Vector2> tangents = new List<Vector2>();

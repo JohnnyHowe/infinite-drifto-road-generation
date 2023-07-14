@@ -1,40 +1,43 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace RoadGeneration
 {
     public struct ConvexShape2D
     {
-        public List<Vector2> OrderedVertices;
-
-        public ConvexShape2D(List<Vector2> orderedVertices)
+        public class Vector2EqualityComparer : IEqualityComparer<Vector2>
         {
-            OrderedVertices = orderedVertices;
+            public bool Equals(Vector2 v1, Vector2 v2)
+            {
+                return Vector2.Distance(v1, v2) < Mathf.Epsilon;
+            }
+
+            public int GetHashCode(Vector2 vector)
+            {
+                return vector.GetHashCode();
+            }
+        }
+
+        private List<Vector2> _vertices;
+        private List<Vector2> _axes;
+
+        public ConvexShape2D(List<Vector2> vertices)
+        {
+            _vertices = vertices;
+            _axes = ConvexHullUtility.GetConvexHullAxes(vertices);
         }
 
         public List<Vector2> GetAxes()
         {
-            // TODO ignore internal connections
-            List<Vector2> tangents = new List<Vector2>();
-            foreach (Vector2 vertex1 in OrderedVertices)
-            {
-                foreach (Vector2 vertex2 in OrderedVertices)
-                {
-                    Vector2 tangent = vertex1 - vertex2;
-                    if (tangent.normalized.magnitude == 0) continue;
-
-                    Vector2 axis = new Vector2(-tangent.y, tangent.x);
-                    tangents.Add(axis.normalized);
-                }
-            }
-            return tangents;
+            return _axes;
         }
 
         public FloatRange GetProjection(Vector2 axis)
         {
             float min = Mathf.Infinity;
             float max = -Mathf.Infinity;
-            foreach (Vector2 vertex in OrderedVertices)
+            foreach (Vector2 vertex in _vertices)
             {
                 float vertexProjection = _Project(axis, vertex);
                 min = Mathf.Min(min, vertexProjection);
