@@ -1,77 +1,11 @@
-using System;
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
+using RoadGeneration;
+
 public class OverlapDetector : MonoBehaviour
 {
-    private struct ConvexShape2D
-    {
-        public List<Vector2> OrderedVertices;
-
-        public ConvexShape2D(List<Vector2> orderedVertices)
-        {
-            OrderedVertices = orderedVertices;
-        }
-
-        public List<Vector2> GetAxes()
-        {
-            // TODO ignore internal connections
-            List<Vector2> tangents = new List<Vector2>();
-            foreach (Vector2 vertex1 in OrderedVertices)
-            {
-                foreach (Vector2 vertex2 in OrderedVertices)
-                {
-                    Vector2 tangent = vertex1 - vertex2;
-                    if (tangent.normalized.magnitude == 0) continue;
-
-                    Vector2 axis = new Vector2(-tangent.y, tangent.x);
-                    tangents.Add(axis.normalized);
-                }
-            }
-            return tangents;
-        }
-
-        public FloatRange GetProjection(Vector2 axis)
-        {
-            float min = Mathf.Infinity;
-            float max = -Mathf.Infinity;
-            foreach (Vector2 vertex in OrderedVertices)
-            {
-                float vertexProjection = _Project(axis, vertex);
-                min = Mathf.Min(min, vertexProjection);
-                max = Mathf.Max(max, vertexProjection);
-            }
-            return new FloatRange(min, max);
-        }
-
-        private static float _Project(Vector2 axis, Vector2 point)
-        {
-            return Vector2.Dot(axis, point) / axis.magnitude;
-        }
-    }
-
-    private struct FloatRange
-    {
-        private float _min;
-        private float _max;
-
-        public float Min
-        {
-            get => _min;
-        }
-        public float Max
-        {
-            get => _max;
-        }
-
-        public FloatRange(float value1, float value2)
-        {
-            _min = Mathf.Min(value1, value2);
-            _max = Mathf.Max(value1, value2);
-        }
-    }
-
     [SerializeField] private MeshFilter _object1BoundingMesh;
     [SerializeField] private MeshFilter _object2BoundingMesh;
     [SerializeField] private GameObject _enableOnDetection;

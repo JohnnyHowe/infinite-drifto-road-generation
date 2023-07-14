@@ -2,25 +2,20 @@ using System;
 
 namespace RoadGeneration
 {
-    public struct FloatRange
+    public class FloatRange
     {
-        private float _min;
-        private float _max;
+        public float Min { get; private set; }
+        public float Max { get; private set; }
+
+        public FloatRange(float value1, float value2)
+        {
+            Set(value1, value2);
+        }
 
         public void Set(float value1, float value2)
         {
-            _min = Math.Min(value1, value2);
-            _max = Math.Max(value1, value2);
-        }
-
-        public float GetMin()
-        {
-            return _min;
-        }
-
-        public float GetMax()
-        {
-            return _max;
+            Min = Math.Min(value1, value2);
+            Max = Math.Max(value1, value2);
         }
     }
 }
