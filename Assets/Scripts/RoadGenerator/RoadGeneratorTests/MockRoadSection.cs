@@ -1,7 +1,7 @@
 using RoadGeneration;
 using UnityEngine;
 
-public class RoadSectionMock : IRoadSection
+public class MockRoadSection : IRoadSection
 {
     public RoadSectionBounds Bounds;
     public Vector3 LocalStartPosition;
@@ -38,7 +38,7 @@ public class RoadSectionMock : IRoadSection
 
     public IRoadSection GetAlignedTo(Vector3 startPosition, float yAxisRotationStart)
     {
-        RoadSectionMock newSection = new RoadSectionMock();
+        MockRoadSection newSection = new MockRoadSection();
 
 
 

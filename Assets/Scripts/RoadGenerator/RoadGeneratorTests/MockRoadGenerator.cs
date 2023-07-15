@@ -7,10 +7,10 @@ using Shapes;
 
 public class MockRoadGenerator
 {
-    public static List<IRoadSection> GetAlignedRoad(List<RoadSectionMock> piecesToAlign)
+    public static List<IRoadSection> GetAlignedRoad(List<MockRoadSection> piecesToAlign)
     {
-        List<RoadSectionMock> alignedRoad = new List<RoadSectionMock>();
-        foreach (RoadSectionMock pieceToAlign in piecesToAlign)
+        List<MockRoadSection> alignedRoad = new List<MockRoadSection>();
+        foreach (MockRoadSection pieceToAlign in piecesToAlign)
         {
             if (alignedRoad.Count == 0)
             {
@@ -18,7 +18,7 @@ public class MockRoadGenerator
                 continue;
             }
 
-            RoadSectionMock lastPiece = alignedRoad[alignedRoad.Count - 1];
+            MockRoadSection lastPiece = alignedRoad[alignedRoad.Count - 1];
 
             // Rotate
             Vector3 objectRotation = (lastPiece.GetGlobalEndRotation().eulerAngles - pieceToAlign.GetLocalStartRotation().eulerAngles);
@@ -32,9 +32,9 @@ public class MockRoadGenerator
         return alignedRoad.Cast<IRoadSection>().ToList();
     }
 
-    public static RoadSectionMock GetBasicStraightAtOrigin(float length = 2, float width = 1, float height = 1)
+    public static MockRoadSection GetBasicStraightAtOrigin(float length = 2, float width = 1, float height = 1)
     {
-        RoadSectionMock piece = new RoadSectionMock();
+        MockRoadSection piece = new MockRoadSection();
 
         // Generate bounds
         List<Vector2> topology = new List<Vector2>() {
@@ -58,9 +58,9 @@ public class MockRoadGenerator
         return piece;
     }
 
-    public static RoadSectionMock GetBasic90RightAtOrigin(float length = 2, float width = 1, float height = 1)
+    public static MockRoadSection GetBasic90RightAtOrigin(float length = 2, float width = 1, float height = 1)
     {
-        RoadSectionMock piece = new RoadSectionMock();
+        MockRoadSection piece = new MockRoadSection();
 
         // Generate bounds
         List<Vector2> topology = new List<Vector2>() {
@@ -85,9 +85,9 @@ public class MockRoadGenerator
         return piece;
     }
 
-    public static RoadSectionMock GetBasic90LeftAtOrigin(float length = 2, float width = 1, float height = 1)
+    public static MockRoadSection GetBasic90LeftAtOrigin(float length = 2, float width = 1, float height = 1)
     {
-        RoadSectionMock piece = new RoadSectionMock();
+        MockRoadSection piece = new MockRoadSection();
 
         // Generate bounds
         List<Vector2> topology = new List<Vector2>() {

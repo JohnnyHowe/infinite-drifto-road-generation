@@ -12,7 +12,7 @@ public class RoadGeneratorChoiceEngineTester
     {
         RoadGeneratorChoiceEngine engine = new RoadGeneratorChoiceEngine();
 
-        List<IRoadSection> currentRoadSections = MockRoadGenerator.GetAlignedRoad(new List<RoadSectionMock>() {
+        List<IRoadSection> currentRoadSections = MockRoadGenerator.GetAlignedRoad(new List<MockRoadSection>() {
             MockRoadGenerator.GetBasicStraightAtOrigin(),
         });
 
@@ -29,7 +29,7 @@ public class RoadGeneratorChoiceEngineTester
     {
         RoadGeneratorChoiceEngine engine = new RoadGeneratorChoiceEngine();
 
-        List<IRoadSection> currentRoadSections = MockRoadGenerator.GetAlignedRoad(new List<RoadSectionMock>() {
+        List<IRoadSection> currentRoadSections = MockRoadGenerator.GetAlignedRoad(new List<MockRoadSection>() {
             MockRoadGenerator.GetBasicStraightAtOrigin(),
         });
 
@@ -47,7 +47,7 @@ public class RoadGeneratorChoiceEngineTester
     {
         RoadGeneratorChoiceEngine engine = new RoadGeneratorChoiceEngine();
 
-        List<IRoadSection> currentRoadSections = MockRoadGenerator.GetAlignedRoad(new List<RoadSectionMock>() {
+        List<IRoadSection> currentRoadSections = MockRoadGenerator.GetAlignedRoad(new List<MockRoadSection>() {
             MockRoadGenerator.GetBasicStraightAtOrigin(),
         });
 
@@ -65,7 +65,7 @@ public class RoadGeneratorChoiceEngineTester
     {
         RoadGeneratorChoiceEngine engine = new RoadGeneratorChoiceEngine();
 
-        List<IRoadSection> currentRoadSections = MockRoadGenerator.GetAlignedRoad(new List<RoadSectionMock>() {
+        List<IRoadSection> currentRoadSections = MockRoadGenerator.GetAlignedRoad(new List<MockRoadSection>() {
             MockRoadGenerator.GetBasicStraightAtOrigin(),
             MockRoadGenerator.GetBasic90LeftAtOrigin(),
             MockRoadGenerator.GetBasicStraightAtOrigin(),
