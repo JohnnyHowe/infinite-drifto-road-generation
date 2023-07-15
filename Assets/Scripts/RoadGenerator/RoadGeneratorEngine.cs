@@ -13,7 +13,7 @@ namespace RoadGeneration
         private List<IRoadSection> _possibleNextPieces;
         private int _forwardPiecesToCheck;
         private bool _lastSearchStateContainsOverlap;
-        private DFSCombinationGenerator _combinationGenerator;
+        private IDFSCombinationGenerator _combinationGenerator;
 
         public void UpdateInputsAndResetSearch(List<IRoadSection> currentPiecesInWorld, List<IRoadSection> possibleNextPieces, int forwardPiecesToCheck)
         {
