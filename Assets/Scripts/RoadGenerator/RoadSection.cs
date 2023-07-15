@@ -5,6 +5,14 @@ namespace RoadGeneration
     public class RoadSection : MonoBehaviour, IRoadSection
     {
         [SerializeField] private MeshFilter _boundingMesh;
+        [SerializeField] private Transform _start;
+        [SerializeField] private Transform _end;
+        private RoadSectionBounds _localBounds;
+
+        private void Awake()
+        {
+            _localBounds = RoadSectionBounds.FromMesh(_boundingMesh.mesh, Vector3.zero, Quaternion.identity, Vector3.one);
+        }
 
         public IRoadSection GetAlignedTo(Vector3 startPosition, float yAxisRotationStart)
         {
@@ -13,27 +21,27 @@ namespace RoadGeneration
 
         public RoadSectionBounds GetGlobalBounds()
         {
-            throw new System.NotImplementedException();
+            return _localBounds.GetCopy(transform.position, transform.rotation, transform.lossyScale);
         }
 
         public Vector3 GetGlobalEndPosition()
         {
-            throw new System.NotImplementedException();
+            return _end.position;
         }
 
         public Quaternion GetGlobalEndRotation()
         {
-            throw new System.NotImplementedException();
+            return _end.rotation;
         }
 
         public Vector3 GetLocalStartPosition()
         {
-            throw new System.NotImplementedException();
+            return _start.localPosition;
         }
 
         public Quaternion GetLocalStartRotation()
         {
-            throw new System.NotImplementedException();
+            return _start.rotation;
         }
     }
 }

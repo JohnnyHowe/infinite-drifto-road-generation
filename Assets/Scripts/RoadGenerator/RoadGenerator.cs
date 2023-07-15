@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,20 @@ namespace RoadGeneration
         {
             _roadGeneratorEngine = new RoadGeneratorChoiceEngine();
             _roadGeneratorEngine.UpdateInputsAndResetSearch(new List<IRoadSection>(), _cornerPrefabs.Cast<IRoadSection>().ToList(), 10);
-            _roadGeneratorEngine.Run(1);
+
+            for (int i = 0; i < _piecesToGenerate; i++)
+            {
+                while (!_roadGeneratorEngine.FoundValidChoice())
+                {
+                    _roadGeneratorEngine.Run(1);
+                }
+                _InstantiateNewPiece(_roadGeneratorEngine.GetNextChoice());
+            }
+        }
+
+        private void _InstantiateNewPiece(IRoadSection roadSection)
+        {
+            Debug.Log(roadSection);
         }
     }
 }

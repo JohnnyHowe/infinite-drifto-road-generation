@@ -34,9 +34,6 @@ namespace RoadGeneration
 
         private void _CheckOneIteration()
         {
-            Debug.Log($"State: {string.Join(", ", _combinationGenerator.GetState())}, Contains Overlap: {_lastSearchStateContainsOverlap}");
-
-            // We're already done -> early exit
             if (FoundValidChoice()) return;
 
             if (!_DoesLastPieceOverlapWithAnyOthers())
