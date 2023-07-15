@@ -48,8 +48,9 @@ namespace RoadGeneration
             List<Vector2> vertices = new List<Vector2>();
             foreach (Vector2 vertex2d in Topology.GetVertices())
             {
-                Vector3 globalVertex3d = TransformPoint(vertex2d, positionOffset, rotationOffset, scaleMultiplier);
-                Vector2 translatedVertex = new Vector2(globalVertex3d.x, globalVertex3d.y);
+                Vector3 vertex3d = new Vector3(vertex2d.x, 0, vertex2d.y);
+                Vector3 globalVertex3d = TransformPoint(vertex3d, positionOffset, rotationOffset, scaleMultiplier);
+                Vector2 translatedVertex = new Vector2(globalVertex3d.x, globalVertex3d.z);
                 vertices.Add(translatedVertex);
             }
             List<Vector2> distinct = vertices.Distinct().ToList();
@@ -65,6 +66,7 @@ namespace RoadGeneration
 
         public bool WillCauseOverlapWith(RoadSectionBounds other, Vector3 thisOffset, float thisYAxisRotationDegrees)
         {
+            // TODO: does this method need offest bits?
             RoadSectionBounds bounds = GetOffsetBy(thisOffset, thisYAxisRotationDegrees);
 
             // Is overlapping in y range?

@@ -4,6 +4,7 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 using RoadGeneration;
+using Other;
 
 public class RoadGeneratorChoiceEngineTester
 {
@@ -56,8 +57,12 @@ public class RoadGeneratorChoiceEngineTester
         };
 
         engine.UpdateInputsAndResetSearch(currentRoadSections, possibleChoices, 5);
-        engine.Run(5);
-        Assert.False(engine.FoundValidChoice());
+        try
+        {
+            engine.Run(5);
+            Assert.False(true, "Engine should have thrown out of combinations error");
+        }
+        catch (DFSCombinationGenerator.OutOfCombinationsException _) { }
     }
 
     [Test]
@@ -75,11 +80,15 @@ public class RoadGeneratorChoiceEngineTester
         };
 
         engine.UpdateInputsAndResetSearch(currentRoadSections, possibleChoices, 5);
-        engine.Run(50);
-        Assert.False(engine.FoundValidChoice());
+        try
+        {
+            engine.Run(50);
+            Assert.False(true, "Engine should have thrown out of combinations error");
+        }
+        catch (DFSCombinationGenerator.OutOfCombinationsException _) { }
     }
 
-[Test]
+    [Test]
     public void TestFoundValidChoiceImpossibleThreeCurrentRightPieces()
     {
         RoadGeneratorChoiceEngine engine = new RoadGeneratorChoiceEngine();
@@ -95,7 +104,11 @@ public class RoadGeneratorChoiceEngineTester
         };
 
         engine.UpdateInputsAndResetSearch(currentRoadSections, possibleChoices, 5);
-        engine.Run(5);
-        Assert.False(engine.FoundValidChoice());
+        try
+        {
+            engine.Run(50);
+            Assert.False(true, "Engine should have thrown out of combinations error");
+        }
+        catch (DFSCombinationGenerator.OutOfCombinationsException _) { }
     }
 }

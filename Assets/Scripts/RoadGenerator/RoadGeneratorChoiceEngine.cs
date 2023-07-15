@@ -52,7 +52,7 @@ namespace RoadGeneration
         private bool _DoesLastPieceOverlapWithAnyOthers()
         {
             List<IRoadSection> candidatesAligned = _GetCandidatesAligned();
-            IRoadSection lastPiece = candidatesAligned[candidatesAligned.Count];
+            IRoadSection lastPiece = candidatesAligned[candidatesAligned.Count - 1];
 
             // Create an enumerable with all the pieces we want to compare the end one with
             IEnumerable<IRoadSection> candidatesExcludingLast = candidatesAligned.Take(candidatesAligned.Count - 1);
@@ -60,18 +60,18 @@ namespace RoadGeneration
 
             foreach (IRoadSection worldRoadSection in roadSectionsToCheckOverlapFor)
             {
-                // If overlap, return true
+                if (_AreOverlapping(lastPiece, worldRoadSection)) return true;
             }
 
             return false;
         }
 
-        private static bool _AreOverlapping(IRoadSection section1, IRoadSection section2)
+        private bool _AreOverlapping(IRoadSection piece1, IRoadSection piece2)
         {
-            return false;
+            return piece1.GetGlobalBounds().WillCauseOverlapWith(piece2.GetGlobalBounds(), Vector3.zero, 0);
         }
 
-        private List<IRoadSection> _GetCandidatesAligned()
+        internal List<IRoadSection> _GetCandidatesAligned()
         {
             List<IRoadSection> candidatesAligned = new List<IRoadSection>();
 
@@ -91,7 +91,11 @@ namespace RoadGeneration
                 if (candidateIndex == -1) break;
 
                 IRoadSection sectionPrototype = _possibleNextPieces[candidateIndex];
-                candidatesAligned.Add(sectionPrototype.GetAlignedTo(nextPieceStartPosition, nextPieceStartRotation));
+                IRoadSection sectionAligned = sectionPrototype.GetAlignedTo(nextPieceStartPosition, nextPieceStartRotation);
+                candidatesAligned.Add(sectionAligned);
+
+                nextPieceStartPosition = sectionAligned.GetGlobalEndPosition();
+                nextPieceStartRotation = sectionAligned.GetGlobalEndRotation().y;
             }
             return candidatesAligned;
         }

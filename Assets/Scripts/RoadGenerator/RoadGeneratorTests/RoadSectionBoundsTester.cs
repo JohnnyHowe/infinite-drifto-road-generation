@@ -210,4 +210,29 @@ public class RoadSectionBoundsTester
         RoadSectionBounds o2 = o1.GetCopy(Vector3.zero, Quaternion.identity, Vector3.one);
         Assert.AreEqual(o1, o2);
     }
+
+    [Test]
+    public void TestGetCopyOffsetAllPositionAxes()
+    {
+        RoadSectionBounds o1 = new RoadSectionBounds();
+        o1.HeightRange = new FloatRange(0, 1);
+        o1.Topology = new ConvexShape2D(new List<Vector2>() {
+            new Vector2(-1, -1),
+            new Vector2(1, -1),
+            new Vector2(1, 1),
+            new Vector2(-1, 1),
+        });
+
+        RoadSectionBounds expected = new RoadSectionBounds();
+        expected.HeightRange = new FloatRange(1, 2);
+        expected.Topology = new ConvexShape2D(new List<Vector2>() {
+            new Vector2(0, 0),
+            new Vector2(2, 0),
+            new Vector2(2, 2),
+            new Vector2(0, 2),
+        });
+
+        RoadSectionBounds o2 = o1.GetCopy(Vector3.one, Quaternion.identity, Vector3.one);
+        Assert.AreEqual(expected, o2);
+    }
 }

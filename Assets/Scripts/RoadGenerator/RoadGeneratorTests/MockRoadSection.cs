@@ -13,7 +13,7 @@ public class MockRoadSection : IRoadSection
 
     public RoadSectionBounds GetGlobalBounds()
     {
-        return LocalBounds;
+        return LocalBounds.GetCopy(GlobalPosition, Quaternion.Euler(0, GlobalRotation, 0), Vector3.one);
     }
 
     public Vector3 GetGlobalEndPosition()
