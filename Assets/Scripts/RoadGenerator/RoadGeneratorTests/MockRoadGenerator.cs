@@ -22,10 +22,10 @@ public class MockRoadGenerator
 
             // Rotate
             Vector3 objectRotation = (lastPiece.GetGlobalEndRotation().eulerAngles - pieceToAlign.GetLocalStartRotation().eulerAngles);
-            pieceToAlign.SetRotation(Quaternion.Euler(objectRotation));
+            pieceToAlign.GlobalRotation = objectRotation.y;
             // Translate
             Vector3 objectTranslation = lastPiece.GetGlobalEndPosition() - pieceToAlign.GetLocalStartPosition();
-            pieceToAlign.SetPosition(objectTranslation);
+            pieceToAlign.GlobalPosition = objectTranslation;
 
             alignedRoad.Add(pieceToAlign);
         }
@@ -51,11 +51,9 @@ public class MockRoadGenerator
 
         // Generate start and end
         piece.LocalStartPosition = Vector3.zero;
-        piece.LocalStartRotation = Quaternion.Euler(0, 0, 0);
-        piece.OriginalGlobalEndPosition = new Vector3(0, 0, length);
-        piece.OriginalGlobalEndRotation = Quaternion.Euler(0, 0, 0);
-        piece.SetPosition(Vector3.zero);
-        piece.SetRotation(Quaternion.identity);
+        piece.LocalStartYRotation = 0;
+        piece.LocalEndPosition = new Vector3(0, 0, length);
+        piece.LocalEndYRotation = 0;
 
         return piece;
     }
@@ -80,11 +78,9 @@ public class MockRoadGenerator
 
         // Generate start and end
         piece.LocalStartPosition = Vector3.zero;
-        piece.LocalStartRotation = Quaternion.Euler(0, 0, 0);
-        piece.OriginalGlobalEndPosition = new Vector3(length, 0, length);
-        piece.OriginalGlobalEndRotation = Quaternion.Euler(0, 90, 0);
-        piece.SetPosition(Vector3.zero);
-        piece.SetRotation(Quaternion.identity);
+        piece.LocalStartYRotation = 0;
+        piece.LocalEndPosition = new Vector3(length, 0, length);
+        piece.LocalEndYRotation = 90;
 
         return piece;
     }
@@ -109,11 +105,9 @@ public class MockRoadGenerator
 
         // Generate start and end
         piece.LocalStartPosition = Vector3.zero;
-        piece.LocalStartRotation = Quaternion.Euler(0, 0, 0);
-        piece.OriginalGlobalEndPosition = new Vector3(-length, 0, length);
-        piece.OriginalGlobalEndRotation = Quaternion.Euler(0, -90, 0);
-        piece.SetPosition(Vector3.zero);
-        piece.SetRotation(Quaternion.identity);
+        piece.LocalStartYRotation = 0;
+        piece.LocalEndPosition = new Vector3(-length, 0, length);
+        piece.LocalEndYRotation = -90;
 
         return piece;
     }

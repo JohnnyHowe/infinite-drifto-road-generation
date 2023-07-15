@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace RoadGeneration
@@ -7,6 +5,11 @@ namespace RoadGeneration
     public class RoadSection : MonoBehaviour, IRoadSection
     {
         [SerializeField] private MeshFilter _boundingMesh;
+
+        public IRoadSection GetAlignedTo(Vector3 startPosition, float yAxisRotationStart)
+        {
+            throw new System.NotImplementedException();
+        }
 
         public RoadSectionBounds GetBounds()
         {

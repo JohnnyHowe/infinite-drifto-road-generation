@@ -8,7 +8,7 @@ using RoadGeneration;
 public class RoadGeneratorChoiceEngineTester
 {
     [Test]
-    public void TestFoundValidChoiceFalseOnNoRun()
+    public void TestFoundValidChoiceFalseOnNoRunOneCurrentPiece()
     {
         RoadGeneratorChoiceEngine engine = new RoadGeneratorChoiceEngine();
 
@@ -25,7 +25,7 @@ public class RoadGeneratorChoiceEngineTester
     }
 
     [Test]
-    public void TestOneIterationValidStraight()
+    public void TestOneIterationValidStraightOneCurrentPiece()
     {
         RoadGeneratorChoiceEngine engine = new RoadGeneratorChoiceEngine();
 
@@ -43,7 +43,7 @@ public class RoadGeneratorChoiceEngineTester
     }
 
     [Test]
-    public void TestFoundValidChoiceAllValid()
+    public void TestFoundValidChoiceAllValidOneCurrentPiece()
     {
         RoadGeneratorChoiceEngine engine = new RoadGeneratorChoiceEngine();
 
@@ -61,11 +61,13 @@ public class RoadGeneratorChoiceEngineTester
     }
 
     [Test]
-    public void TestFoundValidChoiceImpossible()
+    public void TestFoundValidChoiceImpossibleOneCurrentPiece()
     {
         RoadGeneratorChoiceEngine engine = new RoadGeneratorChoiceEngine();
 
         List<IRoadSection> currentRoadSections = MockRoadGenerator.GetAlignedRoad(new List<RoadSectionMock>() {
+            MockRoadGenerator.GetBasicStraightAtOrigin(),
+            MockRoadGenerator.GetBasic90LeftAtOrigin(),
             MockRoadGenerator.GetBasicStraightAtOrigin(),
         });
 
