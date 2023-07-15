@@ -36,15 +36,32 @@ namespace RoadGeneration
             Debug.Log($"State: {string.Join(", ", _combinationGenerator.GetState())}, Contains Overlap: {_lastSearchStateContainsOverlap}");
 
             // We're already done -> early exit
-            if (IsNextChoiceReady()) return;
+            if (FoundValidChoice()) return;
+
+            if (!_DoesLastPieceOverlapWithAnyOthers())
+            {
+                _combinationGenerator.StepValid();
+            }
+            else
+            {
+                _combinationGenerator.StepInvalid();
+            }
         }
 
         private bool _DoesLastPieceOverlapWithAnyOthers()
         {
+            IRoadSection previousPiece;
+            IRoadSection thisPiece = _possibleNextPieces[_combinationGenerator.GetCurrentEnd()];
+
+            Vector3 rotation = previousPiece.GetGlobalEndRotation().eulerAngles - thisPiece.GetLocalStartRotation().eulerAngles;
+
+            RoadSectionBounds alignedBounds = thisPiece.GetBounds().GetOffsetBy();
+
             // Does it overlap with any pieces in the world?
             foreach (IRoadSection worldRoadSection in _currentPiecesInWorld)
             {
                 // if this piece will cause an overlap, return true;
+                // if (thisPiece.GetBounds().WillCauseOverlapWith(worldRoadSection, ));
             }
 
             // Does it overlap with any pieces we're thinking about using?
@@ -57,7 +74,7 @@ namespace RoadGeneration
             return false;
         }
 
-        public bool IsNextChoiceReady()
+        public bool FoundValidChoice()
         {
             return !_lastSearchStateContainsOverlap && _combinationGenerator.HasFoundSolution();
         }
