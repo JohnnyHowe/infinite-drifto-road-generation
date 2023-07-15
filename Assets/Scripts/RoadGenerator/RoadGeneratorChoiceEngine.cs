@@ -51,28 +51,49 @@ namespace RoadGeneration
 
         private bool _DoesLastPieceOverlapWithAnyOthers()
         {
-            IRoadSection previousPiece;
-            IRoadSection thisPiece = _possibleNextPieces[_combinationGenerator.GetCurrentEnd()];
+            List<IRoadSection> candidatesAligned = _GetCandidatesAligned();
+            IRoadSection lastPiece = candidatesAligned[candidatesAligned.Count];
 
-            // Vector3 rotation = previousPiece.GetGlobalEndRotation().eulerAngles - thisPiece.GetLocalStartRotation().eulerAngles;
+            // Create an enumerable with all the pieces we want to compare the end one with
+            IEnumerable<IRoadSection> candidatesExcludingLast = candidatesAligned.Take(candidatesAligned.Count - 1);
+            IEnumerable<IRoadSection> roadSectionsToCheckOverlapFor = _currentPiecesInWorld.Concat(candidatesExcludingLast);
 
-            // RoadSectionBounds alignedBounds = thisPiece.GetBounds().GetOffsetBy();
-
-            // Does it overlap with any pieces in the world?
-            foreach (IRoadSection worldRoadSection in _currentPiecesInWorld)
+            foreach (IRoadSection worldRoadSection in roadSectionsToCheckOverlapFor)
             {
-                // if this piece will cause an overlap, return true;
-                // if (thisPiece.GetBounds().WillCauseOverlapWith(worldRoadSection, ));
+                // If overlap, return true
             }
 
-            // Does it overlap with any pieces we're thinking about using?
-            for (int pieceIndex = 0; pieceIndex < _combinationGenerator.GetCurrentDepth(); pieceIndex++)
-            {
-                // if this piece will cause an overlap, return true;
-            }
-
-            // No overlap, must be a-okay
             return false;
+        }
+
+        private static bool _AreOverlapping(IRoadSection section1, IRoadSection section2)
+        {
+            return false;
+        }
+
+        private List<IRoadSection> _GetCandidatesAligned()
+        {
+            List<IRoadSection> candidatesAligned = new List<IRoadSection>();
+
+            // Setup where the first candidate piece should be aligned from
+            // If there are no current pieces in the world, default to zero
+            Vector3 nextPieceStartPosition = Vector3.zero;
+            float nextPieceStartRotation = 0;
+            if (_currentPiecesInWorld.Count > 0)
+            {
+                nextPieceStartPosition = _currentPiecesInWorld[_currentPiecesInWorld.Count - 1].GetGlobalEndPosition();
+                nextPieceStartRotation = _currentPiecesInWorld[_currentPiecesInWorld.Count - 1].GetGlobalEndRotation().y;
+            }
+
+            // Align
+            foreach (int candidateIndex in _combinationGenerator.GetState())
+            {
+                if (candidateIndex == -1) break;
+
+                IRoadSection sectionPrototype = _possibleNextPieces[candidateIndex];
+                candidatesAligned.Add(sectionPrototype.GetAlignedTo(nextPieceStartPosition, nextPieceStartRotation));
+            }
+            return candidatesAligned;
         }
 
         public bool FoundValidChoice()
