@@ -5,12 +5,12 @@ using UnityEngine;
 using UnityEngine.TestTools;
 using RoadGeneration;
 
-public class RoadGeneratorEngineTester
+public class RoadGeneratorChoiceEngineTester
 {
     [Test]
     public void TestFoundValidChoiceFalseOnNoRun()
     {
-        RoadGeneratorEngine engine = new RoadGeneratorEngine();
+        RoadGeneratorChoiceEngine engine = new RoadGeneratorChoiceEngine();
 
         List<IRoadSection> currentRoadSections = MockRoadGenerator.GetAlignedRoad(new List<RoadSectionMock>() {
             MockRoadGenerator.GetBasicStraightAtOrigin(),
@@ -27,7 +27,7 @@ public class RoadGeneratorEngineTester
     [Test]
     public void TestOneIterationValidStraight()
     {
-        RoadGeneratorEngine engine = new RoadGeneratorEngine();
+        RoadGeneratorChoiceEngine engine = new RoadGeneratorChoiceEngine();
 
         List<IRoadSection> currentRoadSections = MockRoadGenerator.GetAlignedRoad(new List<RoadSectionMock>() {
             MockRoadGenerator.GetBasicStraightAtOrigin(),
@@ -45,7 +45,7 @@ public class RoadGeneratorEngineTester
     [Test]
     public void TestFoundValidChoiceAllValid()
     {
-        RoadGeneratorEngine engine = new RoadGeneratorEngine();
+        RoadGeneratorChoiceEngine engine = new RoadGeneratorChoiceEngine();
 
         List<IRoadSection> currentRoadSections = MockRoadGenerator.GetAlignedRoad(new List<RoadSectionMock>() {
             MockRoadGenerator.GetBasicStraightAtOrigin(),
@@ -63,7 +63,7 @@ public class RoadGeneratorEngineTester
     [Test]
     public void TestFoundValidChoiceImpossible()
     {
-        RoadGeneratorEngine engine = new RoadGeneratorEngine();
+        RoadGeneratorChoiceEngine engine = new RoadGeneratorChoiceEngine();
 
         List<IRoadSection> currentRoadSections = MockRoadGenerator.GetAlignedRoad(new List<RoadSectionMock>() {
             MockRoadGenerator.GetBasicStraightAtOrigin(),

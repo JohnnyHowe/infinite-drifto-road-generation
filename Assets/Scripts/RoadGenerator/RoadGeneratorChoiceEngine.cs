@@ -7,7 +7,7 @@ using Other;
 
 namespace RoadGeneration
 {
-    public class RoadGeneratorEngine
+    public class RoadGeneratorChoiceEngine
     {
         private List<IRoadSection> _currentPiecesInWorld;
         private List<IRoadSection> _possibleNextPieces;
