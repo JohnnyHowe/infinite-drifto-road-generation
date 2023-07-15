@@ -1,17 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace RoadGeneration
 {
     public class RoadGenerator : MonoBehaviour
     {
-        [SerializeField] private List<GameObject> _cornerObjects;
+        [SerializeField] private List<RoadSection> _cornerPrefabs;  // Cannot serialize IRoadSection for inspector, so this will do
         [SerializeField] private RoadGeneratorEngine _roadGeneratorEngine;
+        [SerializeField] private int _piecesToGenerate = 10;
 
-        private void Update()
+        private void Start()
         {
-
+            _roadGeneratorEngine = new RoadGeneratorEngine();
+            _roadGeneratorEngine.UpdateInputsAndResetSearch(new List<IRoadSection>(), _cornerPrefabs.Cast<IRoadSection>().ToList(), 10);
+            _roadGeneratorEngine.Run(1);
         }
     }
 }

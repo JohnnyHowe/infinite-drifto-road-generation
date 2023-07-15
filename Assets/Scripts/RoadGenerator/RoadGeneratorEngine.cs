@@ -15,12 +15,12 @@ namespace RoadGeneration
         private bool _lastSearchStateContainsOverlap;
         private IDFSCombinationGenerator _combinationGenerator;
 
-        public void UpdateInputsAndResetSearch(List<IRoadSection> currentPiecesInWorld, List<IRoadSection> possibleNextPieces, int forwardPiecesToCheck)
+        public void UpdateInputsAndResetSearch(List<IRoadSection> currentPiecesInWorld, List<IRoadSection> possibleNextPiecesInPreferenceOrder, int forwardPiecesToCheck)
         {
             _currentPiecesInWorld = currentPiecesInWorld;
-            _possibleNextPieces = possibleNextPieces;
+            _possibleNextPieces = possibleNextPiecesInPreferenceOrder;
             _forwardPiecesToCheck = forwardPiecesToCheck;
-            _combinationGenerator = new DFSCombinationGenerator(possibleNextPieces.Count, forwardPiecesToCheck);
+            _combinationGenerator = new DFSCombinationGenerator(possibleNextPiecesInPreferenceOrder.Count, forwardPiecesToCheck);
             _lastSearchStateContainsOverlap = false;
         }
 
