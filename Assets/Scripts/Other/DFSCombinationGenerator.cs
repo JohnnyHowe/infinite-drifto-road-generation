@@ -4,7 +4,12 @@ using UnityEngine;
 
 namespace Other
 {
-    public class DFSCombinationGenerator
+    /// <summary>
+    /// The essence of DFS traversal for a fixed number of branches at every node.
+    /// With the depth and number of trees, it will keep track of the branch index at every depth
+    ///  and allow stepping through it ez pz
+    /// </summary>
+    public class DFSCombinationGenerator : IDFSCombinationGenerator
     {
         public class OutOfCombinationsException : Exception { }
 
@@ -67,7 +72,7 @@ namespace Other
                 if (_state[indexInQuestion] < _nBranches - 1) break;
 
                 // Cannot backtrack anymore
-                if (!CanBacktrack()) throw new OutOfCombinationsException();
+                if (!_CanBacktrack()) throw new OutOfCombinationsException();
 
                 // do backtrack
                 _state[indexInQuestion] = -1;
@@ -76,7 +81,7 @@ namespace Other
             }
         }
 
-        public bool CanBacktrack()
+        private bool _CanBacktrack()
         {
             int indexInQuestion = Mathf.Max(0, GetCurrentDepth());
             return indexInQuestion > 0;

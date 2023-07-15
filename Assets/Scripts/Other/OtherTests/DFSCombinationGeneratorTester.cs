@@ -196,25 +196,5 @@ namespace Other.Tests
                 // Good, there was an error
             }
         }
-
-        /// ===========================================================================================
-        /// CanBacktrack
-        /// ===========================================================================================
-
-        [Test]
-        public void TestCanBacktrackTrue()
-        {
-            DFSCombinationGenerator generator = new DFSCombinationGenerator(5, 5);
-            generator.SetState(new int[] { 4, 2, 4, -1, -1 });
-            Assert.True(generator.CanBacktrack());
-        }
-
-        [Test]
-        public void TestCanBacktrackFalse()
-        {
-            DFSCombinationGenerator generator = new DFSCombinationGenerator(5, 5);
-            generator.SetState(new int[] { 4, 4, 4, -1, -1 });
-            Assert.True(generator.CanBacktrack());
-        }
     }
 }
