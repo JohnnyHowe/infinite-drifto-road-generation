@@ -29,12 +29,13 @@ namespace Shapes
             List<Vector2> axes = new List<Vector2>();
             foreach (Vector2 tangent in GetConvexHullTangents(points))
             {
-                Vector2 axis = new Vector2(-tangent.y, tangent.x);
+                Vector2 axis = new Vector2(-tangent.y, tangent.x).normalized;
+                if (axis.magnitude == 0) continue;
                 if (axis.x < 0) axis = -axis;
                 if (axis.y < 0) axis = -axis;
                 axes.Add(axis);
             }
-            return axes;
+            return axes.Distinct().ToList();
         }
 
         public static List<Vector2> GetConvexHullTangents(List<Vector2> points)
