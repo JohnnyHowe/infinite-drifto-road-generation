@@ -4,6 +4,8 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 using RoadGeneration;
+using Shapes;
+using Other;
 
 public class RoadSectionBoundsTester
 {

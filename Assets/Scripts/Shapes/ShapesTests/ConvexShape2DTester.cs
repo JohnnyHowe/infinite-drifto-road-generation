@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
-using RoadGeneration;
+using Shapes;
 
 public class ConvexShape2DTester
 {

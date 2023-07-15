@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Other;
 
 namespace RoadGeneration
 {
@@ -53,9 +54,9 @@ namespace RoadGeneration
             IRoadSection previousPiece;
             IRoadSection thisPiece = _possibleNextPieces[_combinationGenerator.GetCurrentEnd()];
 
-            Vector3 rotation = previousPiece.GetGlobalEndRotation().eulerAngles - thisPiece.GetLocalStartRotation().eulerAngles;
+            // Vector3 rotation = previousPiece.GetGlobalEndRotation().eulerAngles - thisPiece.GetLocalStartRotation().eulerAngles;
 
-            RoadSectionBounds alignedBounds = thisPiece.GetBounds().GetOffsetBy();
+            // RoadSectionBounds alignedBounds = thisPiece.GetBounds().GetOffsetBy();
 
             // Does it overlap with any pieces in the world?
             foreach (IRoadSection worldRoadSection in _currentPiecesInWorld)

@@ -1,8 +1,7 @@
 {
-    "name": "RoadGenerator",
+    "name": "Shapes",
     "rootNamespace": "",
     "references": [
-        "GUID:93f0dbce6af0375488305a6df48df2e4",
         "GUID:fcec704cba43a604980796eb67ec628c"
     ],
     "includePlatforms": [],

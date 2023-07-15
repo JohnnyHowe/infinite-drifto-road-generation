@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using UnityEngine;
 
-namespace RoadGeneration
+namespace Other
 {
     public class DFSCombinationGenerator
     {

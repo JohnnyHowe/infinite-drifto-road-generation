@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Other;
 
-namespace RoadGeneration
+namespace Shapes
 {
     public class ConvexShape2D
     {

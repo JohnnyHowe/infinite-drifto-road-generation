@@ -1,6 +1,6 @@
 using System;
 
-namespace RoadGeneration
+namespace Other
 {
     public class FloatRange : IEquatable<FloatRange>
     {
