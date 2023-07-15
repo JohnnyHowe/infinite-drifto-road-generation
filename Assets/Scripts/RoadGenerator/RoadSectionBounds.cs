@@ -8,23 +8,23 @@ namespace RoadGeneration
 {
     public class RoadSectionBounds
     {
-        public FloatRange GlobalYRange;
-        public ConvexShape2D GlobalTopology;
+        public FloatRange HeightRange;
+        public ConvexShape2D Topology;
 
         public RoadSectionBounds() { }
 
-        public RoadSectionBounds(FloatRange globalYRange, ConvexShape2D globalTopology)
+        public RoadSectionBounds(FloatRange heightRange, ConvexShape2D topology)
         {
-            GlobalYRange = globalYRange;
-            GlobalTopology = globalTopology;
+            HeightRange = heightRange;
+            Topology = topology;
         }
 
-        public static RoadSectionBounds FromMesh(Mesh mesh, Vector3 positionOffset, Quaternion rotationOffset, Vector3 scaleOffset)
+        public static RoadSectionBounds FromMesh(Mesh mesh, Vector3 objectPosition, Quaternion objectRotation, Vector3 objectScale)
         {
             List<Vector2> vertices = new List<Vector2>();
             foreach (Vector3 vertex3d in mesh.vertices)
             {
-                Vector3 globalVertex3d = TransformPoint(vertex3d, positionOffset, rotationOffset, scaleOffset);
+                Vector3 globalVertex3d = TransformPoint(vertex3d, objectPosition, objectRotation, objectScale);
                 Vector2 vertex2d = new Vector2(globalVertex3d.x, globalVertex3d.z);
                 vertices.Add(vertex2d);
             }
@@ -32,8 +32,8 @@ namespace RoadGeneration
             ConvexShape2D topology = new ConvexShape2D(distinct);
 
             FloatRange heightRange = new FloatRange(
-                TransformPoint(mesh.bounds.min, positionOffset, rotationOffset, scaleOffset).y,
-                TransformPoint(mesh.bounds.max, positionOffset, rotationOffset, scaleOffset).y
+                TransformPoint(mesh.bounds.min, objectPosition, objectRotation, objectScale).y,
+                TransformPoint(mesh.bounds.max, objectPosition, objectRotation, objectScale).y
             );
 
             return new RoadSectionBounds(heightRange, topology);
@@ -44,10 +44,10 @@ namespace RoadGeneration
             RoadSectionBounds bounds = GetOffsetBy(thisOffset, thisYAxisRotationDegrees);
 
             // Is overlapping in y range?
-            if (!_AreOverlapping(bounds.GlobalYRange, other.GlobalYRange)) return false;
+            if (!_AreOverlapping(bounds.HeightRange, other.HeightRange)) return false;
 
             // Are shapes overlapping?
-            if (!_AreOverlapping(bounds.GlobalTopology, other.GlobalTopology)) return false;
+            if (!_AreOverlapping(bounds.Topology, other.Topology)) return false;
 
             // No overlap baby
             return true;
@@ -103,20 +103,20 @@ namespace RoadGeneration
         public RoadSectionBounds GetOffsetBy(Vector3 position, float thisYAxisRotationDegrees)
         {
             RoadSectionBounds bounds = new RoadSectionBounds();
-            bounds.GlobalYRange = new FloatRange(GlobalYRange.Min + position.y, GlobalYRange.Max + position.y);
-            bounds.GlobalTopology = new ConvexShape2D(TransformPoints2D(GlobalTopology.GetVertices(), position, thisYAxisRotationDegrees));
+            bounds.HeightRange = new FloatRange(HeightRange.Min + position.y, HeightRange.Max + position.y);
+            bounds.Topology = new ConvexShape2D(TransformPoints2D(Topology.GetVertices(), position, thisYAxisRotationDegrees));
 
             return bounds;
         }
 
         public bool Equals(RoadSectionBounds other)
         {
-            return other.GlobalYRange == GlobalYRange && other.GlobalTopology == GlobalTopology;
+            return other.HeightRange == HeightRange && other.Topology == Topology;
         }
 
         public override bool Equals(object obj) => this.Equals(obj as RoadSectionBounds);
 
-        public override int GetHashCode() => (GlobalYRange, GlobalTopology).GetHashCode();
+        public override int GetHashCode() => (HeightRange, Topology).GetHashCode();
 
         public static bool operator ==(RoadSectionBounds lhs, RoadSectionBounds rhs)
         {

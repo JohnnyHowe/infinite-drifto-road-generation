@@ -11,7 +11,7 @@ namespace RoadGeneration
             throw new System.NotImplementedException();
         }
 
-        public RoadSectionBounds GetBounds()
+        public RoadSectionBounds GetGlobalBounds()
         {
             throw new System.NotImplementedException();
         }

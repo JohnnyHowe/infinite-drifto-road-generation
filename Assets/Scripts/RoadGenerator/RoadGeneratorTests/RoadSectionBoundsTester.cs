@@ -23,8 +23,8 @@ public class RoadSectionBoundsTester
         };
 
         ConvexShape2D expected = new ConvexShape2D(unitCubeTopology);
-        Assert.AreEqual(bounds.GlobalTopology, expected);
-        Assert.AreEqual(bounds.GlobalYRange, new FloatRange(-.5f, .5f));
+        Assert.AreEqual(bounds.Topology, expected);
+        Assert.AreEqual(bounds.HeightRange, new FloatRange(-.5f, .5f));
     }
 
     [Test]
@@ -43,8 +43,8 @@ public class RoadSectionBoundsTester
         };
 
         ConvexShape2D expected = new ConvexShape2D(unitCubeTopology);
-        Assert.AreEqual(bounds.GlobalTopology, expected);
-        Assert.AreEqual(bounds.GlobalYRange, new FloatRange(.5f, 1.5f));
+        Assert.AreEqual(bounds.Topology, expected);
+        Assert.AreEqual(bounds.HeightRange, new FloatRange(.5f, 1.5f));
     }
 
     [Test]
@@ -61,8 +61,8 @@ public class RoadSectionBoundsTester
         };
 
         ConvexShape2D expected = new ConvexShape2D(unitCubeTopology);
-        Assert.AreEqual(bounds.GlobalTopology, expected);
-        Assert.AreEqual(bounds.GlobalYRange, new FloatRange(-1f, 1f));
+        Assert.AreEqual(bounds.Topology, expected);
+        Assert.AreEqual(bounds.HeightRange, new FloatRange(-1f, 1f));
     }
 
     // Commented out because floating point math causes assertion failures
@@ -89,12 +89,12 @@ public class RoadSectionBoundsTester
     public void TestEqualityDifferentRefrence()
     {
         RoadSectionBounds o1 = new RoadSectionBounds();
-        o1.GlobalYRange = new FloatRange(0, 1);
-        o1.GlobalTopology = new ConvexShape2D(new List<Vector2>() { Vector2.up, Vector2.right, Vector2.down });
+        o1.HeightRange = new FloatRange(0, 1);
+        o1.Topology = new ConvexShape2D(new List<Vector2>() { Vector2.up, Vector2.right, Vector2.down });
 
         RoadSectionBounds o2 = new RoadSectionBounds();
-        o2.GlobalYRange = new FloatRange(0, 1);
-        o2.GlobalTopology = new ConvexShape2D(new List<Vector2>() { Vector2.up, Vector2.right, Vector2.down });
+        o2.HeightRange = new FloatRange(0, 1);
+        o2.Topology = new ConvexShape2D(new List<Vector2>() { Vector2.up, Vector2.right, Vector2.down });
 
         Assert.True(o1 == o2);
     }
@@ -103,8 +103,8 @@ public class RoadSectionBoundsTester
     public void TestWillCauseOverlapNoOffsetFalse()
     {
         RoadSectionBounds o1 = new RoadSectionBounds();
-        o1.GlobalYRange = new FloatRange(0, 1);
-        o1.GlobalTopology = new ConvexShape2D(new List<Vector2>() {
+        o1.HeightRange = new FloatRange(0, 1);
+        o1.Topology = new ConvexShape2D(new List<Vector2>() {
             new Vector2(0, 0),
             new Vector2(1, 0),
             new Vector2(1, 1),
@@ -112,8 +112,8 @@ public class RoadSectionBoundsTester
          });
 
         RoadSectionBounds o2 = new RoadSectionBounds();
-        o2.GlobalYRange = new FloatRange(0, 1);
-        o2.GlobalTopology = new ConvexShape2D(new List<Vector2>() {
+        o2.HeightRange = new FloatRange(0, 1);
+        o2.Topology = new ConvexShape2D(new List<Vector2>() {
             new Vector2(2, 0),
             new Vector2(3, 0),
             new Vector2(3, 1),
@@ -127,8 +127,8 @@ public class RoadSectionBoundsTester
     public void TestWillCauseOverlapNoOffsetTrue()
     {
         RoadSectionBounds o1 = new RoadSectionBounds();
-        o1.GlobalYRange = new FloatRange(0, 1);
-        o1.GlobalTopology = new ConvexShape2D(new List<Vector2>() {
+        o1.HeightRange = new FloatRange(0, 1);
+        o1.Topology = new ConvexShape2D(new List<Vector2>() {
             new Vector2(0, 0),
             new Vector2(1, 0),
             new Vector2(1, 1),
@@ -136,8 +136,8 @@ public class RoadSectionBoundsTester
          });
 
         RoadSectionBounds o2 = new RoadSectionBounds();
-        o2.GlobalYRange = new FloatRange(0, 1);
-        o2.GlobalTopology = new ConvexShape2D(new List<Vector2>() {
+        o2.HeightRange = new FloatRange(0, 1);
+        o2.Topology = new ConvexShape2D(new List<Vector2>() {
             new Vector2(.5f, 0),
             new Vector2(1.5f, 0),
             new Vector2(1.5f, 1),
@@ -151,8 +151,8 @@ public class RoadSectionBoundsTester
     public void TestWillCauseOverlapPositionOffsetFalse()
     {
         RoadSectionBounds o1 = new RoadSectionBounds();
-        o1.GlobalYRange = new FloatRange(0, 1);
-        o1.GlobalTopology = new ConvexShape2D(new List<Vector2>() {
+        o1.HeightRange = new FloatRange(0, 1);
+        o1.Topology = new ConvexShape2D(new List<Vector2>() {
             new Vector2(0, 0),
             new Vector2(1, 0),
             new Vector2(1, 1),
@@ -160,8 +160,8 @@ public class RoadSectionBoundsTester
          });
 
         RoadSectionBounds o2 = new RoadSectionBounds();
-        o2.GlobalYRange = new FloatRange(0, 1);
-        o2.GlobalTopology = new ConvexShape2D(new List<Vector2>() {
+        o2.HeightRange = new FloatRange(0, 1);
+        o2.Topology = new ConvexShape2D(new List<Vector2>() {
             new Vector2(0, 0),
             new Vector2(1, 0),
             new Vector2(1, 1),
@@ -175,8 +175,8 @@ public class RoadSectionBoundsTester
     public void TestWillCauseOverlapRotationAndPositionOffsetFalse()
     {
         RoadSectionBounds o1 = new RoadSectionBounds();
-        o1.GlobalYRange = new FloatRange(0, 1);
-        o1.GlobalTopology = new ConvexShape2D(new List<Vector2>() {
+        o1.HeightRange = new FloatRange(0, 1);
+        o1.Topology = new ConvexShape2D(new List<Vector2>() {
             new Vector2(-.5f, -.5f),
             new Vector2(.5f, -.5f),
             new Vector2(.5f, .5f),
@@ -184,8 +184,8 @@ public class RoadSectionBoundsTester
         });
 
         RoadSectionBounds o2 = new RoadSectionBounds();
-        o2.GlobalYRange = new FloatRange(0, 1);
-        o2.GlobalTopology = new ConvexShape2D(new List<Vector2>() {
+        o2.HeightRange = new FloatRange(0, 1);
+        o2.Topology = new ConvexShape2D(new List<Vector2>() {
             new Vector2(-.5f, -.5f),
             new Vector2(.5f, -.5f),
             new Vector2(.5f, .5f),

@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class MockRoadSection : IRoadSection
 {
-    public RoadSectionBounds Bounds;
+    public RoadSectionBounds LocalBounds;
     public Vector3 LocalStartPosition;
     public Vector3 LocalEndPosition;
     public float LocalStartYRotation;
@@ -11,9 +11,9 @@ public class MockRoadSection : IRoadSection
     public Vector3 GlobalPosition;
     public float GlobalRotation;
 
-    public RoadSectionBounds GetBounds()
+    public RoadSectionBounds GetGlobalBounds()
     {
-        return Bounds;
+        return LocalBounds;
     }
 
     public Vector3 GetGlobalEndPosition()
@@ -46,7 +46,7 @@ public class MockRoadSection : IRoadSection
 
         newSection.GlobalPosition = position;
         newSection.GlobalRotation = rotation;
-        newSection.Bounds = Bounds;
+        newSection.LocalBounds = LocalBounds;
         newSection.LocalStartPosition = LocalStartPosition;
         newSection.LocalEndPosition = LocalEndPosition;
         newSection.LocalStartYRotation = LocalStartYRotation;

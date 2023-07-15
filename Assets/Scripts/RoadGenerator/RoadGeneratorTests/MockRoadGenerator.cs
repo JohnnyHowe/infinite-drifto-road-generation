@@ -37,9 +37,9 @@ public class MockRoadGenerator
         };
         ConvexShape2D shape = new ConvexShape2D(topology);
         RoadSectionBounds bounds = new RoadSectionBounds();
-        bounds.GlobalYRange = new FloatRange(-height / 2, height / 2);
-        bounds.GlobalTopology = shape;
-        piece.Bounds = bounds;
+        bounds.HeightRange = new FloatRange(-height / 2, height / 2);
+        bounds.Topology = shape;
+        piece.LocalBounds = bounds;
 
         // Generate start and end
         piece.LocalStartPosition = Vector3.zero;
@@ -64,9 +64,9 @@ public class MockRoadGenerator
         };
         ConvexShape2D shape = new ConvexShape2D(topology);
         RoadSectionBounds bounds = new RoadSectionBounds();
-        bounds.GlobalYRange = new FloatRange(-height / 2, height / 2);
-        bounds.GlobalTopology = shape;
-        piece.Bounds = bounds;
+        bounds.HeightRange = new FloatRange(-height / 2, height / 2);
+        bounds.Topology = shape;
+        piece.LocalBounds = bounds;
 
         // Generate start and end
         piece.LocalStartPosition = Vector3.zero;
@@ -91,9 +91,9 @@ public class MockRoadGenerator
         };
         ConvexShape2D shape = new ConvexShape2D(topology);
         RoadSectionBounds bounds = new RoadSectionBounds();
-        bounds.GlobalYRange = new FloatRange(-height / 2, height / 2);
-        bounds.GlobalTopology = shape;
-        piece.Bounds = bounds;
+        bounds.HeightRange = new FloatRange(-height / 2, height / 2);
+        bounds.Topology = shape;
+        piece.LocalBounds = bounds;
 
         // Generate start and end
         piece.LocalStartPosition = Vector3.zero;

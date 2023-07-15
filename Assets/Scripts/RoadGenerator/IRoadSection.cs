@@ -4,7 +4,7 @@ namespace RoadGeneration
 {
     public interface IRoadSection
     {
-        RoadSectionBounds GetBounds();
+        RoadSectionBounds GetGlobalBounds();
         Vector3 GetGlobalEndPosition();
         Vector3 GetLocalStartPosition();
         Quaternion GetGlobalEndRotation();
