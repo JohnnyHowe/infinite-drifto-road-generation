@@ -9,8 +9,8 @@ public class MockRoadGenerator
 {
     public static List<IRoadSection> GetAlignedRoad(List<MockRoadSection> piecesToAlign)
     {
-        List<MockRoadSection> alignedRoad = new List<MockRoadSection>();
-        foreach (MockRoadSection pieceToAlign in piecesToAlign)
+        List<IRoadSection> alignedRoad = new List<IRoadSection>();
+        foreach (IRoadSection pieceToAlign in piecesToAlign)
         {
             if (alignedRoad.Count == 0)
             {
@@ -18,18 +18,10 @@ public class MockRoadGenerator
                 continue;
             }
 
-            MockRoadSection lastPiece = alignedRoad[alignedRoad.Count - 1];
-
-            // Rotate
-            Vector3 objectRotation = (lastPiece.GetGlobalEndRotation().eulerAngles - pieceToAlign.GetLocalStartRotation().eulerAngles);
-            pieceToAlign.GlobalRotation = objectRotation.y;
-            // Translate
-            Vector3 objectTranslation = lastPiece.GetGlobalEndPosition() - pieceToAlign.GetLocalStartPosition();
-            pieceToAlign.GlobalPosition = objectTranslation;
-
-            alignedRoad.Add(pieceToAlign);
+            IRoadSection lastPiece = alignedRoad[alignedRoad.Count - 1];
+            alignedRoad.Add(pieceToAlign.GetAlignedTo(lastPiece.GetGlobalEndPosition(), lastPiece.GetGlobalEndRotation().eulerAngles.y));
         }
-        return alignedRoad.Cast<IRoadSection>().ToList();
+        return alignedRoad;
     }
 
     public static MockRoadSection GetBasicStraightAtOrigin(float length = 2, float width = 1, float height = 1)

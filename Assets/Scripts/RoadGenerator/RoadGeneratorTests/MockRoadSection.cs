@@ -18,7 +18,8 @@ public class MockRoadSection : IRoadSection
 
     public Vector3 GetGlobalEndPosition()
     {
-        return GlobalPosition + LocalEndPosition;
+        Vector3 position = GlobalPosition + LocalEndPosition;
+        return TransformPoint(LocalEndPosition, GlobalPosition, Quaternion.Euler(0, GlobalRotation, 0), Vector3.one);
     }
 
     public Quaternion GetGlobalEndRotation()
@@ -40,8 +41,25 @@ public class MockRoadSection : IRoadSection
     {
         MockRoadSection newSection = new MockRoadSection();
 
+        float rotation = yAxisRotationStart - GetLocalStartRotation().eulerAngles.y;
+        Vector3 position = startPosition - GetLocalStartPosition();
 
+        newSection.GlobalPosition = position;
+        newSection.GlobalRotation = rotation;
+        newSection.Bounds = Bounds;
+        newSection.LocalStartPosition = LocalStartPosition;
+        newSection.LocalEndPosition = LocalEndPosition;
+        newSection.LocalStartYRotation = LocalStartYRotation;
+        newSection.LocalEndYRotation = LocalEndYRotation;
 
         return newSection;
+    }
+
+    public static Vector3 TransformPoint(Vector3 point, Vector3 position, Quaternion rotation, Vector3 scale)
+    {
+        Vector3 scaledPoint = new Vector3(point.x * scale.x, point.y * scale.y, point.z * scale.z);
+        Vector3 rotatedPoint = rotation * scaledPoint;
+        Vector3 transformedPoint = rotatedPoint + position;
+        return transformedPoint;
     }
 }
