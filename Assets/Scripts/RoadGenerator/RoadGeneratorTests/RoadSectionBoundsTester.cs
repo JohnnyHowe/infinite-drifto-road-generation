@@ -194,4 +194,20 @@ public class RoadSectionBoundsTester
 
         Assert.False(o1.WillCauseOverlapWith(o2, Vector3.one * 0.9f, 45));
     }
+
+    [Test]
+    public void TestGetCopyNoOffsets()
+    {
+        RoadSectionBounds o1 = new RoadSectionBounds();
+        o1.HeightRange = new FloatRange(0, 1);
+        o1.Topology = new ConvexShape2D(new List<Vector2>() {
+            new Vector2(-1, -1),
+            new Vector2(1, -1),
+            new Vector2(1, 1),
+            new Vector2(-1, 1),
+        });
+
+        RoadSectionBounds o2 = o1.GetCopy(Vector3.zero, Quaternion.identity, Vector3.one);
+        Assert.AreEqual(o1, o2);
+    }
 }

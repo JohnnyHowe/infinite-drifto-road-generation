@@ -39,6 +39,30 @@ namespace RoadGeneration
             return new RoadSectionBounds(heightRange, topology);
         }
 
+        /// <summary>
+        /// Get a copy of this translated by the parameters.
+        /// Relative to the current offsets of this 
+        /// </summary>
+        public RoadSectionBounds GetCopy(Vector3 positionOffset, Quaternion rotationOffset, Vector3 scaleMultiplier)
+        {
+            List<Vector2> vertices = new List<Vector2>();
+            foreach (Vector2 vertex2d in Topology.GetVertices())
+            {
+                Vector3 globalVertex3d = TransformPoint(vertex2d, positionOffset, rotationOffset, scaleMultiplier);
+                Vector2 translatedVertex = new Vector2(globalVertex3d.x, globalVertex3d.y);
+                vertices.Add(translatedVertex);
+            }
+            List<Vector2> distinct = vertices.Distinct().ToList();
+            ConvexShape2D topology = new ConvexShape2D(distinct);
+
+            FloatRange heightRange = new FloatRange(
+                TransformPoint(Vector3.up * HeightRange.Min, positionOffset, rotationOffset, scaleMultiplier).y,
+                TransformPoint(Vector3.up * HeightRange.Max, positionOffset, rotationOffset, scaleMultiplier).y
+            );
+
+            return new RoadSectionBounds(heightRange, topology);
+        }
+
         public bool WillCauseOverlapWith(RoadSectionBounds other, Vector3 thisOffset, float thisYAxisRotationDegrees)
         {
             RoadSectionBounds bounds = GetOffsetBy(thisOffset, thisYAxisRotationDegrees);
@@ -94,7 +118,8 @@ namespace RoadGeneration
         public static List<Vector2> TransformPoints2D(List<Vector2> pointsToTransform, Vector2 position, float yAxisRotation)
         {
             List<Vector2> points = new List<Vector2>();
-            foreach (Vector2 point in pointsToTransform) {
+            foreach (Vector2 point in pointsToTransform)
+            {
                 points.Add(TransformPoint2D(point, position, yAxisRotation));
             }
             return points;
