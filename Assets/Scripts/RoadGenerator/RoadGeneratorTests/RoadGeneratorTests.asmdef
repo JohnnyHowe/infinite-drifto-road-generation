@@ -5,8 +5,7 @@
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
         "RoadGenerator",
-        "Other",
-        "Shapes"
+        "Other"
     ],
     "includePlatforms": [
         "Editor"

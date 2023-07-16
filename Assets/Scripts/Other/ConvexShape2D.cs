@@ -3,7 +3,7 @@ using System.Linq;
 using UnityEngine;
 using Other;
 
-namespace Shapes
+namespace Other
 {
     public class ConvexShape2D
     {
@@ -26,7 +26,7 @@ namespace Shapes
         public ConvexShape2D(List<Vector2> vertices)
         {
             _vertices = vertices;
-            _axes = ConvexHullUtility.GetConvexHullAxes(vertices);
+            _axes = ConvexHullUtility2D.GetConvexHullAxes(vertices);
         }
 
         public List<Vector2> GetAxes()

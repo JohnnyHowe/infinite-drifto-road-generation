@@ -2,14 +2,14 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace Shapes
+namespace Other
 {
     /// <summary>
     /// Ugly ass code
     /// Definitely not AI generated
     /// Does it really matter? It's tested good
     /// </summary>
-    public static class ConvexHullUtility
+    public static class ConvexHullUtility2D
     {
         private class Vector2EqualityComparer : IEqualityComparer<Vector2>
         {

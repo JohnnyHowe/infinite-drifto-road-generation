@@ -4,7 +4,7 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-namespace Shapes.Tests
+namespace Other.Tests
 {
     public class ConvexHullUtilityTester
     {
@@ -17,7 +17,7 @@ namespace Shapes.Tests
             new Vector2(1, 1),
             new Vector2(1, 0)
         };
-            List<Vector2> actualTangents = ConvexHullUtility.GetConvexHullTangents(squarePoints);
+            List<Vector2> actualTangents = ConvexHullUtility2D.GetConvexHullTangents(squarePoints);
             List<Vector2> expected = new List<Vector2>() { new Vector2(0, 1), new Vector2(1, 0) };
             CollectionAssert.AreEquivalent(actualTangents, expected);
         }
@@ -32,7 +32,7 @@ namespace Shapes.Tests
             new Vector2(1, 1) + offset,
             new Vector2(1, 0) + offset
         };
-            List<Vector2> actualTangents = ConvexHullUtility.GetConvexHullTangents(squarePoints);
+            List<Vector2> actualTangents = ConvexHullUtility2D.GetConvexHullTangents(squarePoints);
             List<Vector2> expected = new List<Vector2>() { new Vector2(0, 1), new Vector2(1, 0) };
             CollectionAssert.AreEquivalent(actualTangents, expected);
         }
@@ -46,7 +46,7 @@ namespace Shapes.Tests
             new Vector2(0, -1),
             new Vector2(-1, 0),
         };
-            List<Vector2> actualTangents = ConvexHullUtility.GetConvexHullTangents(squarePoints);
+            List<Vector2> actualTangents = ConvexHullUtility2D.GetConvexHullTangents(squarePoints);
             List<Vector2> expected = new List<Vector2>() { new Vector2(1, 1).normalized, new Vector2(-1, 1).normalized };
             CollectionAssert.AreEquivalent(actualTangents, expected);
         }
@@ -61,7 +61,7 @@ namespace Shapes.Tests
             new Vector2(0, -1) + offset,
             new Vector2(-1, 0) + offset
         };
-            List<Vector2> actualTangents = ConvexHullUtility.GetConvexHullTangents(squarePoints);
+            List<Vector2> actualTangents = ConvexHullUtility2D.GetConvexHullTangents(squarePoints);
             List<Vector2> expected = new List<Vector2>() { new Vector2(1, 1).normalized, new Vector2(-1, 1).normalized };
             CollectionAssert.AreEquivalent(actualTangents, expected);
         }
@@ -78,7 +78,7 @@ namespace Shapes.Tests
             new Vector2(.3f, .7f),
             new Vector2(1, 0)
         };
-            List<Vector2> actualTangents = ConvexHullUtility.GetConvexHullTangents(squarePoints);
+            List<Vector2> actualTangents = ConvexHullUtility2D.GetConvexHullTangents(squarePoints);
             List<Vector2> expected = new List<Vector2>() { new Vector2(0, 1), new Vector2(1, 0) };
             CollectionAssert.AreEquivalent(actualTangents, expected);
         }
