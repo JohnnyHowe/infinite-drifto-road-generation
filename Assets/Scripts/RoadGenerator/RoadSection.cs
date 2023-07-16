@@ -43,5 +43,10 @@ namespace RoadGeneration
         {
             return _start.rotation;
         }
+
+        public RoadSectionShape GetLocalShape()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

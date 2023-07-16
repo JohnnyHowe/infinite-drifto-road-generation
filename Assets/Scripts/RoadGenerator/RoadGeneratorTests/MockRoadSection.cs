@@ -62,4 +62,9 @@ public class MockRoadSection : IRoadSection
         Vector3 transformedPoint = rotatedPoint + position;
         return transformedPoint;
     }
+
+    public RoadSectionShape GetLocalShape()
+    {
+        throw new System.NotImplementedException();
+    }
 }
