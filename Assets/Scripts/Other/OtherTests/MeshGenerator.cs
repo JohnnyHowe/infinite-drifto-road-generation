@@ -4,20 +4,25 @@ public class MeshGeneratorUtility
 {
     public static Mesh GenerateUnitCubeMesh()
     {
+        return GenerateUnitCubeMesh(Vector3.zero);
+    }
+
+    public static Mesh GenerateUnitCubeMesh(Vector3 centerPosition)
+    {
         // Create a new empty mesh
         Mesh cubeMesh = new Mesh();
 
         // Define the vertices of the cube
         Vector3[] vertices =
         {
-            new Vector3(-0.5f, -0.5f, -0.5f),  // Bottom-left-back
-            new Vector3(0.5f, -0.5f, -0.5f),   // Bottom-right-back
-            new Vector3(0.5f, -0.5f, 0.5f),    // Bottom-right-front
-            new Vector3(-0.5f, -0.5f, 0.5f),   // Bottom-left-front
-            new Vector3(-0.5f, 0.5f, -0.5f),   // Top-left-back
-            new Vector3(0.5f, 0.5f, -0.5f),    // Top-right-back
-            new Vector3(0.5f, 0.5f, 0.5f),     // Top-right-front
-            new Vector3(-0.5f, 0.5f, 0.5f)     // Top-left-front
+            centerPosition + new Vector3(-0.5f, -0.5f, -0.5f),  // Bottom-left-back
+            centerPosition + new Vector3(0.5f, -0.5f, -0.5f),   // Bottom-right-back
+            centerPosition + new Vector3(0.5f, -0.5f, 0.5f),    // Bottom-right-front
+            centerPosition + new Vector3(-0.5f, -0.5f, 0.5f),   // Bottom-left-front
+            centerPosition + new Vector3(-0.5f, 0.5f, -0.5f),   // Top-left-back
+            centerPosition + new Vector3(0.5f, 0.5f, -0.5f),    // Top-right-back
+            centerPosition + new Vector3(0.5f, 0.5f, 0.5f),     // Top-right-front
+            centerPosition + new Vector3(-0.5f, 0.5f, 0.5f)     // Top-left-front
         };
 
         // Define the triangles of the cube
