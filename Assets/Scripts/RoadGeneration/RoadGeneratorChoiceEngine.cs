@@ -7,21 +7,38 @@ using Other;
 
 namespace RoadGeneration
 {
+    /// <summary>
+    /// Must call Reset() before anything else
+    /// </summary>
     public class RoadGeneratorChoiceEngine
     {
         public class NoChoiceFoundException : Exception { }
 
+        private DFSCombinationGenerator _combinationGenerator;
+
         public void Reset(List<IRoadSection> currentPiecesInWorld, List<IRoadSection> possibleChoicesInPreferenceOrder, int checkDepth)
+        {
+            _combinationGenerator = new DFSCombinationGenerator(possibleChoicesInPreferenceOrder.Count, checkDepth);
+        }
+
+        public void StepUntilChoiceIsFound()
         {
             throw new NotImplementedException();
         }
 
         public void Step(int choiceEngineStepsPerFrame)
         {
-            throw new NotImplementedException();
+            if (_DoesLastCandidateSectionOverlapWithOthers())
+            {
+                _combinationGenerator.StepInvalid();
+            }
+            else
+            {
+                _combinationGenerator.StepValid();
+            }
         }
 
-        public void StepUntilChoiceIsFound()
+        private bool _DoesLastCandidateSectionOverlapWithOthers()
         {
             throw new NotImplementedException();
         }
