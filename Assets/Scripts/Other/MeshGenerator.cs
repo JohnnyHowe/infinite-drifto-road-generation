@@ -1,20 +1,22 @@
 using UnityEngine;
 
-public class MeshGeneratorUtility
+namespace Other
 {
-    public static Mesh GenerateUnitCubeMesh()
+    public class MeshGeneratorUtility
     {
-        return GenerateUnitCubeMesh(Vector3.zero);
-    }
-
-    public static Mesh GenerateUnitCubeMesh(Vector3 centerPosition)
-    {
-        // Create a new empty mesh
-        Mesh cubeMesh = new Mesh();
-
-        // Define the vertices of the cube
-        Vector3[] vertices =
+        public static Mesh GenerateUnitCubeMesh()
         {
+            return GenerateUnitCubeMesh(Vector3.zero);
+        }
+
+        public static Mesh GenerateUnitCubeMesh(Vector3 centerPosition)
+        {
+            // Create a new empty mesh
+            Mesh cubeMesh = new Mesh();
+
+            // Define the vertices of the cube
+            Vector3[] vertices =
+            {
             centerPosition + new Vector3(-0.5f, -0.5f, -0.5f),  // Bottom-left-back
             centerPosition + new Vector3(0.5f, -0.5f, -0.5f),   // Bottom-right-back
             centerPosition + new Vector3(0.5f, -0.5f, 0.5f),    // Bottom-right-front
@@ -25,9 +27,9 @@ public class MeshGeneratorUtility
             centerPosition + new Vector3(-0.5f, 0.5f, 0.5f)     // Top-left-front
         };
 
-        // Define the triangles of the cube
-        int[] triangles =
-        {
+            // Define the triangles of the cube
+            int[] triangles =
+            {
             // Bottom face
             0, 2, 1,
             0, 3, 2,
@@ -48,14 +50,15 @@ public class MeshGeneratorUtility
             1, 6, 5
         };
 
-        // Assign the vertices, triangles, and normals to the mesh
-        cubeMesh.vertices = vertices;
-        cubeMesh.triangles = triangles;
+            // Assign the vertices, triangles, and normals to the mesh
+            cubeMesh.vertices = vertices;
+            cubeMesh.triangles = triangles;
 
-        // Recalculate the bounds and normals of the mesh
-        cubeMesh.RecalculateBounds();
-        cubeMesh.RecalculateNormals();
+            // Recalculate the bounds and normals of the mesh
+            cubeMesh.RecalculateBounds();
+            cubeMesh.RecalculateNormals();
 
-        return cubeMesh;
+            return cubeMesh;
+        }
     }
 }
