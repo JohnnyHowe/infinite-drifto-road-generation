@@ -18,6 +18,11 @@ namespace Other
             Max = Math.Max(value1, value2);
         }
 
+        public bool DoesOverlapWith(FloatRange other)
+        {
+            return Min <= other.Max && Max >= other.Min;
+        }
+
         public bool Equals(FloatRange other)
         {
             return other.Min == Min && other.Max == Max;
