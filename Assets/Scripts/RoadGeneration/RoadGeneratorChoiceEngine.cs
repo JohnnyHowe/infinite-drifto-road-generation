@@ -57,7 +57,7 @@ namespace RoadGeneration
 
         private List<RoadSectionShape> _GetCandidatesAndCurrentPiecesInWorldAligned()
         {
-            return _GetCurrentPiecesInWorldShapes().Concat(_GetAlignedCandidates()).ToList();
+            return _GetCurrentPiecesInWorldShapes().Concat(_GetCandidatesAligned()).ToList();
         }
 
         private List<RoadSectionShape> _GetCurrentPiecesInWorldShapes()
@@ -65,8 +65,38 @@ namespace RoadGeneration
             throw new NotImplementedException();
         }
 
-        private List<RoadSectionShape> _GetAlignedCandidates()
+        private List<RoadSectionShape> _GetCandidatesAligned()
         {
+            // Figuring out the architecture so this method could exist was a nightmare.
+            // Both big redesigns were a result of this.
+            // I hope it looks obvious and easy to make yourself - that means I've done it right
+
+            List<RoadSectionShape> alignedCandidates = new List<RoadSectionShape>();
+            RoadSectionShape.EndPoint nextStartPoint = _GetFirstCandidateStartPoint();
+            foreach (IRoadSection candidateSection in _GetCandidatesAligned())
+            {
+                RoadSectionShape alignedCandidateShape = candidateSection.GetLocalShape().GetCopyWithStartAlignedTo(nextStartPoint);
+                alignedCandidates.Add(alignedCandidateShape);
+                nextStartPoint = alignedCandidateShape.End;
+            }
+            return alignedCandidates;
+        }
+
+        private List<IRoadSection> _GetCandidatesNotAligned()
+        {
+            List<IRoadSection> candidates = new List<IRoadSection>();
+            foreach (int candidateChoiceIndex in _combinationGenerator.GetState())
+            {
+                if (candidateChoiceIndex == -1) break;
+                candidates.Add(_candidatePrototypes[candidateChoiceIndex]);
+            }
+            return candidates;
+        }
+
+        private RoadSectionShape.EndPoint _GetFirstCandidateStartPoint()
+        {
+            // if there's a piece in the world, use it's end
+            // otherwise, world origin
             throw new NotImplementedException();
         }
 
