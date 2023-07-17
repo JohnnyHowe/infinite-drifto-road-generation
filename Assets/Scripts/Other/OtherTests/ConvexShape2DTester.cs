@@ -44,21 +44,56 @@ namespace Other.Tests
         public void TestEqualityDifferentRefrenceDifferentVertexOrder()
         {
             List<Vector2> unitSquareAtOrigin1 = new List<Vector2> {
-            new Vector2(-.5f, -.5f),
-            new Vector2(-.5f, .5f),
-            new Vector2(.5f, .5f),
-            new Vector2(.5f, -.5f),
-        };
+                new Vector2(-.5f, -.5f),
+                new Vector2(-.5f, .5f),
+                new Vector2(.5f, .5f),
+                new Vector2(.5f, -.5f),
+            };
             ConvexShape2D shape1 = new ConvexShape2D(unitSquareAtOrigin1);
             List<Vector2> unitSquareAtOrigin2 = new List<Vector2> {
-            new Vector2(-.5f, .5f),
-            new Vector2(.5f, .5f),
-            new Vector2(-.5f, -.5f),
-            new Vector2(.5f, -.5f),
-        };
+                new Vector2(-.5f, .5f),
+                new Vector2(.5f, .5f),
+                new Vector2(-.5f, -.5f),
+                new Vector2(.5f, -.5f),
+            };
             ConvexShape2D shape2 = new ConvexShape2D(unitSquareAtOrigin2);
 
             Assert.True(shape1 == shape2);
+        }
+
+        [Test]
+        public void DoesOverlapWithBothUnitSquaresAtOrigin()
+        {
+            List<Vector2> unitSquareAtOrigin1 = new List<Vector2> {
+                new Vector2(-.5f, -.5f),
+                new Vector2(-.5f, .5f),
+                new Vector2(.5f, .5f),
+                new Vector2(.5f, -.5f),
+            };
+            ConvexShape2D shape1 = new ConvexShape2D(unitSquareAtOrigin1);
+            ConvexShape2D shape2 = new ConvexShape2D(unitSquareAtOrigin1);
+            Assert.True(shape1.DoesOverlapWith(shape2));
+        }
+
+        [Test]
+        public void DoesOverlapWithUnitSquaresPositionOffset()
+        {
+            List<Vector2> unitSquareAtOrigin = new List<Vector2> {
+                new Vector2(-.5f, -.5f),
+                new Vector2(-.5f, .5f),
+                new Vector2(.5f, .5f),
+                new Vector2(.5f, -.5f),
+            };
+            Vector2 offset = new Vector2(2, 2);
+            List<Vector2> unitSquareOffset = new List<Vector2> {
+                offset + new Vector2(-.5f, -.5f),
+                offset + new Vector2(-.5f, .5f),
+                offset + new Vector2(.5f, .5f),
+                offset + new Vector2(.5f, -.5f),
+            };
+            ConvexShape2D shape1 = new ConvexShape2D(unitSquareAtOrigin);
+            ConvexShape2D shape2 = new ConvexShape2D(unitSquareOffset);
+            Assert.False(shape1.DoesOverlapWith(shape2));
         }
     }
 }

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Other;
+using System;
 
 namespace Other
 {
@@ -55,6 +56,21 @@ namespace Other
         private static float _Project(Vector2 axis, Vector2 point)
         {
             return Vector2.Dot(axis, point) / axis.magnitude;
+        }
+
+        public bool DoesOverlapWith(ConvexShape2D other)
+        {
+            // for each axis of both objects
+            IEnumerable<Vector2> axes = GetAxes().Concat(other.GetAxes()).Distinct().ToList();
+            foreach (Vector2 axis in axes)
+            {
+                // get the projection of each object on the axis
+                FloatRange thisProjectionRange = GetProjection(axis);
+                FloatRange otherProjectionRange = other.GetProjection(axis);
+                // if there is a gap, return false - there is no overlap
+                if (!thisProjectionRange.DoesOverlapWith(otherProjectionRange)) return false;
+            }
+            return true;
         }
 
         public bool Equals(ConvexShape2D other)
