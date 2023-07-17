@@ -32,26 +32,52 @@ namespace Other
             return true;
         }
 
+        /// <summary>
+        /// Shorthand for _GetTopology(mesh, Vector3.zero, Quaternion.identity, Vector3.one)
+        /// <summary>
         public static ConvexBoundary FromMesh(Mesh mesh)
+        {
+            return FromMesh(mesh, Vector3.zero, Quaternion.identity, Vector3.one);
+        }
+
+        public static ConvexBoundary FromMesh(Mesh mesh, Vector3 position, Quaternion rotation, Vector3 scale)
         {
             ConvexBoundary convexBoundary = new ConvexBoundary();
 
-            convexBoundary._heightRange = new FloatRange(mesh.bounds.min.y, mesh.bounds.max.y);
-            convexBoundary._topology = new ConvexShape2D(_GetTopology(mesh));
-
+            convexBoundary._heightRange = new FloatRange(
+                _TransformPoint(mesh.bounds.min, position, rotation, scale).y,
+                _TransformPoint(mesh.bounds.max, position, rotation, scale).y
+            );
+            convexBoundary._topology = new ConvexShape2D(_GetTopology(mesh, position, rotation, scale));
             return convexBoundary;
         }
 
+        /// <summary>
+        /// Shorthand for _GetTopology(mesh, Vector3.zero, Quaternion.identity, Vector3.one)
+        /// </summary>
         private static List<Vector2> _GetTopology(Mesh mesh)
         {
-            List<Vector2> topology = new List<Vector2>();
+            return _GetTopology(mesh, Vector3.zero, Quaternion.identity, Vector3.one);
+        }
 
+        private static List<Vector2> _GetTopology(Mesh mesh, Vector3 position, Quaternion rotation, Vector3 scale)
+        {
+            List<Vector2> topology = new List<Vector2>();
             foreach (Vector3 vertex in mesh.vertices)
             {
-                Vector2 squashed = new Vector2(vertex.x, vertex.z);
+                Vector3 transformedVertex = _TransformPoint(vertex, position, rotation, scale);
+                Vector2 squashed = new Vector2(transformedVertex.x, transformedVertex.z);
                 topology.Add(squashed);
             }
             return topology.Distinct(new Vector2EqualityComparer()).ToList();
+        }
+
+        internal static Vector3 _TransformPoint(Vector3 point, Vector3 position, Quaternion rotation, Vector3 scale)
+        {
+            point = new Vector3(point.x * scale.x, point.y * scale.y, point.z * scale.z);
+            point = rotation * point;
+            point += position;
+            return point;
         }
 
         /// <summary>
