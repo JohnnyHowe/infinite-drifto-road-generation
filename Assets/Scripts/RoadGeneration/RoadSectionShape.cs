@@ -29,6 +29,29 @@ namespace RoadGeneration
         public EndPoint Start;
         public EndPoint End;
 
+        /// <summary>
+        /// Shorthand for SetBoundryFromMesh(mesh, Vector3.zero, Quaternion.identity, Vector3.one)
+        /// </summary>
+        public void SetBoundaryFromMesh(Mesh mesh)
+        {
+            SetBoundaryFromMesh(mesh, Vector3.zero, Quaternion.identity, Vector3.one);
+        }
+
+        public void SetBoundaryFromMesh(Mesh mesh, Vector3 position, Quaternion rotation, Vector3 scale)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetStartPointFromTransform()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetEndPointFromTransform()
+        {
+            throw new NotImplementedException();
+        }
+
         public RoadSectionShape GetCopyWithStartAlignedTo(EndPoint start)
         {
             throw new NotImplementedException();
