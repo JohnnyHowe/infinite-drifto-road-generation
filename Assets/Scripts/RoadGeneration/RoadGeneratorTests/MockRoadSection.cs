@@ -6,7 +6,17 @@ namespace RoadGeneration.Tests
     {
         public RoadSectionShape LocalShape;
 
+        public void AlignByStartPoint(RoadSectionShape.EndPoint newStartPoint)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public RoadSectionShape GetLocalShape()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public RoadSectionShape GetShape()
         {
             throw new System.NotImplementedException();
         }

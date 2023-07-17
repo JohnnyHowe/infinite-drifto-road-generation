@@ -10,10 +10,14 @@ namespace RoadGeneration.Tests
     {
         public static List<IRoadSection> AlignMockSections(List<IRoadSection> toAlign)
         {
-            throw new System.NotImplementedException();
-
             List<IRoadSection> aligned = new List<IRoadSection>();
-            // TODO align it
+            RoadSectionShape.EndPoint nextStartPoint = new RoadSectionShape.EndPoint(Vector3.zero, Quaternion.Euler(0, 0, 1));
+            foreach (IRoadSection section in toAlign)
+            {
+                section.AlignByStartPoint(nextStartPoint);
+                nextStartPoint = section.GetShape().End;
+                aligned.Add(section);
+            }
             return aligned;
         }
 
