@@ -4,8 +4,8 @@
     "references": [
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
-        "RoadGenerator",
-        "Other"
+        "Other",
+        "RoadGeneration"
     ],
     "includePlatforms": [
         "Editor"

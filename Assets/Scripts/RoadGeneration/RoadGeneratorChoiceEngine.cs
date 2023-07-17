@@ -25,5 +25,15 @@ namespace RoadGeneration
         {
             throw new NotImplementedException();
         }
+
+        public bool HasFoundChoice()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IRoadSection GetChoicePrototype()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
