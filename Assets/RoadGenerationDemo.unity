@@ -345,6 +345,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2882d4eb52bc01940bcb77b10744af12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cornerPrefabs:
+  _choiceEngineStepsPerFrame: 1
+  _choiceEngineCheckDepth: 5
+  _roadSectionChoices:
+  - {fileID: 4323603871934246166, guid: c4a8f9ec9cd8ed44fb091f86be3bc525, type: 3}
   - {fileID: 2887276692217163081, guid: 44f06b5e1395238449870b4dcf86c381, type: 3}
-  _piecesToGenerate: 10
