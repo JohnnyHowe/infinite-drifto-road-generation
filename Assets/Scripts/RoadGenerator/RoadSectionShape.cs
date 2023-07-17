@@ -17,6 +17,12 @@ namespace RoadGeneration
         {
             public Vector3 Position;
             public Quaternion Rotation;
+
+            public EndPoint(Vector3 position, Quaternion rotation)
+            {
+                Position = position;
+                Rotation = rotation;
+            }
         }
 
         public ConvexBoundary Boundary;
