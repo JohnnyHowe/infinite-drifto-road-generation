@@ -70,7 +70,6 @@ namespace RoadGeneration
             // Figuring out the architecture so this method could exist was a nightmare.
             // Both big redesigns were a result of this.
             // I hope it looks obvious and easy to make yourself - that means I've done it right
-
             List<RoadSectionShape> alignedCandidates = new List<RoadSectionShape>();
             RoadSectionShape.EndPoint nextStartPoint = _GetFirstCandidateStartPoint();
             foreach (IRoadSection candidateSection in _GetCandidatesAligned())

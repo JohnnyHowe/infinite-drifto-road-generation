@@ -12,7 +12,12 @@ namespace RoadGeneration.Tests
         public void TestHasFoundSolutionFalseOnNoSteps()
         {
             RoadGeneratorChoiceEngine engine = new RoadGeneratorChoiceEngine();
-            // engine.Reset(new List<IRoadSection>(), );
+
+            List<IRoadSection> worldSections = MockRoadGenerator.AlignMockSections(
+                MockRoadGenerator.CreateBasicStraight()
+            );
+
+            engine.Reset(new List<IRoadSection>(), worldSections, 5);
             Assert.False(engine.HasFoundChoice());
         }
 

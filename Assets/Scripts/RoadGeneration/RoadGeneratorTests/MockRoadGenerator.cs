@@ -8,6 +8,11 @@ namespace RoadGeneration.Tests
 {
     public class MockRoadGenerator
     {
+        public static List<IRoadSection> AlignMockSections(params IRoadSection[] toAlign)
+        {
+            return AlignMockSections(new List<IRoadSection>(toAlign));
+        }
+
         public static List<IRoadSection> AlignMockSections(List<IRoadSection> toAlign)
         {
             List<IRoadSection> aligned = new List<IRoadSection>();
@@ -21,7 +26,7 @@ namespace RoadGeneration.Tests
             return aligned;
         }
 
-        public static IRoadSection CreateBasicStraightMock()
+        public static IRoadSection CreateBasicStraight()
         {
             MockRoadSection section = new MockRoadSection();
             section.LocalShape = new RoadSectionShape();
