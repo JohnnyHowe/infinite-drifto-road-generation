@@ -25,7 +25,13 @@ namespace RoadGeneration.Tests
         public void TestGetChoicePrototypeThrowsErrorNoStep()
         {
             RoadGeneratorChoiceEngine engine = new RoadGeneratorChoiceEngine();
-            // engine.Reset(new List<IRoadSection>(), );
+
+            List<IRoadSection> worldSections = MockRoadGenerator.AlignMockSections(
+                MockRoadGenerator.CreateBasicStraight()
+            );
+
+            engine.Reset(new List<IRoadSection>(), worldSections, 5);
+
             try
             {
                 engine.GetChoicePrototype();

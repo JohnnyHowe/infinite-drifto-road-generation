@@ -23,11 +23,17 @@ namespace RoadGeneration
                 Position = position;
                 Rotation = rotation;
             }
+
+            public bool Equals(EndPoint other)
+            {
+                return Position == other.Position && Rotation == other.Rotation;
+            }
         }
 
         public ConvexBoundary Boundary;
         public EndPoint Start;
         public EndPoint End;
+        private Mesh _mesh;
 
         /// <summary>
         /// Shorthand for SetBoundryFromMesh(mesh, Vector3.zero, Quaternion.identity, Vector3.one)
@@ -39,7 +45,8 @@ namespace RoadGeneration
 
         public void SetBoundaryFromMesh(Mesh mesh, Vector3 position, Quaternion rotation, Vector3 scale)
         {
-            throw new NotImplementedException();
+            _mesh = mesh;
+            Boundary = ConvexBoundary.FromMesh(mesh, position, rotation, scale);
         }
 
         public void SetStartPointFromTransform()
@@ -52,14 +59,40 @@ namespace RoadGeneration
             throw new NotImplementedException();
         }
 
-        public RoadSectionShape GetCopyWithStartAlignedTo(EndPoint start)
+        public RoadSectionShape GetCopyWithStartAlignedTo(EndPoint targetStart)
         {
-            throw new NotImplementedException();
+            Vector3 positionOffset = targetStart.Position - Start.Position;
+            Vector3 rotationOffsetEuler = targetStart.Rotation.eulerAngles - Start.Rotation.eulerAngles;
+            Quaternion rotationOffset = Quaternion.Euler(rotationOffsetEuler);
+
+            RoadSectionShape newShape = new RoadSectionShape();
+            newShape.Start = targetStart;
+            newShape.End = new EndPoint(_TransformPoint(End.Position, positionOffset, rotationOffset, Vector3.one), End.Rotation * rotationOffset);
+            newShape.SetBoundaryFromMesh(_mesh, positionOffset, rotationOffset, Vector3.one);
+
+            return newShape;
+        }
+
+        private static Vector3 _TransformPoint(Vector3 point, Vector3 position, Quaternion rotation, Vector3 scale)
+        {
+            point = new Vector3(point.x * scale.x, point.y * scale.y, point.z * scale.z);
+            point = rotation * point;
+            point += position;
+            return point;
         }
 
         public bool DoesOverlapWith(RoadSectionShape other)
         {
-            throw new NotImplementedException();
+            return Boundary.DoesOverlapWith(other.Boundary);
+        }
+
+        public bool Equals(RoadSectionShape other)
+        {
+            return (
+                Start.Equals(other.Start) &&
+                End.Equals(other.End) &&
+                Boundary.Equals(other.Boundary)
+            );
         }
     }
 }

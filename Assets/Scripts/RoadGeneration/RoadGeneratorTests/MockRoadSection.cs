@@ -5,20 +5,22 @@ namespace RoadGeneration.Tests
     public class MockRoadSection : IRoadSection
     {
         public RoadSectionShape LocalShape;
+        public RoadSectionShape GlobalShape;
 
         public void AlignByStartPoint(RoadSectionShape.EndPoint newStartPoint)
         {
-            throw new System.NotImplementedException();
+            GlobalShape = LocalShape.GetCopyWithStartAlignedTo(newStartPoint);
         }
 
         public RoadSectionShape GetLocalShape()
         {
-            throw new System.NotImplementedException();
+            return LocalShape;
         }
 
         public RoadSectionShape GetShape()
         {
-            throw new System.NotImplementedException();
+            if (GlobalShape == null) return LocalShape;
+            return GlobalShape;
         }
     }
 }

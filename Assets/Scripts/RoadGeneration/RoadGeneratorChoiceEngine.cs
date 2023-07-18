@@ -101,12 +101,16 @@ namespace RoadGeneration
 
         public bool HasFoundChoice()
         {
-            throw new NotImplementedException();
+            return _combinationGenerator.HasFoundSolution();
         }
 
         public IRoadSection GetChoicePrototype()
         {
-            throw new NotImplementedException();
+            if (!HasFoundChoice())
+            {
+                throw new NoChoiceFoundException();
+            }
+            return _candidatePrototypes[_combinationGenerator.GetCurrentEnd()];
         }
     }
 }

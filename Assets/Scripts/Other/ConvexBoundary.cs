@@ -22,8 +22,8 @@ namespace Other
         }
 
         // yes it is just a 2d extruded shape. it works for this application. TODO - not this
-        private FloatRange _heightRange;
-        private ConvexShape2D _topology;
+        internal FloatRange _heightRange;
+        internal ConvexShape2D _topology;
 
         public bool DoesOverlapWith(ConvexBoundary other)
         {
@@ -86,6 +86,11 @@ namespace Other
         public ConvexBoundary GetCopyTranslated(Vector3 position, Quaternion rotation, Vector3 scale)
         {
             throw new NotImplementedException();
+        }
+
+        public bool Equals(ConvexBoundary other)
+        {
+            return _heightRange == other._heightRange && _topology == other._topology;
         }
     }
 }
