@@ -85,6 +85,7 @@ namespace RoadGeneration
             IRoadSection newSection = _choiceEngine.GetChoicePrototype().Clone();
             newSection.AlignByStartPoint(_GetNextPieceStartPosition());
             _currentPieces.Add(newSection);
+            _choiceEngine.Reset(_GetCurrentPiecesInWorld(), _GetNextPossiblePiecesInPreferenceOrder(), _choiceEngineCheckDepth);
         }
 
         private RoadSectionShape.EndPoint _GetNextPieceStartPosition()
