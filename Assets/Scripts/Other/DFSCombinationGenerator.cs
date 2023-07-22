@@ -64,12 +64,13 @@ namespace Other
         {
             int currentDepth = GetCurrentDepth();
             int indexInQuestion = Mathf.Max(0, currentDepth);
+            _state[indexInQuestion] ++;
 
             // Acting as a while loop - I'm sick of breaking Unity through infinite loops 
             for (int i = 0; i < MAX_ITERATIONS; i++)
             {
                 // exit clause, imagine the contents in while(!...)
-                if (_state[indexInQuestion] < _nBranches - 1) break;
+                if (_state[indexInQuestion] < _nBranches) break;
 
                 // Cannot backtrack anymore
                 if (!_CanBacktrack()) throw new OutOfCombinationsException();

@@ -182,6 +182,15 @@ namespace Other.Tests
         }
 
         [Test]
+        public void TestStepInvalidBackTrackLast()
+        {
+            DFSCombinationGenerator generator = new DFSCombinationGenerator(2, 5);
+            generator.SetState(new int[] { 0, 0, 0, 0, 1 });
+            generator.StepInvalid();
+            CollectionAssert.AreEqual(new int[] { 0, 0, 0, 1, -1 }, generator.GetState());
+        }
+
+        [Test]
         public void TestStepInvalidDoubleBackTrackToStart()
         {
             DFSCombinationGenerator generator = new DFSCombinationGenerator(5, 5);
