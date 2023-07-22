@@ -9,20 +9,52 @@ namespace RoadGeneration
         [SerializeField] private Transform _startPoint;
         [SerializeField] private Transform _endPoint;
         [SerializeField] private MeshFilter _boundingMesh;
+        private RoadSectionShape _localShape
+        {
+            get
+            {
+                if (_localShapeReal == null) _SetShape();
+                return _localShapeReal;
+            }
+            set
+            {
+                _localShapeReal = value;
+            }
+        }
+        private RoadSectionShape _localShapeReal;
+
+        private void _SetShape()
+        {
+            _localShape = new RoadSectionShape();
+            _localShape.SetBoundaryFromMesh(_boundingMesh.mesh, Vector3.zero, Quaternion.identity, transform.lossyScale);
+            _localShape.SetStartPointFromTransformLocal(_startPoint);
+            _localShape.SetEndPointFromTransformLocal(_endPoint);
+        }
 
         public void AlignByStartPoint(RoadSectionShape.EndPoint newStartPoint)
         {
-            throw new System.NotImplementedException();
+            Vector3 positionOffset = newStartPoint.Position - GetShape().Start.Position;
+            Vector3 rotationOffsetEuler = newStartPoint.Rotation.eulerAngles - GetShape().Start.Rotation.eulerAngles;
+            Quaternion rotationOffset = Quaternion.Euler(rotationOffsetEuler);
+            transform.position += positionOffset;
+            transform.rotation *= rotationOffset;
+        }
+
+        public IRoadSection Clone()
+        {
+            GameObject clone = Instantiate(gameObject);
+            clone.SetActive(true);
+            return clone.GetComponent<IRoadSection>();
         }
 
         public RoadSectionShape GetLocalShape()
         {
-            throw new System.NotImplementedException();
+            return _localShape;
         }
 
         public RoadSectionShape GetShape()
         {
-            throw new System.NotImplementedException();
+            return _localShape.GetCopyAt(transform.position, transform.rotation);
         }
     }
 }

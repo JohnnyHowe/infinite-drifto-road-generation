@@ -27,7 +27,7 @@ namespace RoadGeneration
 
         public void StepUntilChoiceIsFound()
         {
-            throw new NotImplementedException();
+            while (!HasFoundChoice()) Step(1);
         }
 
         public void Step(int choiceEngineStepsPerFrame)
@@ -62,7 +62,7 @@ namespace RoadGeneration
 
         private List<RoadSectionShape> _GetCurrentPiecesInWorldShapes()
         {
-            throw new NotImplementedException();
+            return _currentPiecesInWorld.Select(section => section.GetShape()).ToList();
         }
 
         private List<RoadSectionShape> _GetCandidatesAligned()
@@ -72,7 +72,7 @@ namespace RoadGeneration
             // I hope it looks obvious and easy to make yourself - that means I've done it right
             List<RoadSectionShape> alignedCandidates = new List<RoadSectionShape>();
             RoadSectionShape.EndPoint nextStartPoint = _GetFirstCandidateStartPoint();
-            foreach (IRoadSection candidateSection in _GetCandidatesAligned())
+            foreach (IRoadSection candidateSection in _GetCandidatesNotAligned())
             {
                 RoadSectionShape alignedCandidateShape = candidateSection.GetLocalShape().GetCopyWithStartAlignedTo(nextStartPoint);
                 alignedCandidates.Add(alignedCandidateShape);
@@ -94,9 +94,11 @@ namespace RoadGeneration
 
         private RoadSectionShape.EndPoint _GetFirstCandidateStartPoint()
         {
-            // if there's a piece in the world, use it's end
-            // otherwise, world origin
-            throw new NotImplementedException();
+            if (_currentPiecesInWorld.Count == 0) {
+                return new RoadSectionShape.EndPoint(Vector3.zero, Quaternion.Euler(0, 0, 1));
+            }
+            return _currentPiecesInWorld[_currentPiecesInWorld.Count - 1].GetShape().End;
+
         }
 
         public bool HasFoundChoice()

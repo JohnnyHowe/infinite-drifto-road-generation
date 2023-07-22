@@ -49,14 +49,19 @@ namespace RoadGeneration
             Boundary = ConvexBoundary.FromMesh(mesh, position, rotation, scale);
         }
 
-        public void SetStartPointFromTransform()
+        public void SetStartPointFromTransformLocal(Transform transform)
         {
-            throw new NotImplementedException();
+            Start = _GetEndPointFromTranformLocal(transform);
         }
 
-        public void SetEndPointFromTransform()
+        public void SetEndPointFromTransformLocal(Transform transform)
         {
-            throw new NotImplementedException();
+            End = _GetEndPointFromTranformLocal(transform);
+        }
+
+        private EndPoint _GetEndPointFromTranformLocal(Transform transform)
+        {
+            return new EndPoint(transform.localPosition, transform.localRotation);
         }
 
         public RoadSectionShape GetCopyWithStartAlignedTo(EndPoint targetStart)
@@ -65,12 +70,18 @@ namespace RoadGeneration
             Vector3 rotationOffsetEuler = targetStart.Rotation.eulerAngles - Start.Rotation.eulerAngles;
             Quaternion rotationOffset = Quaternion.Euler(rotationOffsetEuler);
 
+            return GetCopyAt(positionOffset, rotationOffset);
+        }
+
+        public RoadSectionShape GetCopyAt(Vector3 position, Quaternion rotation)
+        {
             RoadSectionShape newShape = new RoadSectionShape();
-            newShape.Start = targetStart;
-            newShape.End = new EndPoint(_TransformPoint(End.Position, positionOffset, rotationOffset, Vector3.one), End.Rotation * rotationOffset);
-            newShape.SetBoundaryFromMesh(_mesh, positionOffset, rotationOffset, Vector3.one);
+            newShape.Start = new EndPoint(_TransformPoint(Start.Position, position, rotation, Vector3.one), Start.Rotation * rotation);
+            newShape.End = new EndPoint(_TransformPoint(End.Position, position, rotation, Vector3.one), End.Rotation * rotation);
+            newShape.SetBoundaryFromMesh(_mesh, position, rotation, Vector3.one);
 
             return newShape;
+
         }
 
         private static Vector3 _TransformPoint(Vector3 point, Vector3 position, Quaternion rotation, Vector3 scale)

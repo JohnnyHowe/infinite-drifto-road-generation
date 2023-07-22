@@ -12,6 +12,11 @@ namespace RoadGeneration.Tests
             GlobalShape = LocalShape.GetCopyWithStartAlignedTo(newStartPoint);
         }
 
+        public IRoadSection Clone()
+        {
+            throw new System.NotImplementedException();
+        }
+
         public RoadSectionShape GetLocalShape()
         {
             return LocalShape;

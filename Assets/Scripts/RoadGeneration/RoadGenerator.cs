@@ -12,16 +12,37 @@ namespace RoadGeneration
         [SerializeField] private int _choiceEngineCheckDepth = 5;
         [SerializeField] private List<RoadSection> _roadSectionChoices; // Cannot serialize interfaces for inspector :(
         private RoadGeneratorChoiceEngine _choiceEngine;
+        private List<IRoadSection> _currentPieces;
+        private List<RoadSection> _prototypes;
 
         private void Awake()
         {
+            _currentPieces = new List<IRoadSection>();
+            _CreatePrototypes();
+
             _choiceEngine = new RoadGeneratorChoiceEngine();
             _choiceEngine.Reset(_GetCurrentPiecesInWorld(), _GetNextPossiblePiecesInPreferenceOrder(), _choiceEngineCheckDepth);
         }
 
+        private void _CreatePrototypes()
+        {
+            _prototypes = new List<RoadSection>();
+            foreach (RoadSection roadSection in _roadSectionChoices)
+            {
+                GameObject prototype = Instantiate(roadSection.gameObject);
+                prototype.transform.parent = transform;
+                prototype.SetActive(false);
+                RoadSection instantiatedSection = prototype.GetComponent<RoadSection>();
+                _prototypes.Add(instantiatedSection);
+            }
+        }
+
+        public int ptp = 2;
+        int piecesPlaced = 0;
         private void Update()
         {
             _choiceEngine.Step(_choiceEngineStepsPerFrame);
+            if (piecesPlaced >= ptp) return;
 
             if (_ShouldPlacePiece())
             {
@@ -36,6 +57,7 @@ namespace RoadGeneration
                     return;
                 }
                 _PlaceNewPiece();
+                piecesPlaced ++;
             }
             if (_ShouldRemovePiece())
             {
@@ -45,12 +67,12 @@ namespace RoadGeneration
 
         private List<IRoadSection> _GetCurrentPiecesInWorld()
         {
-            throw new NotImplementedException();
+            return _currentPieces;
         }
 
         private List<IRoadSection> _GetNextPossiblePiecesInPreferenceOrder()
         {
-            throw new NotImplementedException();
+            return _prototypes.Cast<IRoadSection>().ToList();
         }
 
         private void _RemoveLastPiece()
@@ -60,17 +82,29 @@ namespace RoadGeneration
 
         private void _PlaceNewPiece()
         {
-            throw new NotImplementedException();
+            IRoadSection newSection = _choiceEngine.GetChoicePrototype().Clone();
+            newSection.AlignByStartPoint(_GetNextPieceStartPosition());
+            _currentPieces.Add(newSection);
+        }
+
+        private RoadSectionShape.EndPoint _GetNextPieceStartPosition()
+        {
+            if (_currentPieces.Count == 0)
+            {
+                return new RoadSectionShape.EndPoint(Vector3.zero, Quaternion.Euler(0, 0, 1));
+            }
+            return _currentPieces[_currentPieces.Count - 1].GetShape().End;
         }
 
         private bool _ShouldPlacePiece()
         {
-            throw new NotImplementedException();
+            return true;
         }
 
         private bool _ShouldRemovePiece()
         {
-            throw new NotImplementedException();
+            // TODO
+            return false;
         }
     }
 }

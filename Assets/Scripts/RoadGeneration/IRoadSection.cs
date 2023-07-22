@@ -7,5 +7,6 @@ namespace RoadGeneration
         RoadSectionShape GetShape();
         RoadSectionShape GetLocalShape();
         void AlignByStartPoint(RoadSectionShape.EndPoint newStartPoint);
+        IRoadSection Clone();
     }
 }
