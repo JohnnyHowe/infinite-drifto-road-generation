@@ -11,6 +11,7 @@ namespace RoadGeneration
         [SerializeField] private int _choiceEngineStepsPerFrame = 1;
         [SerializeField] private int _choiceEngineCheckDepth = 5;
         [SerializeField] private List<RoadSection> _roadSectionChoices; // Cannot serialize interfaces for inspector :(
+        [SerializeField] private Transform _roadSectionContainer;
         private RoadGeneratorChoiceEngine _choiceEngine;
         private List<IRoadSection> _currentPieces;
         private List<RoadSection> _prototypes;
@@ -22,6 +23,11 @@ namespace RoadGeneration
 
             _choiceEngine = new RoadGeneratorChoiceEngine();
             _choiceEngine.Reset(_GetCurrentPiecesInWorld(), _GetNextPossiblePiecesInPreferenceOrder(), _choiceEngineCheckDepth);
+
+            foreach (Transform child in _roadSectionContainer)
+            {
+                _currentPieces.Add(child.GetComponent<IRoadSection>());
+            }
         }
 
         private void _CreatePrototypes()
@@ -38,11 +44,11 @@ namespace RoadGeneration
         }
 
         public int ptp = 2;
-        int piecesPlaced = 0;
+        public int piecesPlaced = 0;
         private void Update()
         {
-            _choiceEngine.Step(_choiceEngineStepsPerFrame);
             if (piecesPlaced >= ptp) return;
+            // _choiceEngine.Step(_choiceEngineStepsPerFrame);
 
             if (_ShouldPlacePiece())
             {
@@ -57,7 +63,7 @@ namespace RoadGeneration
                     return;
                 }
                 _PlaceNewPiece();
-                piecesPlaced ++;
+                piecesPlaced++;
             }
             if (_ShouldRemovePiece())
             {

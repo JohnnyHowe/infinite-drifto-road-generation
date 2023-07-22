@@ -32,6 +32,7 @@ namespace RoadGeneration
 
         public void Step(int choiceEngineStepsPerFrame)
         {
+            Debug.Log(String.Join(", ", _combinationGenerator.GetState()));
             if (_DoesLastCandidateSectionOverlapWithOthers())
             {
                 _combinationGenerator.StepInvalid();
@@ -112,7 +113,7 @@ namespace RoadGeneration
             {
                 throw new NoChoiceFoundException();
             }
-            return _candidatePrototypes[_combinationGenerator.GetCurrentEnd()];
+            return _candidatePrototypes[_combinationGenerator.GetState()[0]];
         }
     }
 }
