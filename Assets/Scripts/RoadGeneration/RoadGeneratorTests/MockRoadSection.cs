@@ -27,5 +27,10 @@ namespace RoadGeneration.Tests
             if (GlobalShape == null) return LocalShape;
             return GlobalShape;
         }
+
+        public RoadSectionShape GetShapeRelativeToStart()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

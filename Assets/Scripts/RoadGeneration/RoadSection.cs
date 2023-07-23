@@ -23,6 +23,16 @@ namespace RoadGeneration
         }
         private RoadSectionShape _localShapeReal;
 
+        private void Update()
+        {
+            _DrawLocalShape();
+        }
+
+        private void _DrawLocalShape()
+        {
+            _localShape.Boundary.DrawDebug();
+        }
+
         private void _SetShape()
         {
             _localShape = new RoadSectionShape();
@@ -55,6 +65,11 @@ namespace RoadGeneration
         public RoadSectionShape GetShape()
         {
             return _localShape.GetCopyAt(transform.position, transform.rotation);
+        }
+
+        public RoadSectionShape GetShapeRelativeToStart()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

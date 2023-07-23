@@ -25,6 +25,20 @@ namespace Other
         internal FloatRange _heightRange;
         internal ConvexShape2D _topology;
 
+        public void DrawDebug()
+        {
+            List<Vector2> vertices = _topology.GetVertices();
+            foreach (Vector2 start2d in vertices)
+            {
+                Vector3 start3d = new Vector3(start2d.x, 0, start2d.y);
+                foreach (Vector2 end2d in vertices)
+                {
+                    Vector3 end3d = new Vector3(end2d.x, 0, end2d.y);
+                    Debug.DrawLine(start3d, end3d);
+                }
+            }
+        }
+
         public bool DoesOverlapWith(ConvexBoundary other)
         {
             if (!_heightRange.DoesOverlapWith(other._heightRange)) return false;

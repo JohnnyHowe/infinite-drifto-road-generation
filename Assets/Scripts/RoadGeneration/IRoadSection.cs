@@ -5,7 +5,8 @@ namespace RoadGeneration
     public interface IRoadSection
     {
         RoadSectionShape GetShape();
-        RoadSectionShape GetLocalShape();
+        RoadSectionShape GetLocalShape();   // TODO remove
+        RoadSectionShape GetShapeRelativeToStart();
         void AlignByStartPoint(RoadSectionShape.EndPoint newStartPoint);
         IRoadSection Clone();
     }
