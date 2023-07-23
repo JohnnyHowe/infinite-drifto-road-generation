@@ -26,8 +26,7 @@ namespace RoadGeneration
         private void _SetShape()
         {
             _localShape = new RoadSectionShape();
-            // Vector3 position = transform.InverseTransformPoint()
-            _localShape.SetBoundaryFromMesh(_boundingMesh.mesh, _boundingMesh.transform.position, _boundingMesh.transform.rotation, _boundingMesh.transform.lossyScale);
+            _localShape.SetBoundaryFromMesh(_boundingMesh.mesh, Vector3.zero, Quaternion.identity, transform.lossyScale);
             _localShape.SetStartPointFromTransformLocal(_startPoint);
             _localShape.SetEndPointFromTransformLocal(_endPoint);
         }
