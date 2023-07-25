@@ -14,22 +14,30 @@ namespace RoadGeneration
     {
         public TransformData Start;
         public TransformData End;
-        private TransformData _handle;
-        private List<Vector3> _boundaryVerticesRelativeToHandle;
+        public TransformData Handle;
+        public List<Vector3> _boundaryVerticesRelativeToHandle;
 
         public void SetBoundaryFromMesh(Mesh mesh, TransformData meshGlobalTransform, TransformData handle)
         {
             _boundaryVerticesRelativeToHandle = new List<Vector3>();
-            _handle = handle;
+            Handle = handle;
             foreach (Vector3 vertexLocalToMesh in mesh.vertices)
             {
-                _boundaryVerticesRelativeToHandle.Add(_handle.InverseTransformPoint(meshGlobalTransform.TransformPoint(vertexLocalToMesh)));
+                _boundaryVerticesRelativeToHandle.Add(Handle.InverseTransformPoint(meshGlobalTransform.TransformPoint(vertexLocalToMesh)));
             }
         }
 
         public RoadSectionShape GetTranslatedCopy(TransformData newHandlePosition)
         {
-            throw new NotImplementedException();
+            RoadSectionShape newShape = new RoadSectionShape();
+            newShape.Handle = newHandlePosition;
+
+            newShape._boundaryVerticesRelativeToHandle = new List<Vector3>();
+            foreach (Vector3 localVertex in _boundaryVerticesRelativeToHandle) {
+                newShape._boundaryVerticesRelativeToHandle.Add(newHandlePosition.TransformPoint(localVertex));
+            }
+
+            return newShape;
         }
 
         public void DebugDraw()
