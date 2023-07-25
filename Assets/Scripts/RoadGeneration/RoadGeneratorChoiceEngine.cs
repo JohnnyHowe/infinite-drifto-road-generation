@@ -51,7 +51,8 @@ namespace RoadGeneration
 
             foreach (RoadSectionShape worldRoadSectionShape in allPiecesAligned.Take(allPiecesAligned.Count - 1))
             {
-                if (currentCandidate.DoesOverlapWith(worldRoadSectionShape)) return true;
+                // if (currentCandidate.DoesOverlapWith(worldRoadSectionShape)) return true;
+                throw new NotImplementedException();
             }
             return false;
         }
@@ -72,12 +73,13 @@ namespace RoadGeneration
             // Both big redesigns were a result of this.
             // I hope it looks obvious and easy to make yourself - that means I've done it right
             List<RoadSectionShape> alignedCandidates = new List<RoadSectionShape>();
-            RoadSectionShape.EndPoint nextStartPoint = _GetFirstCandidateStartPoint();
+            TransformData nextStartPoint = _GetFirstCandidateStartPoint();
             foreach (IRoadSection candidateSection in _GetCandidatesNotAligned())
             {
-                RoadSectionShape alignedCandidateShape = candidateSection.GetLocalShape().GetCopyWithStartAlignedTo(nextStartPoint);
-                alignedCandidates.Add(alignedCandidateShape);
-                nextStartPoint = alignedCandidateShape.End;
+                // RoadSectionShape alignedCandidateShape = candidateSection.GetLocalShape().GetCopyWithStartAlignedTo(nextStartPoint);
+                // alignedCandidates.Add(alignedCandidateShape);
+                // nextStartPoint = alignedCandidateShape.End;
+                throw new NotImplementedException();
             }
             return alignedCandidates;
         }
@@ -93,10 +95,12 @@ namespace RoadGeneration
             return candidates;
         }
 
-        private RoadSectionShape.EndPoint _GetFirstCandidateStartPoint()
+        private TransformData _GetFirstCandidateStartPoint()
         {
-            if (_currentPiecesInWorld.Count == 0) {
-                return new RoadSectionShape.EndPoint(Vector3.zero, Quaternion.Euler(0, 0, 1));
+            if (_currentPiecesInWorld.Count == 0)
+            {
+                // return new TransformData(Vector3.zero, Quaternion.Euler(0, 0, 1));
+            throw new NotImplementedException();
             }
             return _currentPiecesInWorld[_currentPiecesInWorld.Count - 1].GetShape().End;
 

@@ -21,20 +21,43 @@ namespace Other
             }
         }
 
+        public class TransformData
+        {
+            public Vector3 Position;
+            public Quaternion Rotation;
+            public Vector3 Scale;
+
+            public TransformData(Vector3 position, Quaternion rotation, Vector3 scale)
+            {
+                Position = position;
+                Rotation = rotation;
+                Scale = scale;
+            }
+
+            public static TransformData FromTransform(Transform transform)
+            {
+                return new TransformData(transform.position, transform.rotation, transform.lossyScale);
+            }
+        }
+
         // yes it is just a 2d extruded shape. it works for this application. TODO - not this
         internal FloatRange _heightRange;
         internal ConvexShape2D _topology;
 
-        public void DrawDebug()
+        public void DrawDebug(Color lineColor)
         {
             List<Vector2> vertices = _topology.GetVertices();
             foreach (Vector2 start2d in vertices)
             {
-                Vector3 start3d = new Vector3(start2d.x, 0, start2d.y);
+                Vector3 start3dLow = new Vector3(start2d.x, _heightRange.Min, start2d.y);
+                Vector3 start3dHigh = new Vector3(start2d.x, _heightRange.Max, start2d.y);
+                Debug.DrawLine(start3dHigh, start3dLow, lineColor);
                 foreach (Vector2 end2d in vertices)
                 {
-                    Vector3 end3d = new Vector3(end2d.x, 0, end2d.y);
-                    Debug.DrawLine(start3d, end3d);
+                    Vector3 end3dLow = new Vector3(end2d.x, _heightRange.Min, end2d.y);
+                    Vector3 end3dHigh = new Vector3(end2d.x, _heightRange.Max, end2d.y);
+                    Debug.DrawLine(start3dLow, end3dLow, lineColor);
+                    Debug.DrawLine(start3dHigh, end3dHigh, lineColor);
                 }
             }
         }
@@ -64,6 +87,50 @@ namespace Other
             );
             convexBoundary._topology = new ConvexShape2D(_GetTopology(mesh, position, rotation, scale));
             return convexBoundary;
+        }
+
+        public static ConvexBoundary FromMesh(Mesh mesh, TransformData meshTransformData, TransformData relativeTo)
+        {
+            return FromMeshVertices(mesh.vertices, meshTransformData, relativeTo);
+        }
+
+        public static ConvexBoundary FromMeshVertices(Vector3[] vertices)
+        {
+            return FromMeshVertices(vertices, new TransformData(Vector3.zero, Quaternion.identity, Vector3.one), new TransformData(Vector3.zero, Quaternion.identity, Vector3.one));
+        }
+
+        public static ConvexBoundary FromMeshVertices(Vector3[] vertices, TransformData meshTransformData, TransformData relativeTo)
+        {
+            ConvexBoundary convexBoundary = new ConvexBoundary();
+
+            List<Vector2> topology = new List<Vector2>();
+            float minHeight = Mathf.Infinity;
+            float maxHeight = -Mathf.Infinity;
+            foreach (Vector3 vertex in vertices)
+            {
+                Vector3 transformedVertex = _InverseTransformPoint(_TransformPoint(vertex, meshTransformData), relativeTo);
+                topology.Add(new Vector2(transformedVertex.x, transformedVertex.z));
+                minHeight = Mathf.Min(minHeight, transformedVertex.y);
+                maxHeight = Mathf.Max(maxHeight, transformedVertex.y);
+            }
+            convexBoundary._topology = new ConvexShape2D(topology);
+            convexBoundary._heightRange = new FloatRange(minHeight, maxHeight);
+            return convexBoundary;
+        }
+
+        private static Vector3 _TransformPoint(Vector3 point, TransformData transformData)
+        {
+            point = new Vector3(point.x * transformData.Scale.x, point.y * transformData.Scale.y, point.z * transformData.Scale.z);
+            point = transformData.Rotation * point;
+            point += transformData.Position;
+            return point;
+        }
+
+        private static Vector3 _InverseTransformPoint(Vector3 point, TransformData transformData)
+        {
+            Matrix4x4 matrix = Matrix4x4.TRS(transformData.Position, transformData.Rotation, transformData.Scale);
+            Matrix4x4 inverse = matrix.inverse;
+            return inverse.MultiplyPoint3x4(point);
         }
 
         /// <summary>

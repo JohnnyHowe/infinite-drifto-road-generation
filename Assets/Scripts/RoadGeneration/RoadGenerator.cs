@@ -26,6 +26,7 @@ namespace RoadGeneration
 
             foreach (Transform child in _roadSectionContainer)
             {
+                if (!child.gameObject.activeInHierarchy) continue;
                 _currentPieces.Add(child.GetComponent<IRoadSection>());
             }
         }
@@ -94,11 +95,12 @@ namespace RoadGeneration
             _choiceEngine.Reset(_GetCurrentPiecesInWorld(), _GetNextPossiblePiecesInPreferenceOrder(), _choiceEngineCheckDepth);
         }
 
-        private RoadSectionShape.EndPoint _GetNextPieceStartPosition()
+        private TransformData _GetNextPieceStartPosition()
         {
             if (_currentPieces.Count == 0)
             {
-                return new RoadSectionShape.EndPoint(Vector3.zero, Quaternion.Euler(0, 0, 1));
+            throw new NotImplementedException();
+                // return new TransformData(Vector3.zero, Quaternion.Euler(0, 0, 1));
             }
             return _currentPieces[_currentPieces.Count - 1].GetShape().End;
         }

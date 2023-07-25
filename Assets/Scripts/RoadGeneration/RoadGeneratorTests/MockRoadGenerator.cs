@@ -3,6 +3,7 @@ using System.Linq;
 using RoadGeneration;
 using UnityEngine;
 using Other;
+using System;
 
 namespace RoadGeneration.Tests
 {
@@ -16,24 +17,27 @@ namespace RoadGeneration.Tests
         public static List<IRoadSection> AlignMockSections(List<IRoadSection> toAlign)
         {
             List<IRoadSection> aligned = new List<IRoadSection>();
-            RoadSectionShape.EndPoint nextStartPoint = new RoadSectionShape.EndPoint(Vector3.zero, Quaternion.Euler(0, 0, 1));
-            foreach (IRoadSection section in toAlign)
-            {
-                section.AlignByStartPoint(nextStartPoint);
-                nextStartPoint = section.GetShape().End;
-                aligned.Add(section);
-            }
+            // TransformData nextStartPoint = new TransformData(Vector3.zero, Quaternion.Euler(0, 0, 1));
+            throw new NotImplementedException();
+            // foreach (IRoadSection section in toAlign)
+            // {
+            //     section.AlignByStartPoint(nextStartPoint);
+            //     nextStartPoint = section.GetShape().End;
+            //     aligned.Add(section);
+            // }
             return aligned;
         }
 
         public static IRoadSection CreateBasicStraight()
         {
-            MockRoadSection section = new MockRoadSection();
-            section.LocalShape = new RoadSectionShape();
-            section.LocalShape.SetBoundaryFromMesh(MeshGeneratorUtility.GenerateUnitCubeMesh());
-            section.LocalShape.End = new RoadSectionShape.EndPoint(new Vector3(0, 0, -.5f), Quaternion.Euler(0, 0, 1));
-            section.LocalShape.Start = new RoadSectionShape.EndPoint(new Vector3(0, 0, .5f), Quaternion.Euler(0, 0, 1));
-            return section;
+            throw new NotImplementedException();
+            // MockRoadSection section = new MockRoadSection();
+            // section.LocalShape = new RoadSectionShape();
+            // // section.LocalShape.SetBoundaryFromMesh(MeshGeneratorUtility.GenerateUnitCubeMesh());
+            // throw new NotImplementedException();
+            // section.LocalShape.End = new TransformData(new Vector3(0, 0, -.5f), Quaternion.Euler(0, 0, 1));
+            // section.LocalShape.Start = new TransformData(new Vector3(0, 0, .5f), Quaternion.Euler(0, 0, 1));
+            // return section;
         }
     }
 }

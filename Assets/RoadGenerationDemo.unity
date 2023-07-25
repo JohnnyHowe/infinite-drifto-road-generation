@@ -134,6 +134,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SweepingRight (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 3997215506176110264, guid: c4a8f9ec9cd8ed44fb091f86be3bc525, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7004133031816220265, guid: c4a8f9ec9cd8ed44fb091f86be3bc525, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -408,7 +412,7 @@ MonoBehaviour:
   - {fileID: 4323603871934246166, guid: c4a8f9ec9cd8ed44fb091f86be3bc525, type: 3}
   - {fileID: 2887276692217163081, guid: 44f06b5e1395238449870b4dcf86c381, type: 3}
   _roadSectionContainer: {fileID: 1331768362}
-  ptp: 1
+  ptp: 5
   piecesPlaced: 0
 --- !u!1 &1331768361
 GameObject:
@@ -463,6 +467,10 @@ PrefabInstance:
     - target: {fileID: 3997215506176110264, guid: c4a8f9ec9cd8ed44fb091f86be3bc525, type: 3}
       propertyPath: m_Name
       value: SweepingRight
+      objectReference: {fileID: 0}
+    - target: {fileID: 3997215506176110264, guid: c4a8f9ec9cd8ed44fb091f86be3bc525, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7004133031816220265, guid: c4a8f9ec9cd8ed44fb091f86be3bc525, type: 3}
       propertyPath: m_RootOrder

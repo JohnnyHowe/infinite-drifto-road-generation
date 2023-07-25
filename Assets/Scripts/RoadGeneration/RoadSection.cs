@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Other;
 using UnityEngine;
 
 namespace RoadGeneration
@@ -25,23 +27,29 @@ namespace RoadGeneration
 
         private void Update()
         {
+            _SetShape();    // TODO remove this - is just for testing
             _DrawLocalShape();
         }
 
         private void _DrawLocalShape()
         {
-            _localShape.Boundary.DrawDebug();
+            throw new NotImplementedException();
+            // GetShape().Boundary.DrawDebug(Color.green);
+            // GetLocalShape().Boundary.DrawDebug(Color.white);
         }
 
         private void _SetShape()
         {
             _localShape = new RoadSectionShape();
-            _localShape.SetBoundaryFromMesh(_boundingMesh.mesh, Vector3.zero, Quaternion.identity, transform.lossyScale);
-            _localShape.SetStartPointFromTransformLocal(_startPoint);
-            _localShape.SetEndPointFromTransformLocal(_endPoint);
+            ConvexBoundary.TransformData meshTransformData = ConvexBoundary.TransformData.FromTransform(_boundingMesh.transform);
+            ConvexBoundary.TransformData startTransformData = new ConvexBoundary.TransformData(_startPoint.position, _startPoint.rotation, Vector3.one);
+            throw new NotImplementedException();
+            // _localShape.SetBoundaryFromMesh(_boundingMesh.mesh, meshTransformData, startTransformData);
+            // _localShape.SetStartPointFromTransformLocal(_startPoint);
+            // _localShape.SetEndPointFromTransformLocal(_endPoint);
         }
 
-        public void AlignByStartPoint(RoadSectionShape.EndPoint newStartPoint)
+        public void AlignByStartPoint(TransformData newStartPoint)
         {
             Vector3 positionOffset = newStartPoint.Position - GetShape().Start.Position;
             Vector3 rotationOffsetEuler = newStartPoint.Rotation.eulerAngles - GetShape().Start.Rotation.eulerAngles;
@@ -64,7 +72,8 @@ namespace RoadGeneration
 
         public RoadSectionShape GetShape()
         {
-            return _localShape.GetCopyAt(transform.position, transform.rotation);
+            // return _localShape.GetCopyWithStartAlignedTo(new TransformData(_startPoint.position, _startPoint.rotation));
+            throw new NotImplementedException();
         }
 
         public RoadSectionShape GetShapeRelativeToStart()

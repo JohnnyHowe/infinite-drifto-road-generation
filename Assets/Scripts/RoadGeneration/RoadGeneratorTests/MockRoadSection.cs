@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace RoadGeneration.Tests
@@ -7,9 +8,10 @@ namespace RoadGeneration.Tests
         public RoadSectionShape LocalShape;
         public RoadSectionShape GlobalShape;
 
-        public void AlignByStartPoint(RoadSectionShape.EndPoint newStartPoint)
+        public void AlignByStartPoint(TransformData newStartPoint)
         {
-            GlobalShape = LocalShape.GetCopyWithStartAlignedTo(newStartPoint);
+            // GlobalShape = LocalShape.GetCopyWithStartAlignedTo(newStartPoint);
+            throw new NotImplementedException();
         }
 
         public IRoadSection Clone()
