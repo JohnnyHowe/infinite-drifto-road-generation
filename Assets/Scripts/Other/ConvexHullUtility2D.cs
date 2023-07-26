@@ -54,40 +54,63 @@ namespace Other
             return tangents.Distinct(new Vector2EqualityComparer()).ToList(); ;
         }
 
-        private static List<(Vector2, Vector2)> GetConvexHull(List<Vector2> points)
+        public static List<(Vector2, Vector2)> GetConvexHull(List<Vector2> points)
         {
             if (points.Count < 3)
                 return new List<(Vector2, Vector2)>();
 
-            List<Vector2> hullPoints = new List<Vector2>();
+            Vector2 leftmost = FindLeftmostPoint(points);
+            List<Vector2> sortedPoints = SortByPolarAngle(points, leftmost);
+            Stack<Vector2> hullStack = new Stack<Vector2>();
+            hullStack.Push(sortedPoints[0]);
+            hullStack.Push(sortedPoints[1]);
 
-            // Find the leftmost point
-            int leftmostIndex = 0;
+            for (int i = 2; i < sortedPoints.Count; i++)
+            {
+                Vector2 top = hullStack.Pop();
+                while (hullStack.Count > 0 && !IsCounterClockwise(hullStack.Peek(), top, sortedPoints[i]))
+                {
+                    top = hullStack.Pop();
+                }
+                hullStack.Push(top);
+                hullStack.Push(sortedPoints[i]);
+            }
+
+            List<(Vector2, Vector2)> hullEdges = new List<(Vector2, Vector2)>();
+            Vector2 prevPoint = hullStack.Pop();
+            while (hullStack.Count > 0)
+            {
+                Vector2 currentPoint = hullStack.Pop();
+                hullEdges.Add((prevPoint, currentPoint));
+                prevPoint = currentPoint;
+            }
+
+            return hullEdges;
+        }
+
+        private static Vector2 FindLeftmostPoint(List<Vector2> points)
+        {
+            Vector2 leftmost = points[0];
             for (int i = 1; i < points.Count; i++)
             {
-                if (points[i].x < points[leftmostIndex].x)
-                    leftmostIndex = i;
-            }
-
-            int currentIndex = leftmostIndex;
-            int nextIndex;
-
-            do
-            {
-                hullPoints.Add(points[currentIndex]);
-                nextIndex = (currentIndex + 1) % points.Count;
-
-                for (int i = 0; i < points.Count; i++)
+                if (points[i].x < leftmost.x || (Mathf.Approximately(points[i].x, leftmost.x) && points[i].y < leftmost.y))
                 {
-                    if (IsCounterClockwise(points[currentIndex], points[i], points[nextIndex]))
-                        nextIndex = i;
+                    leftmost = points[i];
                 }
-
-                currentIndex = nextIndex;
             }
-            while (currentIndex != leftmostIndex);
+            return leftmost;
+        }
 
-            return GetEdges(hullPoints);
+        private static List<Vector2> SortByPolarAngle(List<Vector2> points, Vector2 pivot)
+        {
+            List<Vector2> sortedPoints = new List<Vector2>(points);
+            sortedPoints.Sort((a, b) =>
+            {
+                float angleA = Mathf.Atan2(a.y - pivot.y, a.x - pivot.x);
+                float angleB = Mathf.Atan2(b.y - pivot.y, b.x - pivot.x);
+                return angleA.CompareTo(angleB);
+            });
+            return sortedPoints;
         }
 
         private static bool IsCounterClockwise(Vector2 a, Vector2 b, Vector2 c)
@@ -96,16 +119,16 @@ namespace Other
             return crossProduct > 0;
         }
 
-        private static List<(Vector2, Vector2)> GetEdges(List<Vector2> points)
+        // Helper function to get edges from the convex hull
+        private static List<(Vector2, Vector2)> GetEdges(List<Vector2> hullPoints)
         {
             List<(Vector2, Vector2)> edges = new List<(Vector2, Vector2)>();
-
-            int numPoints = points.Count;
+            int numPoints = hullPoints.Count;
 
             for (int i = 0; i < numPoints; i++)
             {
-                Vector2 currentPoint = points[i];
-                Vector2 nextPoint = points[(i + 1) % numPoints]; // Wrap around to the first point
+                Vector2 currentPoint = hullPoints[i];
+                Vector2 nextPoint = hullPoints[(i + 1) % numPoints]; // Wrap around to the first point
 
                 edges.Add((currentPoint, nextPoint));
             }

@@ -6,8 +6,10 @@ using UnityEngine;
 
 namespace RoadGeneration
 {
-    public class RoadGenerator : MonoBehaviour
+    public class RoadGeneratorDemo : MonoBehaviour
     {
+        [SerializeField] private int _roadLength = 10;
+        [SerializeField] private float _timeBetweenPiecePlacing = 0.5f;
         [SerializeField] private int _choiceEngineStepsPerFrame = 1;
         [SerializeField] private int _choiceEngineCheckDepth = 5;
         [SerializeField] private List<RoadSection> _roadSectionChoices; // Cannot serialize interfaces for inspector :(
@@ -15,6 +17,8 @@ namespace RoadGeneration
         private RoadGeneratorChoiceEngine _choiceEngine;
         private List<IRoadSection> _currentPieces;
         private List<RoadSection> _prototypes;
+
+        private float _timeUntilNextPiece;
 
         private void Awake()
         {
@@ -29,6 +33,13 @@ namespace RoadGeneration
                 if (!child.gameObject.activeInHierarchy) continue;
                 _currentPieces.Add(child.GetComponent<IRoadSection>());
             }
+
+            _timeUntilNextPiece = 0;
+
+            _choiceEngine.StepUntilChoiceIsFound();
+            _PlaceNewPiece();
+            _choiceEngine.StepUntilChoiceIsFound();
+            _PlaceNewPiece();
         }
 
         private void _CreatePrototypes()
@@ -44,14 +55,12 @@ namespace RoadGeneration
             }
         }
 
-        public int ptp = 2;
-        public int piecesPlaced = 0;
         private void Update()
         {
-            if (piecesPlaced >= ptp) return;
-            // _choiceEngine.Step(_choiceEngineStepsPerFrame);
-
-            if (_ShouldPlacePiece())
+            // return;
+            _choiceEngine.Step(_choiceEngineStepsPerFrame);
+            _timeUntilNextPiece -= Time.deltaTime;
+            if (_timeUntilNextPiece <= 0)
             {
                 try
                 {
@@ -63,10 +72,11 @@ namespace RoadGeneration
                     Debug.LogError("Could not find valid road section choice!");
                     return;
                 }
+                _timeUntilNextPiece += _timeBetweenPiecePlacing;
                 _PlaceNewPiece();
-                piecesPlaced++;
             }
-            if (_ShouldRemovePiece())
+
+            if (_currentPieces.Count > _roadLength)
             {
                 _RemoveLastPiece();
             }
@@ -84,7 +94,10 @@ namespace RoadGeneration
 
         private void _RemoveLastPiece()
         {
-            throw new NotImplementedException();
+            IRoadSection lastSection = _currentPieces[0];
+            _currentPieces.RemoveAt(0);
+            // TODO not this
+            Destroy(((RoadSection)lastSection).gameObject);
         }
 
         private void _PlaceNewPiece()
@@ -99,20 +112,9 @@ namespace RoadGeneration
         {
             if (_currentPieces.Count == 0)
             {
-                return new TransformData(Vector3.zero, Quaternion.Euler(0, 0, 1), Vector3.one);
+                return new TransformData(Vector3.zero, Quaternion.Euler(Vector3.forward), Vector3.one);
             }
             return _currentPieces[_currentPieces.Count - 1].GetShape().End;
-        }
-
-        private bool _ShouldPlacePiece()
-        {
-            return true;
-        }
-
-        private bool _ShouldRemovePiece()
-        {
-            // TODO
-            return false;
         }
     }
 }
