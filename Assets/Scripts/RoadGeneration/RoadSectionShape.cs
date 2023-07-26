@@ -41,6 +41,8 @@ namespace RoadGeneration
             }
 
             // TODO translate start and end points
+            newShape.Start = newHandlePosition;
+            newShape.End = newHandlePosition.TransformPoint(Start.InverseTransformPoint(End));
 
             newShape.RecalculateCollisionBoundaries();
             return newShape;
@@ -88,7 +90,6 @@ namespace RoadGeneration
                     Debug.DrawLine(new Vector3(vertex1.x, _heightRange.Max, vertex1.y), new Vector3(vertex2.x, _heightRange.Max, vertex2.y), Color.red);
                 }
             }
-
             DrawArrow.ForDebug(Start.Position, Start.Rotation * Vector3.forward);
             DrawArrow.ForDebug(End.Position, End.Rotation * Vector3.forward);
         }

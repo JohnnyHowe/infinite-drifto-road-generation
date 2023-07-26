@@ -27,6 +27,21 @@ namespace RoadGeneration
             return point;
         }
 
+        public TransformData TransformPoint(TransformData point)
+        {
+            // TODO make work with scale
+            if (point.Scale != Vector3.one || Scale != Vector3.one)
+            {
+                Debug.LogWarning("TransformData.TransformPoint does not work when scale is not one!");
+            }
+
+            return new TransformData(
+                TransformPoint(point.Position),
+                Rotation * point.Rotation,
+                Vector3.Scale(Scale, point.Scale)
+            );
+        }
+
         /// <summary>
         /// Transform point from world space to local space
         /// </summary>
@@ -35,6 +50,23 @@ namespace RoadGeneration
             Matrix4x4 matrix = Matrix4x4.TRS(Position, Rotation, Scale);
             Matrix4x4 inverse = matrix.inverse;
             return inverse.MultiplyPoint3x4(point);
+        }
+
+        public TransformData InverseTransformPoint(TransformData point)
+        {
+            // TODO make work with scale
+            if (point.Scale != Vector3.one || Scale != Vector3.one)
+            {
+                Debug.LogWarning("TransformData.InverseTransformPoint does not work when scale is not one!");
+            }
+
+            Matrix4x4 matrix = Matrix4x4.TRS(Position, Rotation, Scale);
+            Matrix4x4 inverse = matrix.inverse;
+            return new TransformData(
+                inverse.MultiplyPoint3x4(point.Position),
+                point.Rotation * Quaternion.Inverse(Rotation),
+                new Vector3(Scale.x / point.Scale.x, Scale.y / point.Scale.y, Scale.z / point.Scale.z)
+            );
         }
 
         public bool Equals(TransformData other)
