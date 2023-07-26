@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace RoadGeneration
 {
-    public class RoadGeneratorDemo : MonoBehaviour
+    public class ARoadGenerator : MonoBehaviour
     {
         [SerializeField] private int _roadLength = 10;
         [SerializeField] private float _timeBetweenPiecePlacing = 0.5f;
@@ -57,7 +57,6 @@ namespace RoadGeneration
 
         private void Update()
         {
-            // return;
             _choiceEngine.Step(_choiceEngineStepsPerFrame);
             _timeUntilNextPiece -= Time.deltaTime;
             if (_timeUntilNextPiece <= 0)
@@ -112,7 +111,7 @@ namespace RoadGeneration
         {
             if (_currentPieces.Count == 0)
             {
-                return new TransformData(Vector3.zero, Quaternion.Euler(Vector3.forward), Vector3.one);
+                return new TransformData(Vector3.zero, new Quaternion(0, 0, 0, 1), Vector3.one);
             }
             return _currentPieces[_currentPieces.Count - 1].GetShape().End;
         }

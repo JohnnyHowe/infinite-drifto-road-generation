@@ -378,13 +378,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _roadLength: 25
-  _timeBetweenPiecePlacing: 0.05
+  _timeBetweenPiecePlacing: 0
   _choiceEngineStepsPerFrame: 1
   _choiceEngineCheckDepth: 26
   _roadSectionChoices:
   - {fileID: 4323603871934246166, guid: c4a8f9ec9cd8ed44fb091f86be3bc525, type: 3}
   - {fileID: 2887276692217163081, guid: 44f06b5e1395238449870b4dcf86c381, type: 3}
   _roadSectionContainer: {fileID: 774513853}
+  _prototypes: []
+  _timeUntilNextPiece: 0
 --- !u!1001 &1854871406
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -395,6 +397,10 @@ PrefabInstance:
     - target: {fileID: 3997215506176110264, guid: c4a8f9ec9cd8ed44fb091f86be3bc525, type: 3}
       propertyPath: m_Name
       value: SweepingRight
+      objectReference: {fileID: 0}
+    - target: {fileID: 3997215506176110264, guid: c4a8f9ec9cd8ed44fb091f86be3bc525, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7004133031816220265, guid: c4a8f9ec9cd8ed44fb091f86be3bc525, type: 3}
       propertyPath: m_RootOrder
