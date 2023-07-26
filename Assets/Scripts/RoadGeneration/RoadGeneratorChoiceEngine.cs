@@ -32,7 +32,7 @@ namespace RoadGeneration
 
         public void Step(int choiceEngineStepsPerFrame)
         {
-            Debug.Log(String.Join(", ", _combinationGenerator.GetState()));
+            // Debug.Log(String.Join(", ", _combinationGenerator.GetState()));
             if (_DoesLastCandidateSectionOverlapWithOthers())
             {
                 _combinationGenerator.StepInvalid();
@@ -51,8 +51,7 @@ namespace RoadGeneration
 
             foreach (RoadSectionShape worldRoadSectionShape in allPiecesAligned.Take(allPiecesAligned.Count - 1))
             {
-                // if (currentCandidate.DoesOverlapWith(worldRoadSectionShape)) return true;
-                throw new NotImplementedException();
+                if (currentCandidate.DoesOverlapWith(worldRoadSectionShape)) return true;
             }
             return false;
         }
@@ -76,10 +75,9 @@ namespace RoadGeneration
             TransformData nextStartPoint = _GetFirstCandidateStartPoint();
             foreach (IRoadSection candidateSection in _GetCandidatesNotAligned())
             {
-                // RoadSectionShape alignedCandidateShape = candidateSection.GetLocalShape().GetCopyWithStartAlignedTo(nextStartPoint);
-                // alignedCandidates.Add(alignedCandidateShape);
-                // nextStartPoint = alignedCandidateShape.End;
-                throw new NotImplementedException();
+                RoadSectionShape alignedCandidateShape = candidateSection.GetShape().GetTranslatedCopy(nextStartPoint);
+                alignedCandidates.Add(alignedCandidateShape);
+                nextStartPoint = alignedCandidateShape.End;
             }
             return alignedCandidates;
         }
@@ -97,10 +95,10 @@ namespace RoadGeneration
 
         private TransformData _GetFirstCandidateStartPoint()
         {
+            // TODO this is copied in RoadGenerator - they both define start points - should not be separate
             if (_currentPiecesInWorld.Count == 0)
             {
-                // return new TransformData(Vector3.zero, Quaternion.Euler(0, 0, 1));
-            throw new NotImplementedException();
+                return new TransformData(Vector3.zero, Quaternion.Euler(0, 0, 1), Vector3.one);
             }
             return _currentPiecesInWorld[_currentPiecesInWorld.Count - 1].GetShape().End;
 

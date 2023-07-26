@@ -99,8 +99,7 @@ namespace RoadGeneration
         {
             if (_currentPieces.Count == 0)
             {
-            throw new NotImplementedException();
-                // return new TransformData(Vector3.zero, Quaternion.Euler(0, 0, 1));
+                return new TransformData(Vector3.zero, Quaternion.Euler(0, 0, 1), Vector3.one);
             }
             return _currentPieces[_currentPieces.Count - 1].GetShape().End;
         }

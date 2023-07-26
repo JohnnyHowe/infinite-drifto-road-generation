@@ -5,20 +5,16 @@ using RoadGeneration;
 
 public class RoadSectionShapeDemo : MonoBehaviour
 {
-    [SerializeField] private MeshFilter _mesh;
-    [SerializeField] private Transform _start;
-    [SerializeField] private Transform _end;
+    [SerializeField] private RoadSection _section;
     [SerializeField] private Transform _translatedHandle;
+
+    private RoadSection clone;
 
     void Update()
     {
-        RoadSectionShape shape = new RoadSectionShape();
-        shape.SetBoundaryFromMesh(_mesh.mesh, TransformData.FromTransform(_mesh.transform), TransformData.FromTransform(_start));
-        shape.Start = TransformData.FromTransform(_start);
-        shape.End = TransformData.FromTransform(_end);
-        // shape.DebugDraw();  
-
-        RoadSectionShape translated = shape.GetTranslatedCopy(TransformData.FromTransform(_translatedHandle));
-        translated.DebugDraw();  
+        if (clone != null) Destroy(clone.gameObject);
+        clone = (RoadSection)_section.Clone();
+        clone.AlignByStartPoint(TransformData.FromTransform(_translatedHandle));
+        clone.Draw();
     }
 }

@@ -27,7 +27,12 @@ namespace RoadGeneration
 
         private void Update()
         {
-            _SetShape();    // TODO remove this - is just for testing
+            Draw();
+        }
+
+        public void Draw()
+        {
+            _shape.DebugDraw();
         }
 
         private void _SetShape()
@@ -41,6 +46,8 @@ namespace RoadGeneration
         public void AlignByStartPoint(TransformData newStartPoint)
         {
             _shape = _shape.GetTranslatedCopy(newStartPoint);
+            transform.position += newStartPoint.Position;
+            transform.rotation = newStartPoint.Rotation;
         }
 
         public IRoadSection Clone()
