@@ -39,6 +39,9 @@ namespace RoadGeneration
             {
                 newShape._boundaryVerticesRelativeToHandle.Add(newHandlePosition.TransformPoint(localVertex));
             }
+
+            // TODO translate start and end points
+
             newShape.RecalculateCollisionBoundaries();
             return newShape;
         }
@@ -56,6 +59,13 @@ namespace RoadGeneration
             }
             _topology = new ConvexShape2D(topology);
             _heightRange = new FloatRange(_minHeight, _maxHeight);
+        }
+
+        public bool DoesOverlapWith(RoadSectionShape other)
+        {
+            if (!_heightRange.DoesOverlapWith(other._heightRange)) return false;
+            if (!_topology.DoesOverlapWith(other._topology)) return false;
+            return true;
         }
 
         public void DebugDraw()
