@@ -15,6 +15,5 @@ public class RoadSectionShapeDemo : MonoBehaviour
         if (clone != null) Destroy(clone.gameObject);
         clone = (RoadSection)_section.Clone();
         clone.AlignByStartPoint(TransformData.FromTransform(_translatedHandle));
-        clone.Draw();
     }
 }

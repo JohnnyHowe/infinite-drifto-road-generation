@@ -32,7 +32,6 @@ namespace RoadGeneration
 
         public void Step(int choiceEngineStepsPerFrame)
         {
-            // Debug.Log(String.Join(", ", _combinationGenerator.GetState()));
             if (_DoesLastCandidateSectionOverlapWithOthers())
             {
                 _combinationGenerator.StepInvalid();

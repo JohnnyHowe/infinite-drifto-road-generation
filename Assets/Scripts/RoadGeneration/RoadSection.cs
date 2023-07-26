@@ -25,16 +25,6 @@ namespace RoadGeneration
         }
         private RoadSectionShape _localShapeReal;
 
-        private void Update()
-        {
-            Draw();
-        }
-
-        public void Draw()
-        {
-            _shape.DebugDraw();
-        }
-
         private void _SetShape()
         {
             _shape = new RoadSectionShape();
