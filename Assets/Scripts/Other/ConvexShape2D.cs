@@ -8,19 +8,6 @@ namespace Other
 {
     public class ConvexShape2D
     {
-        public class Vector2EqualityComparer : IEqualityComparer<Vector2>
-        {
-            public bool Equals(Vector2 v1, Vector2 v2)
-            {
-                return Vector2.Distance(v1, v2) < Mathf.Epsilon;
-            }
-
-            public int GetHashCode(Vector2 vector)
-            {
-                return vector.GetHashCode();
-            }
-        }
-
         private List<Vector2> _vertices;
         private List<Vector2> _axes;
 
@@ -72,26 +59,5 @@ namespace Other
             }
             return true;
         }
-
-        public bool Equals(ConvexShape2D other)
-        {
-            return new HashSet<Vector2>(other.GetVertices()).SetEquals(new HashSet<Vector2>(GetVertices()));
-        }
-
-        public override bool Equals(object obj) => this.Equals(obj as ConvexShape2D);
-
-        public override int GetHashCode() => (new HashSet<Vector2>(GetVertices())).GetHashCode();
-
-        public static bool operator ==(ConvexShape2D lhs, ConvexShape2D rhs)
-        {
-            if (lhs is null)
-            {
-                if (rhs is null) return true;
-                return false;
-            }
-            return lhs.Equals(rhs);
-        }
-
-        public static bool operator !=(ConvexShape2D lhs, ConvexShape2D rhs) => !(lhs == rhs);
     }
 }

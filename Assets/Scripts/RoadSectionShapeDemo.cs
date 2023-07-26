@@ -16,7 +16,7 @@ public class RoadSectionShapeDemo : MonoBehaviour
         shape.SetBoundaryFromMesh(_mesh.mesh, TransformData.FromTransform(_mesh.transform), TransformData.FromTransform(_start));
         shape.Start = TransformData.FromTransform(_start);
         shape.End = TransformData.FromTransform(_end);
-        shape.DebugDraw();  
+        // shape.DebugDraw();  
 
         RoadSectionShape translated = shape.GetTranslatedCopy(TransformData.FromTransform(_translatedHandle));
         translated.DebugDraw();  
