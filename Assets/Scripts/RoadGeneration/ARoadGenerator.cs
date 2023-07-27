@@ -6,23 +6,19 @@ using UnityEngine;
 
 namespace RoadGeneration
 {
-    public class ARoadGenerator : MonoBehaviour
+    public abstract class ARoadGenerator : MonoBehaviour
     {
-        [SerializeField] private int _roadLength = 10;
-        [SerializeField] private float _timeBetweenPiecePlacing = 0.5f;
         [SerializeField] private int _choiceEngineStepsPerFrame = 1;
         [SerializeField] private int _choiceEngineCheckDepth = 5;
         [SerializeField] private List<RoadSection> _roadSectionChoices; // Cannot serialize interfaces for inspector :(
         [SerializeField] private Transform _roadSectionContainer;
         private RoadGeneratorChoiceEngine _choiceEngine;
-        private List<IRoadSection> _currentPieces;
-        private List<RoadSection> _prototypes;
+        protected List<IRoadSection> currentPieces;
+        protected List<RoadSection> prototypes;
 
-        private float _timeUntilNextPiece;
-
-        private void Awake()
+        protected void Awake()
         {
-            _currentPieces = new List<IRoadSection>();
+            currentPieces = new List<IRoadSection>();
             _CreatePrototypes();
 
             _choiceEngine = new RoadGeneratorChoiceEngine();
@@ -31,35 +27,27 @@ namespace RoadGeneration
             foreach (Transform child in _roadSectionContainer)
             {
                 if (!child.gameObject.activeInHierarchy) continue;
-                _currentPieces.Add(child.GetComponent<IRoadSection>());
+                currentPieces.Add(child.GetComponent<IRoadSection>());
             }
-
-            _timeUntilNextPiece = 0;
-
-            _choiceEngine.StepUntilChoiceIsFound();
-            _PlaceNewPiece();
-            _choiceEngine.StepUntilChoiceIsFound();
-            _PlaceNewPiece();
         }
 
         private void _CreatePrototypes()
         {
-            _prototypes = new List<RoadSection>();
+            prototypes = new List<RoadSection>();
             foreach (RoadSection roadSection in _roadSectionChoices)
             {
                 GameObject prototype = Instantiate(roadSection.gameObject);
                 prototype.transform.parent = transform;
                 prototype.SetActive(false);
                 RoadSection instantiatedSection = prototype.GetComponent<RoadSection>();
-                _prototypes.Add(instantiatedSection);
+                prototypes.Add(instantiatedSection);
             }
         }
 
-        private void Update()
+        protected void Update()
         {
             _choiceEngine.Step(_choiceEngineStepsPerFrame);
-            _timeUntilNextPiece -= Time.deltaTime;
-            if (_timeUntilNextPiece <= 0)
+            if (ShouldPlaceNewPiece())
             {
                 try
                 {
@@ -71,30 +59,34 @@ namespace RoadGeneration
                     Debug.LogError("Could not find valid road section choice!");
                     return;
                 }
-                _timeUntilNextPiece += _timeBetweenPiecePlacing;
+                OnNewPiecePlaced();
                 _PlaceNewPiece();
             }
 
-            if (_currentPieces.Count > _roadLength)
+            if (ShouldRemoveLastPiece())
             {
                 _RemoveLastPiece();
             }
         }
 
+        protected virtual void OnNewPiecePlaced() { }
+        protected abstract bool ShouldPlaceNewPiece();
+        protected abstract bool ShouldRemoveLastPiece();
+
         private List<IRoadSection> _GetCurrentPiecesInWorld()
         {
-            return _currentPieces;
+            return currentPieces;
         }
 
         private List<IRoadSection> _GetNextPossiblePiecesInPreferenceOrder()
         {
-            return _prototypes.Cast<IRoadSection>().ToList();
+            return prototypes.Cast<IRoadSection>().ToList();
         }
 
         private void _RemoveLastPiece()
         {
-            IRoadSection lastSection = _currentPieces[0];
-            _currentPieces.RemoveAt(0);
+            IRoadSection lastSection = currentPieces[0];
+            currentPieces.RemoveAt(0);
             // TODO not this
             Destroy(((RoadSection)lastSection).gameObject);
         }
@@ -103,17 +95,17 @@ namespace RoadGeneration
         {
             IRoadSection newSection = _choiceEngine.GetChoicePrototype().Clone();
             newSection.AlignByStartPoint(_GetNextPieceStartPosition());
-            _currentPieces.Add(newSection);
+            currentPieces.Add(newSection);
             _choiceEngine.Reset(_GetCurrentPiecesInWorld(), _GetNextPossiblePiecesInPreferenceOrder(), _choiceEngineCheckDepth);
         }
 
         private TransformData _GetNextPieceStartPosition()
         {
-            if (_currentPieces.Count == 0)
+            if (currentPieces.Count == 0)
             {
                 return new TransformData(Vector3.zero, new Quaternion(0, 0, 0, 1), Vector3.one);
             }
-            return _currentPieces[_currentPieces.Count - 1].GetShape().End;
+            return currentPieces[currentPieces.Count - 1].GetShape().End;
         }
     }
 }

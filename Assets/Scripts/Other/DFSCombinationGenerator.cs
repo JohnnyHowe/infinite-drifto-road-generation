@@ -21,7 +21,7 @@ namespace Other
 
         public DFSCombinationGenerator(int branches, int depth)
         {
-            if (branches < 1) throw new ArgumentOutOfRangeException("Cannot have less than branches");
+            if (branches < 1) throw new ArgumentOutOfRangeException("Cannot have less than 1 branches");
             if (depth < 1) throw new ArgumentOutOfRangeException("Cannot have less than one depth");
 
             _maxDepth = depth;
