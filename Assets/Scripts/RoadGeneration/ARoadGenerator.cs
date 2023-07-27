@@ -22,7 +22,7 @@ namespace RoadGeneration
             _CreatePrototypes();
 
             _choiceEngine = new RoadGeneratorChoiceEngine();
-            _choiceEngine.Reset(_GetCurrentPiecesInWorld(), _GetNextPossiblePiecesInPreferenceOrder(), _choiceEngineCheckDepth);
+            _ResetEngine();
 
             foreach (Transform child in _roadSectionContainer)
             {
@@ -55,21 +55,28 @@ namespace RoadGeneration
                 }
                 catch (RoadGeneratorChoiceEngine.NoChoiceFoundException _)
                 {
-                    // This is really bad, the whole point of the generator is to avoid this
-                    Debug.LogError("Could not find valid road section choice!");
-                    return;
+                    // Debug.Log("Could not find valid road section choice!");
                 }
-                OnNewPiecePlaced();
-                _PlaceNewPiece();
+                if (_choiceEngine.HasFoundChoice())
+                {
+                    OnNewPiecePlaced();
+                    _PlaceNewPiece();
+                }
+                else
+                {
+                    // Debug.Log("Could not find valid road section choice!");
+                }
             }
 
             if (ShouldRemoveLastPiece())
             {
                 _RemoveLastPiece();
+                OnNewPieceRemoved();
             }
         }
 
         protected virtual void OnNewPiecePlaced() { }
+        protected virtual void OnNewPieceRemoved() { }
         protected abstract bool ShouldPlaceNewPiece();
         protected abstract bool ShouldRemoveLastPiece();
 
@@ -89,6 +96,7 @@ namespace RoadGeneration
             currentPieces.RemoveAt(0);
             // TODO not this
             Destroy(((RoadSection)lastSection).gameObject);
+            _ResetEngine();
         }
 
         private void _PlaceNewPiece()
@@ -96,6 +104,11 @@ namespace RoadGeneration
             IRoadSection newSection = _choiceEngine.GetChoicePrototype().Clone();
             newSection.AlignByStartPoint(_GetNextPieceStartPosition());
             currentPieces.Add(newSection);
+            _ResetEngine();
+        }
+
+        private void _ResetEngine()
+        {
             _choiceEngine.Reset(_GetCurrentPiecesInWorld(), _GetNextPossiblePiecesInPreferenceOrder(), _choiceEngineCheckDepth);
         }
 

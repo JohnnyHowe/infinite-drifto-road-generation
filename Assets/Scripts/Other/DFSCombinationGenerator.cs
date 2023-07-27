@@ -18,6 +18,7 @@ namespace Other
         private int _nBranches;
         private const int MAX_ITERATIONS = 10000;
         private bool _atSolution;
+        private bool _exhaustedSearch;
 
         public DFSCombinationGenerator(int branches, int depth)
         {
@@ -30,6 +31,7 @@ namespace Other
 
             SetState(Enumerable.Range(0, depth).Select(_ => -1).ToArray()); // init to { -1, -1, ...}
             _state[0] = 0;
+            _exhaustedSearch = false;
         }
 
         public int[] GetState()
@@ -64,7 +66,7 @@ namespace Other
         {
             int currentDepth = GetCurrentDepth();
             int indexInQuestion = Mathf.Max(0, currentDepth);
-            _state[indexInQuestion] ++;
+            _state[indexInQuestion]++;
 
             // Acting as a while loop - I'm sick of breaking Unity through infinite loops 
             for (int i = 0; i < MAX_ITERATIONS; i++)
@@ -73,7 +75,11 @@ namespace Other
                 if (_state[indexInQuestion] < _nBranches) break;
 
                 // Cannot backtrack anymore
-                if (!_CanBacktrack()) throw new OutOfCombinationsException();
+                if (!_CanBacktrack())
+                {
+                    _exhaustedSearch = true;
+                    throw new OutOfCombinationsException();
+                }
 
                 // do backtrack
                 _state[indexInQuestion] = -1;
@@ -114,6 +120,11 @@ namespace Other
         public int GetCurrentEnd()
         {
             return _state[Mathf.Max(0, GetCurrentDepth())];
+        }
+
+        public bool IsImpossible()
+        {
+            return _exhaustedSearch;
         }
     }
 }

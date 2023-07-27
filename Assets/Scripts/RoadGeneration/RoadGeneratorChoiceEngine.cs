@@ -18,6 +18,8 @@ namespace RoadGeneration
         private List<IRoadSection> _currentPiecesInWorld;
         private List<IRoadSection> _candidatePrototypes;
 
+        private const int MAX_ITERATIONS = 10000000;
+
         public void Reset(List<IRoadSection> currentPiecesInWorld, List<IRoadSection> possibleChoicesInPreferenceOrder, int checkDepth)
         {
             _combinationGenerator = new DFSCombinationGenerator(possibleChoicesInPreferenceOrder.Count, checkDepth);
@@ -27,14 +29,24 @@ namespace RoadGeneration
 
         public void StepUntilChoiceIsFound()
         {
-            while (!HasFoundChoice()) Step(1);
+            for (int i = 0; i < MAX_ITERATIONS; i++)
+            {
+                if (_combinationGenerator.IsImpossible()) break;
+                if (HasFoundChoice()) break;
+                Step(1);
+            }
         }
 
         public void Step(int choiceEngineStepsPerFrame)
         {
+            if (_combinationGenerator.IsImpossible()) return;
             if (_DoesLastCandidateSectionOverlapWithOthers())
             {
-                _combinationGenerator.StepInvalid();
+                try
+                {
+                    _combinationGenerator.StepInvalid();
+                }
+                catch (DFSCombinationGenerator.OutOfCombinationsException _) { }
             }
             else
             {
