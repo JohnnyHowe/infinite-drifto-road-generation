@@ -357,9 +357,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1283671432}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1.0000001, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -378,14 +378,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _choiceEngineStepsPerFrame: 1
-  _choiceEngineCheckDepth: 2
+  _choiceEngineCheckDepth: 20
   _roadSectionChoices:
-  - {fileID: 4323603871934246166, guid: c4a8f9ec9cd8ed44fb091f86be3bc525, type: 3}
-  - {fileID: 2887276692217163081, guid: 44f06b5e1395238449870b4dcf86c381, type: 3}
+  - {fileID: 1008237179905350790, guid: d2b587557ad502a4c92f6a95076e476b, type: 3}
   _roadSectionContainer: {fileID: 774513853}
   _targetRoadLength: 20
   _timeBetweenPiecePlacing: 0.1
-  _maxTimeBetweenRemovingPieces: 1
+  _maxTimeBetweenRemovingPieces: 0.2
 --- !u!1001 &1854871406
 PrefabInstance:
   m_ObjectHideFlags: 0

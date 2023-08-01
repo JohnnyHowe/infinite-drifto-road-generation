@@ -62,6 +62,7 @@ namespace RoadGeneration
 
             Matrix4x4 matrix = Matrix4x4.TRS(Position, Rotation, Scale);
             Matrix4x4 inverse = matrix.inverse;
+            
             return new TransformData(
                 inverse.MultiplyPoint3x4(point.Position),
                 point.Rotation * Quaternion.Inverse(Rotation),

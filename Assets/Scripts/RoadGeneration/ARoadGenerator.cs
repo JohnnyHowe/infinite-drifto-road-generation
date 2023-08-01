@@ -92,6 +92,7 @@ namespace RoadGeneration
 
         private void _RemoveLastPiece()
         {
+            if (currentPieces.Count == 0) return;
             IRoadSection lastSection = currentPieces[0];
             currentPieces.RemoveAt(0);
             // TODO not this
