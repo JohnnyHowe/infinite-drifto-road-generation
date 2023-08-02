@@ -59,7 +59,7 @@ namespace RoadGeneration
             
             return new TransformData(
                 inverse.MultiplyPoint3x4(point.Position),
-                point.Rotation * Quaternion.Inverse(Rotation),
+                Quaternion.Inverse(Rotation) * point.Rotation,
                 new Vector3(point.Scale.x / Scale.x, point.Scale.y / Scale.y, point.Scale.z / Scale.z)
             );
         }
