@@ -34,6 +34,10 @@ namespace RoadGeneration
 
         private void _CreatePrototypes()
         {
+            if (_autoHorizontalFlipPieces) {
+                Debug.LogWarning("RoadSection auto flip only works when start is along z axis!");
+            }
+
             prototypes = new List<RoadSection>();
             foreach (RoadSection roadSection in _roadSectionChoices)
             {
