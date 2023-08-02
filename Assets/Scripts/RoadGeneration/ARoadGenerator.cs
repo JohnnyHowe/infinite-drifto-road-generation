@@ -38,6 +38,10 @@ namespace RoadGeneration
             foreach (RoadSection roadSection in _roadSectionChoices)
             {
                 prototypes.Add(_CreatePrototype(roadSection));
+
+                RoadSection flippedSection = _CreatePrototype(roadSection);
+                _Flip(flippedSection);
+                prototypes.Add(flippedSection);
             }
         }
 
@@ -48,6 +52,13 @@ namespace RoadGeneration
             prototype.SetActive(false);
             RoadSection instantiatedSection = prototype.GetComponent<RoadSection>();
             return instantiatedSection;
+        }
+
+        private void _Flip(RoadSection toFlip)
+        {
+            Vector3 localScale = toFlip.transform.localScale;
+            localScale.x *= -1;
+            toFlip.transform.localScale = localScale;
         }
 
         protected void Update()
@@ -85,15 +96,11 @@ namespace RoadGeneration
         protected virtual void OnNewPieceRemoved() { }
         protected abstract bool ShouldPlaceNewPiece();
         protected abstract bool ShouldRemoveLastPiece();
+        protected abstract List<RoadSection> GetPiecesInPreferenceOrder(List<RoadSection> sectionPrototypes);
 
         private List<IRoadSection> _GetCurrentPiecesInWorld()
         {
             return currentPieces;
-        }
-
-        private List<IRoadSection> _GetNextPossiblePiecesInPreferenceOrder()
-        {
-            return prototypes.Cast<IRoadSection>().ToList();
         }
 
         private void _RemoveLastPiece()
@@ -116,7 +123,7 @@ namespace RoadGeneration
 
         private void _ResetEngine()
         {
-            _choiceEngine.Reset(_GetCurrentPiecesInWorld(), _GetNextPossiblePiecesInPreferenceOrder(), _choiceEngineCheckDepth);
+            _choiceEngine.Reset(_GetCurrentPiecesInWorld(), GetPiecesInPreferenceOrder(prototypes).Cast<IRoadSection>().ToList(), _choiceEngineCheckDepth);
         }
 
         private TransformData _GetNextPieceStartPosition()

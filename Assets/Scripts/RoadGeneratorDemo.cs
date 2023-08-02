@@ -46,4 +46,9 @@ public class RoadGeneratorDemo : ARoadGenerator
         _timeUntilNextPiece = _timeBetweenPiecePlacing;
         _timeUntilRemovingNextPiece += _maxTimeBetweenRemovingPieces;
     }
+
+    protected override List<RoadSection> GetPiecesInPreferenceOrder(List<RoadSection> sectionPrototypes)
+    {
+        return sectionPrototypes;
+    }
 }
