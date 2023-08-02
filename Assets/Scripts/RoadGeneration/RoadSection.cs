@@ -29,6 +29,7 @@ namespace RoadGeneration
         private void OnDrawGizmos()
         {
             _shape.DebugDraw();
+            _DrawEndPoints();
         }
 
         private void _SetShape()
@@ -39,6 +40,12 @@ namespace RoadGeneration
             _shape.Start.Scale = Vector3.one;
             _shape.End.Scale = Vector3.one;
             _shape.SetBoundaryFromMesh(_boundingMesh.mesh, TransformData.FromTransform(_boundingMesh.transform), _shape.Start, _infiniteHeight);
+        }
+
+        private void _DrawEndPoints() {
+            Vector3 startDir = _startPoint.rotation * Quaternion.Euler(0, 0, 1).eulerAngles;
+            DrawArrow.ForGizmo(_startPoint.position - startDir, startDir);
+            DrawArrow.ForGizmo(_endPoint.position, _endPoint.rotation * Quaternion.Euler(0, 0, 1).eulerAngles);
         }
 
         public void AlignByStartPoint(TransformData newStartPoint)
