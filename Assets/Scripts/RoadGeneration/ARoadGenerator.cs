@@ -12,6 +12,7 @@ namespace RoadGeneration
         [SerializeField] private int _choiceEngineCheckDepth = 5;
         [SerializeField] private List<RoadSection> _roadSectionChoices; // Cannot serialize interfaces for inspector :(
         [SerializeField] private Transform _roadSectionContainer;
+        [SerializeField] private bool _autoHorizontalFlipPieces = true;
         private RoadGeneratorChoiceEngine _choiceEngine;
         protected List<IRoadSection> currentPieces;
         protected List<RoadSection> prototypes;
@@ -36,12 +37,17 @@ namespace RoadGeneration
             prototypes = new List<RoadSection>();
             foreach (RoadSection roadSection in _roadSectionChoices)
             {
-                GameObject prototype = Instantiate(roadSection.gameObject);
-                prototype.transform.parent = transform;
-                prototype.SetActive(false);
-                RoadSection instantiatedSection = prototype.GetComponent<RoadSection>();
-                prototypes.Add(instantiatedSection);
+                prototypes.Add(_CreatePrototype(roadSection));
             }
+        }
+
+        private RoadSection _CreatePrototype(RoadSection toCopy)
+        {
+            GameObject prototype = Instantiate(toCopy.gameObject);
+            prototype.transform.parent = transform;
+            prototype.SetActive(false);
+            RoadSection instantiatedSection = prototype.GetComponent<RoadSection>();
+            return instantiatedSection;
         }
 
         protected void Update()
