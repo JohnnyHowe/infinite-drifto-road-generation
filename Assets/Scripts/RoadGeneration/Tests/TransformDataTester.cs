@@ -26,52 +26,51 @@ public class TransformDataTester
     }
 
     [Test]
-    public void TransformPointVector()
+    public void InverseTransformPointVector2()
     {
         TransformData transformData = new TransformData(new Vector3(1, 2, 3), Quaternion.Euler(0, 0, 45), Vector3.one * 2);
+        Vector3 worldPoint = new Vector3(3f, 2f, 5f);
         Vector3 localPoint = new Vector3(0.71f, -.71f, 1);
-        Vector3 actual = transformData.TransformPoint(localPoint);
-        AssertCloseEnough(new Vector3(3f, 2f, 5f), actual, 0.01f);
+        Vector3 actual = transformData.InverseTransformPoint(worldPoint);
+        AssertCloseEnough(localPoint, actual, 0.01f);
     }
 
     [Test]
-    public void TransformPointTransformDataPositionOffsetOnly()
+    public void FullTransformShakedown_Empty()
     {
-        TransformData transformData = new TransformData(new Vector3(1, 2, 3), Quaternion.Euler(0, 0, 0), Vector3.one);
-        TransformData localPoint = new TransformData(new Vector3(1, 2, 3), Quaternion.Euler(0, 0, 45), new Vector3(1, 2, 3));
-        TransformData actual = transformData.TransformPoint(localPoint);
-        TransformData expected = new TransformData(new Vector3(2, 4, 6), Quaternion.Euler(0, 0, 45), new Vector3(1, 2, 3));
-        AssertCloseEnough(expected, actual, 0.01f);
+        AssertTransformAndInverseTransform(
+            new TransformData(Vector3.zero, Quaternion.identity, Vector3.one),
+            new TransformData(Vector3.zero, Quaternion.identity, Vector3.one),
+            new TransformData(Vector3.zero, Quaternion.identity, Vector3.one)
+        );
     }
 
     [Test]
-    public void TransformPointTransformDataZRotationOffsetOnly()
+    public void FullTransformShakedown_AllPositionOffsets()
     {
-        TransformData transformData = new TransformData(Vector3.zero, Quaternion.Euler(0, 0, -90), Vector3.one);
-        TransformData localPoint = new TransformData(new Vector3(1, 2, 3), Quaternion.Euler(0, 0, 0), Vector3.one);
-        TransformData actual = transformData.TransformPoint(localPoint);
-        TransformData expected = new TransformData(new Vector3(2, -1, 3), Quaternion.Euler(0, 0, -90), Vector3.one);
-        AssertCloseEnough(expected, actual, 0.01f);
+        AssertTransformAndInverseTransform(
+            new TransformData(new Vector3(1, 2, -5), Quaternion.identity, Vector3.one),
+            new TransformData(new Vector3(-3, 2, 0), Quaternion.identity, Vector3.one),
+            new TransformData(new Vector3(-2, 4, -5), Quaternion.identity, Vector3.one)
+        );
     }
 
     [Test]
-    public void TransformPointTransformDataScaleOffsetOnly()
+    public void FullTransformShakedown_AllRotationOffsets()
     {
-        TransformData transformData = new TransformData(Vector3.zero, Quaternion.Euler(0, 0, 0), new Vector3(1, 2, 3));
-        TransformData localPoint = new TransformData(new Vector3(1, 2, 3), Quaternion.Euler(0, 0, 0), Vector3.one);
-        TransformData actual = transformData.TransformPoint(localPoint);
-        TransformData expected = new TransformData(new Vector3(1, 4, 9), Quaternion.Euler(0, 0, 0), new Vector3(1, 2, 3));
-        AssertCloseEnough(expected, actual, 0.01f);
+        AssertTransformAndInverseTransform(
+            new TransformData(Vector3.zero, Quaternion.Euler(45, 10, -90), Vector3.one),
+            new TransformData(Vector3.zero, Quaternion.Euler(-100, -225, -85), Vector3.one),
+            new TransformData(Vector3.zero, Quaternion.Euler(0, -270, 5), Vector3.one)
+        );
     }
 
-    [Test]
-    public void TransformPointTransformDataPositionAndScaleOffset()
+    private static void AssertTransformAndInverseTransform(TransformData reference, TransformData localPoint, TransformData worldPoint, float threshold = CLOSE_ENOUGH_THRESHOLD)
     {
-        TransformData transformData = new TransformData(new Vector3(2, 1, 0), Quaternion.Euler(0, 0, 0), new Vector3(1, 2, 3));
-        TransformData localPoint = new TransformData(new Vector3(1, 2, 3), Quaternion.Euler(0, 0, 0), Vector3.one);
-        TransformData actual = transformData.TransformPoint(localPoint);
-        TransformData expected = new TransformData(new Vector3(1, 4, 9), Quaternion.Euler(0, 0, 0), new Vector3(1, 2, 3));
-        AssertCloseEnough(expected, actual, 0.01f);
+        AssertCloseEnough(worldPoint, reference.TransformPoint(localPoint), threshold);
+        AssertCloseEnough(localPoint, reference.InverseTransformPoint(worldPoint), threshold);
+        AssertCloseEnough(localPoint, reference.InverseTransformPoint(reference.TransformPoint(localPoint)));
+        AssertCloseEnough(worldPoint, reference.TransformPoint(reference.InverseTransformPoint(worldPoint)));
     }
 
     private static void AssertCloseEnough(TransformData expected, TransformData actual, float threshold = CLOSE_ENOUGH_THRESHOLD)

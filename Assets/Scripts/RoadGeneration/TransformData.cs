@@ -29,12 +29,6 @@ namespace RoadGeneration
 
         public TransformData TransformPoint(TransformData point)
         {
-            // TODO make work with scale
-            if (point.Scale != Vector3.one || Scale != Vector3.one)
-            {
-                Debug.LogWarning("TransformData.TransformPoint does not work when scale is not one!");
-            }
-
             return new TransformData(
                 TransformPoint(point.Position),
                 Rotation * point.Rotation,
@@ -66,7 +60,7 @@ namespace RoadGeneration
             return new TransformData(
                 inverse.MultiplyPoint3x4(point.Position),
                 point.Rotation * Quaternion.Inverse(Rotation),
-                new Vector3(Scale.x / point.Scale.x, Scale.y / point.Scale.y, Scale.z / point.Scale.z)
+                new Vector3(point.Scale.x / Scale.x, point.Scale.y / Scale.y, point.Scale.z / Scale.z)
             );
         }
 
