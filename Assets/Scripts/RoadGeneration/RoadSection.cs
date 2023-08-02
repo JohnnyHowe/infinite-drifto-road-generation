@@ -11,6 +11,7 @@ namespace RoadGeneration
         [SerializeField] private Transform _startPoint;
         [SerializeField] private Transform _endPoint;
         [SerializeField] private MeshFilter _boundingMesh;
+        [SerializeField] private bool _infiniteHeight = false;
         private RoadSectionShape _shape
         {
             get
@@ -25,7 +26,7 @@ namespace RoadGeneration
         }
         private RoadSectionShape _localShapeReal;
 
-        private void Update()
+        private void OnDrawGizmos()
         {
             _shape.DebugDraw();
         }
@@ -37,7 +38,7 @@ namespace RoadGeneration
             _shape.End = TransformData.FromTransform(_endPoint);
             _shape.Start.Scale = Vector3.one;
             _shape.End.Scale = Vector3.one;
-            _shape.SetBoundaryFromMesh(_boundingMesh.mesh, TransformData.FromTransform(_boundingMesh.transform), _shape.Start);
+            _shape.SetBoundaryFromMesh(_boundingMesh.mesh, TransformData.FromTransform(_boundingMesh.transform), _shape.Start, _infiniteHeight);
         }
 
         public void AlignByStartPoint(TransformData newStartPoint)

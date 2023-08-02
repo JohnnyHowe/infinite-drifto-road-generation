@@ -382,6 +382,8 @@ MonoBehaviour:
   _roadSectionChoices:
   - {fileID: 4402979995159914802, guid: 671d2687cdc7b17429f4245697f7f62c, type: 3}
   - {fileID: 1008237179905350790, guid: d2b587557ad502a4c92f6a95076e476b, type: 3}
+  - {fileID: 4323603871934246166, guid: c4a8f9ec9cd8ed44fb091f86be3bc525, type: 3}
+  - {fileID: 2887276692217163081, guid: 44f06b5e1395238449870b4dcf86c381, type: 3}
   _roadSectionContainer: {fileID: 774513853}
   _targetRoadLength: 20
   _timeBetweenPiecePlacing: 0.1

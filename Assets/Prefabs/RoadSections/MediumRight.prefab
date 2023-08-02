@@ -81,6 +81,7 @@ MonoBehaviour:
   _startPoint: {fileID: 8305587446540540233}
   _endPoint: {fileID: 8391825944258590961}
   _boundingMesh: {fileID: 610136457938682979}
+  _infiniteHeight: 1
 --- !u!1 &7588190578921673081
 GameObject:
   m_ObjectHideFlags: 0
@@ -104,8 +105,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7588190578921673081}
-  m_LocalRotation: {x: -0, y: 0.70710576, z: -0, w: 0.70710784}
-  m_LocalPosition: {x: 5, y: 0, z: 6}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 5, y: -1, z: 6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

@@ -50,6 +50,7 @@ MonoBehaviour:
   _startPoint: {fileID: 602292138076316916}
   _endPoint: {fileID: 593071917357346099}
   _boundingMesh: {fileID: 5089817708695043856}
+  _infiniteHeight: 1
 --- !u!1 &5824598831095528000
 GameObject:
   m_ObjectHideFlags: 0

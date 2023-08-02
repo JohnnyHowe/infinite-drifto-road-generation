@@ -18,9 +18,11 @@ namespace RoadGeneration
         public List<Vector3> _boundaryVerticesRelativeToHandle;
         private FloatRange _heightRange;
         private ConvexShape2D _topology;
+        private bool _infiniteHeight;
 
-        public void SetBoundaryFromMesh(Mesh mesh, TransformData meshGlobalTransform, TransformData handle)
+        public void SetBoundaryFromMesh(Mesh mesh, TransformData meshGlobalTransform, TransformData handle, bool infiniteHeight = false)
         {
+            _infiniteHeight = infiniteHeight;
             _boundaryVerticesRelativeToHandle = new List<Vector3>();
             Handle = handle;
             foreach (Vector3 vertexLocalToMesh in mesh.vertices)
@@ -45,6 +47,7 @@ namespace RoadGeneration
             // TODO translate start and end points
             newShape.Start = newHandlePosition;
             newShape.End = newHandlePosition.TransformPoint(Start.InverseTransformPoint(End));
+            newShape._infiniteHeight = _infiniteHeight;
 
             newShape.RecalculateCollisionBoundaries();
             return newShape;
@@ -67,21 +70,13 @@ namespace RoadGeneration
 
         public bool DoesOverlapWith(RoadSectionShape other)
         {
-            if (!_heightRange.DoesOverlapWith(other._heightRange)) return false;
+            if (!_infiniteHeight && !_heightRange.DoesOverlapWith(other._heightRange)) return false;
             if (!_topology.DoesOverlapWith(other._topology)) return false;
             return true;
         }
 
         public void DebugDraw()
         {
-            foreach (Vector3 vertex1 in _boundaryVerticesRelativeToHandle)
-            {
-                foreach (Vector3 vertex2 in _boundaryVerticesRelativeToHandle)
-                {
-                    Debug.DrawLine(vertex1, vertex2);
-                }
-            }
-
             List<Vector2> topology = _topology.GetVertices();
             foreach (Vector2 vertex1 in topology)
             {

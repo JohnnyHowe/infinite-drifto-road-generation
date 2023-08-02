@@ -112,6 +112,7 @@ MonoBehaviour:
   _startPoint: {fileID: 3990920058711723925}
   _endPoint: {fileID: 4446253919436327430}
   _boundingMesh: {fileID: 5089817708695043856}
+  _infiniteHeight: 1
 --- !u!1001 &335714611744041444
 PrefabInstance:
   m_ObjectHideFlags: 0
