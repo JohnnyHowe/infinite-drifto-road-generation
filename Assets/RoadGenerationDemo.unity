@@ -380,6 +380,7 @@ MonoBehaviour:
   _choiceEngineStepsPerFrame: 1
   _choiceEngineCheckDepth: 20
   _roadSectionChoices:
+  - {fileID: 4402979995159914802, guid: 671d2687cdc7b17429f4245697f7f62c, type: 3}
   - {fileID: 1008237179905350790, guid: d2b587557ad502a4c92f6a95076e476b, type: 3}
   _roadSectionContainer: {fileID: 774513853}
   _targetRoadLength: 20

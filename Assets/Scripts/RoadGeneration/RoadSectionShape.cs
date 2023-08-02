@@ -25,7 +25,9 @@ namespace RoadGeneration
             Handle = handle;
             foreach (Vector3 vertexLocalToMesh in mesh.vertices)
             {
-                _boundaryVerticesRelativeToHandle.Add(Handle.InverseTransformPoint(meshGlobalTransform.TransformPoint(vertexLocalToMesh)));
+                Vector3 vertexGlobal = meshGlobalTransform.TransformPoint(vertexLocalToMesh);
+                Vector3 vertexLocalToHandle = Handle.InverseTransformPoint(vertexGlobal);
+                _boundaryVerticesRelativeToHandle.Add(vertexLocalToHandle);
             }
             RecalculateCollisionBoundaries();
         }

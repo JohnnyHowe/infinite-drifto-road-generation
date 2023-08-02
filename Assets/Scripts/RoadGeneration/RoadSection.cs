@@ -25,16 +25,19 @@ namespace RoadGeneration
         }
         private RoadSectionShape _localShapeReal;
 
-        private void Update() {
+        private void Update()
+        {
             _shape.DebugDraw();
         }
 
         private void _SetShape()
         {
             _shape = new RoadSectionShape();
-            _shape.SetBoundaryFromMesh(_boundingMesh.mesh, TransformData.FromTransform(_boundingMesh.transform), TransformData.FromTransform(_startPoint));
             _shape.Start = TransformData.FromTransform(_startPoint);
             _shape.End = TransformData.FromTransform(_endPoint);
+            _shape.Start.Scale = Vector3.one;
+            _shape.End.Scale = Vector3.one;
+            _shape.SetBoundaryFromMesh(_boundingMesh.mesh, TransformData.FromTransform(_boundingMesh.transform), _shape.Start);
         }
 
         public void AlignByStartPoint(TransformData newStartPoint)
