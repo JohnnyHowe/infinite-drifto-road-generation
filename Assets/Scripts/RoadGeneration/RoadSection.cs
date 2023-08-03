@@ -34,15 +34,17 @@ namespace RoadGeneration
 
         private void _SetShape()
         {
-            _shape = new RoadSectionShape();
-            _shape.Start = TransformData.FromTransform(_startPoint);
-            _shape.End = TransformData.FromTransform(_endPoint);
-            _shape.Start.Scale = Vector3.one;
-            _shape.End.Scale = Vector3.one;
-            _shape.SetBoundaryFromMesh(_boundingMesh.mesh, TransformData.FromTransform(_boundingMesh.transform), _shape.Start, _infiniteHeight);
+            _localShapeReal = new RoadSectionShape();
+            _localShapeReal.Start = TransformData.FromTransform(_startPoint);
+            _localShapeReal.End = TransformData.FromTransform(_endPoint);
+            _localShapeReal.Start.Scale = Vector3.one;
+            _localShapeReal.End.Scale = Vector3.one;
+            _localShapeReal.SetBoundaryFromMesh(_boundingMesh.sharedMesh, TransformData.FromTransform(_boundingMesh.transform), _shape.Start, _infiniteHeight);
+            _localShapeReal.DebugDraw();
         }
 
-        private void _DrawEndPoints() {
+        private void _DrawEndPoints()
+        {
             Vector3 startDir = _startPoint.rotation * Quaternion.Euler(0, 0, 1).eulerAngles;
             DrawArrow.ForGizmo(_startPoint.position - startDir, startDir);
             DrawArrow.ForGizmo(_endPoint.position, _endPoint.rotation * Quaternion.Euler(0, 0, 1).eulerAngles);

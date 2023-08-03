@@ -34,7 +34,8 @@ namespace RoadGeneration
 
         private void _CreatePrototypes()
         {
-            if (_autoHorizontalFlipPieces) {
+            if (_autoHorizontalFlipPieces)
+            {
                 Debug.LogWarning("RoadSection auto flip only works when start is along z axis!");
             }
 
@@ -54,6 +55,7 @@ namespace RoadGeneration
             GameObject prototype = Instantiate(toCopy.gameObject);
             prototype.transform.parent = transform;
             prototype.SetActive(false);
+            prototype.transform.SetGlobalScale(_roadSectionContainer.lossyScale);
             RoadSection instantiatedSection = prototype.GetComponent<RoadSection>();
             return instantiatedSection;
         }
@@ -119,7 +121,10 @@ namespace RoadGeneration
 
         private void _PlaceNewPiece()
         {
-            IRoadSection newSection = _choiceEngine.GetChoicePrototype().Clone();
+            RoadSection newSection = (RoadSection)_choiceEngine.GetChoicePrototype().Clone();
+            Vector3 sectionScaleOriginal = newSection.transform.localScale;
+            newSection.transform.parent = _roadSectionContainer;
+            newSection.transform.SetGlobalScale(sectionScaleOriginal);
             newSection.AlignByStartPoint(_GetNextPieceStartPosition());
             currentPieces.Add(newSection);
             _ResetEngine();
