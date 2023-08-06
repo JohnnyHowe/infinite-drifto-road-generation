@@ -28,7 +28,9 @@ namespace RoadGeneration
             foreach (Transform child in _roadSectionContainer)
             {
                 if (!child.gameObject.activeInHierarchy) continue;
-                currentPieces.Add(child.GetComponent<IRoadSection>());
+                IRoadSection section = child.GetComponent<IRoadSection>();
+                // ((RoadSection)section)._SetShape();
+                currentPieces.Add(section);
             }
         }
 
@@ -46,6 +48,7 @@ namespace RoadGeneration
 
                 RoadSection flippedSection = _CreatePrototype(roadSection);
                 _Flip(flippedSection);
+                flippedSection.name += "Flipped";
                 prototypes.Add(flippedSection);
             }
         }
@@ -53,6 +56,7 @@ namespace RoadGeneration
         private RoadSection _CreatePrototype(RoadSection toCopy)
         {
             GameObject prototype = Instantiate(toCopy.gameObject);
+            prototype.name = toCopy.name + " Prototype";
             prototype.transform.parent = transform;
             prototype.SetActive(false);
             prototype.transform.SetGlobalScale(_roadSectionContainer.lossyScale);
@@ -121,7 +125,8 @@ namespace RoadGeneration
 
         private void _PlaceNewPiece()
         {
-            RoadSection newSection = (RoadSection)_choiceEngine.GetChoicePrototype().Clone();
+            RoadSection prototype = (RoadSection)_choiceEngine.GetChoicePrototype();
+            RoadSection newSection = (RoadSection)prototype.Clone();
             Vector3 sectionScaleOriginal = newSection.transform.localScale;
             newSection.transform.parent = _roadSectionContainer;
             newSection.transform.SetGlobalScale(sectionScaleOriginal);
