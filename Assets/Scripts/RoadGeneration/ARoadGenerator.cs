@@ -14,24 +14,23 @@ namespace RoadGeneration
         [SerializeField] private Transform _roadSectionContainer;
         [SerializeField] private bool _autoHorizontalFlipPieces = true;
         private RoadGeneratorChoiceEngine _choiceEngine;
-        protected List<IRoadSection> currentPieces;
+        protected List<RoadSection> currentPieces;
         protected List<RoadSection> prototypes;
 
         protected void Awake()
         {
-            currentPieces = new List<IRoadSection>();
+            currentPieces = new List<RoadSection>();
             _CreatePrototypes();
 
             _choiceEngine = new RoadGeneratorChoiceEngine();
-            _ResetEngine();
-
             foreach (Transform child in _roadSectionContainer)
             {
                 if (!child.gameObject.activeInHierarchy) continue;
-                IRoadSection section = child.GetComponent<IRoadSection>();
+                RoadSection section = child.GetComponent<RoadSection>();
                 // ((RoadSection)section)._SetShape();
                 currentPieces.Add(section);
             }
+            _ResetEngine();
         }
 
         private void _CreatePrototypes()
@@ -45,6 +44,7 @@ namespace RoadGeneration
             foreach (RoadSection roadSection in _roadSectionChoices)
             {
                 prototypes.Add(_CreatePrototype(roadSection));
+                continue;
 
                 RoadSection flippedSection = _CreatePrototype(roadSection);
                 _Flip(flippedSection);
@@ -108,7 +108,7 @@ namespace RoadGeneration
         protected abstract bool ShouldRemoveLastPiece();
         protected abstract List<RoadSection> GetPiecesInPreferenceOrder(List<RoadSection> sectionPrototypes);
 
-        private List<IRoadSection> _GetCurrentPiecesInWorld()
+        private List<RoadSection> _GetCurrentPiecesInWorld()
         {
             return currentPieces;
         }
@@ -116,7 +116,7 @@ namespace RoadGeneration
         private void _RemoveLastPiece()
         {
             if (currentPieces.Count == 0) return;
-            IRoadSection lastSection = currentPieces[0];
+            RoadSection lastSection = currentPieces[0];
             currentPieces.RemoveAt(0);
             // TODO not this
             Destroy(((RoadSection)lastSection).gameObject);
@@ -137,7 +137,7 @@ namespace RoadGeneration
 
         private void _ResetEngine()
         {
-            _choiceEngine.Reset(_GetCurrentPiecesInWorld(), GetPiecesInPreferenceOrder(prototypes).Cast<IRoadSection>().ToList(), _choiceEngineCheckDepth);
+            _choiceEngine.Reset(_GetCurrentPiecesInWorld(), GetPiecesInPreferenceOrder(prototypes).Cast<RoadSection>().ToList(), _choiceEngineCheckDepth);
         }
 
         private TransformData _GetNextPieceStartPosition()

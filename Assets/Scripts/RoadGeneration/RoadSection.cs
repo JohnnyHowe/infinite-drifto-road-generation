@@ -6,12 +6,14 @@ using UnityEngine;
 
 namespace RoadGeneration
 {
-    public class RoadSection : MonoBehaviour, IRoadSection
+    public class RoadSection : MonoBehaviour
     {
         [SerializeField] private Transform _startPoint;
         [SerializeField] private Transform _endPoint;
         [SerializeField] private MeshFilter _boundingMesh;
         [SerializeField] private bool _infiniteHeight = false;
+
+        [SerializeField] private List<Vector2> topology;
 
         private RoadSectionShape _shapeRelativeToStart
         {
@@ -44,6 +46,10 @@ namespace RoadGeneration
             _localShapeReal.DebugDraw();
         }
 
+        void Update() {
+            topology = _localShapeReal?._topologyGlobal.GetVertices();
+        }
+
         private void _DrawEndPoints()
         {
             Vector3 startDir = _startPoint.rotation * Quaternion.Euler(0, 0, 1).eulerAngles;
@@ -55,13 +61,14 @@ namespace RoadGeneration
         {
             transform.position += newStartPoint.Position;
             transform.rotation = newStartPoint.Rotation;
+            _SetShape();
         }
 
-        public IRoadSection Clone()
+        public RoadSection Clone()
         {
             GameObject clone = Instantiate(gameObject);
             clone.SetActive(true);
-            return clone.GetComponent<IRoadSection>();
+            return clone.GetComponent<RoadSection>();
         }
 
         public RoadSectionShape GetShape()

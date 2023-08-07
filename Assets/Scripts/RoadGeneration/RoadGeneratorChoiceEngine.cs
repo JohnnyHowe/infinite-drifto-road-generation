@@ -14,17 +14,19 @@ namespace RoadGeneration
     {
         public class NoChoiceFoundException : Exception { }
 
-        private DFSCombinationGenerator _combinationGenerator;
-        private List<IRoadSection> _currentPiecesInWorld;
-        private List<IRoadSection> _candidatePrototypes;
+        public DFSCombinationGenerator _combinationGenerator;
+        private List<RoadSection> _currentPiecesInWorld;
+        private List<RoadSection> _candidatePrototypes;
 
         private const int MAX_ITERATIONS = 10000000;
+        private bool _impossible;
 
-        public void Reset(List<IRoadSection> currentPiecesInWorld, List<IRoadSection> possibleChoicesInPreferenceOrder, int checkDepth)
+        public void Reset(List<RoadSection> currentPiecesInWorld, List<RoadSection> possibleChoicesInPreferenceOrder, int checkDepth)
         {
             _combinationGenerator = new DFSCombinationGenerator(possibleChoicesInPreferenceOrder.Count, checkDepth);
             _currentPiecesInWorld = currentPiecesInWorld;
             _candidatePrototypes = possibleChoicesInPreferenceOrder;
+            _impossible = false;
         }
 
         public void StepUntilChoiceIsFound()
@@ -39,6 +41,7 @@ namespace RoadGeneration
 
         public void Step(int choiceEngineStepsPerFrame)
         {
+            if (HasFoundChoice() || _impossible) return;
             if (_combinationGenerator.IsImpossible()) return;
             if (_DoesLastCandidateSectionOverlapWithOthers())
             {
@@ -46,7 +49,11 @@ namespace RoadGeneration
                 {
                     _combinationGenerator.StepInvalid();
                 }
-                catch (DFSCombinationGenerator.OutOfCombinationsException _) { }
+                catch (DFSCombinationGenerator.OutOfCombinationsException _)
+                {
+                    Debug.Log("No Choice Found!");
+                    _impossible = true;
+                }
             }
             else
             {
@@ -84,7 +91,7 @@ namespace RoadGeneration
             // I hope it looks obvious and easy to make yourself - that means I've done it right
             List<RoadSectionShape> alignedCandidates = new List<RoadSectionShape>();
             TransformData nextStartPoint = _GetFirstCandidateStartPoint();
-            foreach (IRoadSection candidateSection in _GetCandidatesNotAligned())
+            foreach (RoadSection candidateSection in _GetCandidatesNotAligned())
             {
                 RoadSectionShape alignedCandidateShape = candidateSection.GetShape().GetTranslatedCopy(nextStartPoint);
                 alignedCandidates.Add(alignedCandidateShape);
@@ -93,9 +100,9 @@ namespace RoadGeneration
             return alignedCandidates;
         }
 
-        private List<IRoadSection> _GetCandidatesNotAligned()
+        private List<RoadSection> _GetCandidatesNotAligned()
         {
-            List<IRoadSection> candidates = new List<IRoadSection>();
+            List<RoadSection> candidates = new List<RoadSection>();
             foreach (int candidateChoiceIndex in _combinationGenerator.GetState())
             {
                 if (candidateChoiceIndex == -1) break;
@@ -120,7 +127,7 @@ namespace RoadGeneration
             return _combinationGenerator.HasFoundSolution();
         }
 
-        public IRoadSection GetChoicePrototype()
+        public RoadSection GetChoicePrototype()
         {
             if (!HasFoundChoice())
             {
