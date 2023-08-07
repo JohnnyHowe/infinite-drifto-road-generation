@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
-using RoadGeneration;
+using JonathonOH.RoadGeneration;
 using UnityEngine;
 using UnityEngine.TestTools;
 

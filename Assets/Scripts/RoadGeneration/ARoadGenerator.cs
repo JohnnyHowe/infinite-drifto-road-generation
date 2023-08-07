@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace RoadGeneration
+namespace JonathonOH.RoadGeneration
 {
     public abstract class ARoadGenerator : MonoBehaviour
     {
@@ -85,8 +85,8 @@ namespace RoadGeneration
                 }
                 if (_choiceEngine.HasFoundChoice())
                 {
-                    OnNewPiecePlaced();
                     _PlaceNewPiece();
+                    OnNewPiecePlaced(currentPieces[currentPieces.Count - 1]);
                 }
                 else
                 {
@@ -97,12 +97,12 @@ namespace RoadGeneration
             if (ShouldRemoveLastPiece())
             {
                 _RemoveLastPiece();
-                OnNewPieceRemoved();
+                OnPieceRemoved();
             }
         }
 
-        protected virtual void OnNewPiecePlaced() { }
-        protected virtual void OnNewPieceRemoved() { }
+        protected virtual void OnNewPiecePlaced(RoadSection newPiece) { }
+        protected virtual void OnPieceRemoved() { }
         protected abstract bool ShouldPlaceNewPiece();
         protected abstract bool ShouldRemoveLastPiece();
         protected abstract List<RoadSection> GetPiecesInPreferenceOrder(List<RoadSection> sectionPrototypes);

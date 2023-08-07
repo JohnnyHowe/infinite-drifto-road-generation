@@ -1,7 +1,7 @@
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
-using RoadGeneration;
+using JonathonOH.RoadGeneration;
 using Other;
 
 public class OverlapDetectorDemoWithShape : MonoBehaviour

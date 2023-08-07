@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using RoadGeneration;
+using JonathonOH.RoadGeneration;
 
 public class RoadSectionShapeDemoNoRoadSection : MonoBehaviour
 {

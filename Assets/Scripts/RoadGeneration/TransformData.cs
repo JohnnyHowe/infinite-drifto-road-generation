@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace RoadGeneration
+namespace JonathonOH.RoadGeneration
 {
     [System.Serializable]
     public struct TransformData

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Other;
 using UnityEngine;
 
-namespace RoadGeneration
+namespace JonathonOH.RoadGeneration
 {
     /// <summary>
     /// Describes the shape of a road section

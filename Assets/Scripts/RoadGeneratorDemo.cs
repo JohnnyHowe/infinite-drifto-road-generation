@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using RoadGeneration;
+using JonathonOH.RoadGeneration;
 using UnityEngine;
 
 public class RoadGeneratorDemo : ARoadGenerator

@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine;
 using Other;
 
-namespace RoadGeneration
+namespace JonathonOH.RoadGeneration
 {
     /// <summary>
     /// Must call Reset() before anything else

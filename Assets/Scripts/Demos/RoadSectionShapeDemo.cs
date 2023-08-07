@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Other;
-using RoadGeneration;
+using JonathonOH.RoadGeneration;
 
 public class RoadSectionShapeDemo : MonoBehaviour
 {
