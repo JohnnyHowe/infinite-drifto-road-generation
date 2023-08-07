@@ -46,7 +46,8 @@ namespace RoadGeneration
             _localShapeReal.DebugDraw();
         }
 
-        void Update() {
+        void Update()
+        {
             topology = _localShapeReal?._topologyGlobal.GetVertices();
         }
 

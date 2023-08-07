@@ -50,7 +50,7 @@ public class RoadGeneratorDemo : ARoadGenerator
     protected override List<RoadSection> GetPiecesInPreferenceOrder(List<RoadSection> sectionPrototypes)
     {
         List<RoadSection> shuffled = new List<RoadSection>(sectionPrototypes);
-        // Shuffle(shuffled);
+        Shuffle(shuffled);
         return shuffled;
     }
 

@@ -44,7 +44,6 @@ namespace RoadGeneration
             foreach (RoadSection roadSection in _roadSectionChoices)
             {
                 prototypes.Add(_CreatePrototype(roadSection));
-                continue;
 
                 RoadSection flippedSection = _CreatePrototype(roadSection);
                 _Flip(flippedSection);
