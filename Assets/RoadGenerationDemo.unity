@@ -452,7 +452,7 @@ MonoBehaviour:
   _autoHorizontalFlipPieces: 1
   _targetRoadLength: 30
   _timeBetweenPiecePlacing: 0.1
-  _maxTimeBetweenRemovingPieces: 1
+  _maxTimeBetweenRemovingPieces: 0.1
 --- !u!1001 &1409346077
 PrefabInstance:
   m_ObjectHideFlags: 0
